@@ -1,0 +1,14 @@
+torch
+lion-pytorch
+numpy
+# colt5_attention
+einops
+# local_attention
+accelerate
+transformers
+# triton
+SentencePiece
+bitsandbytes
+datasets
+x_transformers
+optimus-prime-transformers
