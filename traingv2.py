@@ -20,7 +20,7 @@ from transformers import (AutoTokenizer, default_data_collator,
 
 # from stable_adamw import StableAdamWUnfused
 
-from optimus_prime import TransformerWrapper, Decoder, AutoregressiveWrapper
+from optimus_prime.optimus_prime import TransformerWrapper, Decoder, AutoregressiveWrapper
 from lion_pytorch import Lion
 # constants
 
