@@ -109,11 +109,11 @@ Here's an example of training Andromeda with the provided code snippet:
 1. Clone the repository and install the required packages.
 
 ```bash
-!git clone https://github.com/kyegomez/Optimus-Prime.git
-%cd Optimus-Prime
-!pip install --upgrade torch
-!pip install -r requirements.txt
-!pip install einops
+git clone https://github.com/kyegomez/Optimus-Prime.git
+cd Optimus-Prime
+pip install --upgrade torch
+pip install -r requirements.txt
+pip install einops
 ```
 
 2. Run the training script:
