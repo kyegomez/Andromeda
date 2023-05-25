@@ -109,17 +109,23 @@ Here's an example of training Andromeda with the provided code snippet:
 1. Clone the repository and install the required packages.
 
 ```bash
-git clone https://github.com/kyegomez/Optimus-Prime.git
-cd Optimus-Prime
-pip install --upgrade torch
-pip install -r requirements.txt
-pip install einops
+pip install andromeda
 ```
 
 2. Run the training script:
 
-```bash
-!python3 trainandromeda.py
+```python
+from andromeda import TrainAndromeda
+
+if __name__ == "__main__":
+    TrainAndromeda()
+
+```
+
+run the file:
+
+```
+python3 trainandromeda.py
 ```
 
 This script will train the Andromeda model on the enwik8 dataset, leveraging the advanced techniques discussed above. The model's progress will be displayed during training, and the model will be saved periodically.
