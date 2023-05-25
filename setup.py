@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-  name = 'andromeda',
+  name = 'andromeda_transformer',
   packages = find_packages(exclude=['examples']),
   version = '1.1.3',
   license='MIT',

@@ -112,6 +112,23 @@ Here's an example of training Andromeda with the provided code snippet:
 pip install andromeda
 ```
 
+or:
+
+```git clone https://github.com/kyegomez/Andromeda/tree/e2
+cd Andromeda
+pip3 install -r requirements.txt
+```
+
+
+2. Data
+
+Data
+You can preprocess a different dataset in a way similar to the C4 dataset used during training by running the build_dataset.py script. This will pre-tokenize, chunk the data in blocks of a specified sequence length, and upload to the Huggingface hub. For example:
+
+```python3 Andromeda/build_dataset.py --seed 42 --seq_len 8192 --hf_account "your_hf_account" --tokenizer "EleutherAI/gpt-neox-20b" --dataset_name "EleutherAI/the_pile_deduplicated"```
+
+
+
 2. Run the training script:
 
 ```python
@@ -127,6 +144,11 @@ run the file:
 ```
 python3 trainandromeda.py
 ```
+
+# Inference
+
+```python3 inference.py "My dog is very cute" --seq_len 256 --temperature 0.8 --filter_thres 0.9 --model "andromeda"``` 
+
 
 This script will train the Andromeda model on the enwik8 dataset, leveraging the advanced techniques discussed above. The model's progress will be displayed during training, and the model will be saved periodically.
 

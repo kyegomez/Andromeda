@@ -10,5 +10,4 @@ transformers
 SentencePiece
 bitsandbytes
 datasets
-x_transformers
 optimus-prime-transformers
