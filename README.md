@@ -21,7 +21,7 @@ pip3 install -r requirements.txt
 
 or:
 ```bash
-pip install andromeda
+pip install andromeda_transformer
 ```
 
 
