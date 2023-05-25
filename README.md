@@ -13,7 +13,8 @@ Get started:
 1. Clone the repository and install the required packages.
 
 
-```git clone https://github.com/kyegomez/Andromeda/tree/e2
+```
+git clone https://github.com/kyegomez/Andromeda/tree/e2
 cd Andromeda
 pip3 install -r requirements.txt
 ```
