@@ -50,16 +50,16 @@ run the file:
 ```
 python3 trainandromeda.py
 ```
+This script will train the Andromeda model on the enwik8 dataset, leveraging the advanced techniques discussed above. The model's progress will be displayed during training, and the model will be saved periodically.
+
+By incorporating these cutting-edge techniques, Andromeda is designed to outperform other language models like OpenAI's GPT-4 and PALM in terms of efficiency, flexibility, and scalability.
 
 # Inference
 
 ```python3 inference.py "My dog is very cute" --seq_len 256 --temperature 0.8 --filter_thres 0.9 --model "andromeda"``` 
+
 Not yet we need to submit model to pytorch hub
 
-
-This script will train the Andromeda model on the enwik8 dataset, leveraging the advanced techniques discussed above. The model's progress will be displayed during training, and the model will be saved periodically.
-
-By incorporating these cutting-edge techniques, Andromeda is designed to outperform other language models like OpenAI's GPT-4 and PALM in terms of efficiency, flexibility, and scalability.
 
 ## Model Architecture 🧠🔧
 
