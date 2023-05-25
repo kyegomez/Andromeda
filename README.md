@@ -4,6 +4,63 @@
 
 Andromeda is a state-of-the-art language model that pushes the boundaries of natural language understanding and generation. Designed for high performance and efficiency, Andromeda is built upon advanced techniques that make it a strong contender against the likes of OpenAI's GPT-4 and PALM.
 
+
+
+# Usage
+
+Get started:
+
+1. Clone the repository and install the required packages.
+
+
+```git clone https://github.com/kyegomez/Andromeda/tree/e2
+cd Andromeda
+pip3 install -r requirements.txt
+```
+
+or:
+```bash
+pip install andromeda
+```
+
+
+
+## Dataset building building
+
+Data
+You can preprocess a different dataset in a way similar to the C4 dataset used during training by running the build_dataset.py script. This will pre-tokenize, chunk the data in blocks of a specified sequence length, and upload to the Huggingface hub. For example:
+
+```python3 Andromeda/build_dataset.py --seed 42 --seq_len 8192 --hf_account "HUGGINGFACE APIKEY" --tokenizer "EleutherAI/gpt-neox-20b" --dataset_name "EleutherAI/the_pile_deduplicated"```
+
+
+# Training
+
+2. Run the training script:
+
+```python
+from andromeda import TrainAndromeda
+
+if __name__ == "__main__":
+    TrainAndromeda()
+
+```
+
+run the file:
+
+```
+python3 trainandromeda.py
+```
+
+# Inference
+
+```python3 inference.py "My dog is very cute" --seq_len 256 --temperature 0.8 --filter_thres 0.9 --model "andromeda"``` 
+Not yet we need to submit model to pytorch hub
+
+
+This script will train the Andromeda model on the enwik8 dataset, leveraging the advanced techniques discussed above. The model's progress will be displayed during training, and the model will be saved periodically.
+
+By incorporating these cutting-edge techniques, Andromeda is designed to outperform other language models like OpenAI's GPT-4 and PALM in terms of efficiency, flexibility, and scalability.
+
 ## Model Architecture 🧠🔧
 
 ```python
@@ -88,10 +145,6 @@ attn_layers = Decoder(
 )
 ```
 
-### Deep Normalization (deepnorm)
-
-Deep normalization is a technique that normalizes the activations within a layer, helping with training stability and convergence. It allows the model to better learn complex patterns and generalize to unseen data.
-
 Usage example:
 
 ```python
@@ -102,57 +155,9 @@ attn_layers = Decoder(
 )
 ```
 
-### Training Example
+### Deep Normalization (deepnorm)
 
-Here's an example of training Andromeda with the provided code snippet:
-
-1. Clone the repository and install the required packages.
-
-```bash
-pip install andromeda
-```
-
-or:
-
-```git clone https://github.com/kyegomez/Andromeda/tree/e2
-cd Andromeda
-pip3 install -r requirements.txt
-```
-
-
-2. Data
-
-Data
-You can preprocess a different dataset in a way similar to the C4 dataset used during training by running the build_dataset.py script. This will pre-tokenize, chunk the data in blocks of a specified sequence length, and upload to the Huggingface hub. For example:
-
-```python3 Andromeda/build_dataset.py --seed 42 --seq_len 8192 --hf_account "your_hf_account" --tokenizer "EleutherAI/gpt-neox-20b" --dataset_name "EleutherAI/the_pile_deduplicated"```
-
-
-
-2. Run the training script:
-
-```python
-from andromeda import TrainAndromeda
-
-if __name__ == "__main__":
-    TrainAndromeda()
-
-```
-
-run the file:
-
-```
-python3 trainandromeda.py
-```
-
-# Inference
-
-```python3 inference.py "My dog is very cute" --seq_len 256 --temperature 0.8 --filter_thres 0.9 --model "andromeda"``` 
-
-
-This script will train the Andromeda model on the enwik8 dataset, leveraging the advanced techniques discussed above. The model's progress will be displayed during training, and the model will be saved periodically.
-
-By incorporating these cutting-edge techniques, Andromeda is designed to outperform other language models like OpenAI's GPT-4 and PALM in terms of efficiency, flexibility, and scalability.
+Deep normalization is a technique that normalizes the activations within a layer, helping with training stability and convergence. It allows the model to better learn complex patterns and generalize to unseen data.
 
 # Andromeda Principles
 - **Efficiency**: Andromeda incorporates cutting-edge optimization techniques, such as attention flashing, rotary position encodings, and deep normalization, resulting in efficient training and inference.

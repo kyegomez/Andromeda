@@ -9,7 +9,7 @@ class CFG:
     SEED: int = 42
     SEQ_LEN: int = 8192
     NUM_CPU: int = multiprocessing.cpu_count()
-    HF_ACCOUNT_REPO: str = "huggingface account"
+    HF_ACCOUNT_REPO: str = "YOUR HUGGINGFACE API KEY"
     TOKENIZER: str = "EleutherAI/gpt-neox-20b"
     DATASET_NAME: str = "EleutherAI/the_pile_deduplicated"
 
