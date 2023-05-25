@@ -13,7 +13,7 @@ class CFG:
     TOKENIZER: str = "EleutherAI/gpt-neox-20b"
     DATASET_NAME: str = "EleutherAI/the_pile_deduplicated"
 
-def main(args):
+def built_dataset(args):
     tokenizer = AutoTokenizer.from_pretrained(CFG.Tokenizer)
     train_dataset = load_dataset(CFG.DATASET_NAME, split="train")
 
@@ -67,4 +67,4 @@ if __name__ == '__main__':
     parser.add_argument("--tokenizer", type=str, default=CFG.TOKENIZER, help="Tokenizer model to use")
     parser.add_argument("--dataset_name", type=str, default=CFG.DATASET_NAME, help="Name of the dataset to process")
     args = parser.parse_args()
-    main(args)
+    built_dataset(args)

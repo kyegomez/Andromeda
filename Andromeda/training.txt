@@ -13,8 +13,8 @@ from rich.progress import Progress
 
 
 from lion_pytorch import Lion
-from x_transformers import TransformerWrapper, Decoder, AutoregressiveWrapper
-
+# from x_transformers import TransformerWrapper, Decoder, AutoregressiveWrapper
+from optimus_prim import TransformerWrapper, Decoder, AutoregressiveWrapper
 
 from torch.nn.parallel import DataParallel, DistributedDataParallel
 import torch.distributed as dist

@@ -222,7 +222,7 @@ def build_dataloaders():
 # main
 
 
-def main():
+def TrainAndromeda():
     # accelerator
 
     timeout = InitProcessGroupKwargs(timeout=timedelta(seconds=1_000_000))
@@ -431,4 +431,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    TrainAndromeda()
