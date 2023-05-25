@@ -14,7 +14,7 @@ class CFG:
     DATASET_NAME: str = "EleutherAI/the_pile_deduplicated"
 
 def built_dataset(args):
-    tokenizer = AutoTokenizer.from_pretrained(CFG.Tokenizer)
+    tokenizer = AutoTokenizer.from_pretrained(CFG.TOKENIZER)
     train_dataset = load_dataset(CFG.DATASET_NAME, split="train")
 
 
