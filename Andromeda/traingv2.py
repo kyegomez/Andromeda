@@ -5,7 +5,7 @@ from datetime import timedelta
 from functools import partial
 from itertools import chain
 
-import torch
+import torch 
 from accelerate import Accelerator
 from accelerate.utils import InitProcessGroupKwargs
 from datasets import concatenate_datasets, load_dataset
@@ -20,7 +20,7 @@ from transformers import (AutoTokenizer, default_data_collator,
 
 # from stable_adamw import StableAdamWUnfused
 #sd
-from optimus_prime import TransformerWrapper, Decoder, AutoregressiveWrapper
+from optimus_prime_transformers import TransformerWrapper, Decoder, AutoregressiveWrapper
 from lion_pytorch import Lion
 # constants
 
