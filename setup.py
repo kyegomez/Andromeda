@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
   name = 'andromeda_transformer',
   packages = find_packages(exclude=['examples']),
-  version = '1.1.3',
+  version = '1.1.4',
   license='MIT',
   description = 'andromeda - Pytorch',
   author = 'Kye Gomez',
