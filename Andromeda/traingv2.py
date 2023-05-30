@@ -268,7 +268,7 @@ def TrainAndromeda():
             alibi_num_heads=16,
             rotary_xpos=True,
             attn_flash = True,
-            deepnorm=True,
+            # deepnorm=True,
             shift_tokens=1,
             attn_one_kv_head = True,
             qk_norm=True,
