@@ -55,4 +55,7 @@ Adjust hyperparameters, learning rate, and training duration as needed to optimi
 If necessary, revisit the data prioritization and preprocessing steps to refine the training data.
 
 
+# Evaluations and Benchmarks:
 
+[Chain of thought hub](https://github.com/FranxYao/chain-of-thought-hub)
+SFT stands for Style Fine-tuning and RLHF stands for Reinforcement Learning and Human Feedback. These are techniques used in natural language processing to improve the quality and accuracy of generated text. The statement suggests that if these techniques are applied correctly to the 65B LLaMA dataset, it is possible to recreate ChatGPT.
