@@ -3,8 +3,21 @@
 We should train an 100m param, 500m, 1billion parameters with the same hyperparameters as 2 similiar models
 
 [concept of mind's PALM](https://github.com/conceptofmind/PaLM)
+Model Size	Num Tokens	Dim	Depth	Dim Head	Heads	Flash Attention	Learning Rate
+150 M	50304	768	12	128	8	True	6e-4
+410 M	50304	1024	24	128	8	True	3e-4
+1 B	50304	2048	16	128	8	True	3e-4
+
 
 [MPT HF](https://huggingface.co/mosaicml/mpt-7b)
+
+Hyperparameter	Value
+n_parameters	6.7B
+n_layers	32
+n_heads	32
+d_model	4096
+vocab size	50432
+sequence length	2048
 
 
 
