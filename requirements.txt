@@ -10,4 +10,3 @@ transformers
 SentencePiece
 bitsandbytes
 datasets
-optimus-prime-transformers
