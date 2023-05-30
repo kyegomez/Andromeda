@@ -1,6 +1,6 @@
 #  Andromeda
 
-We should train an 100m param, 500m, 1billion parameters with the same hyperparameters as 2 similiar models
+We should train an 100m param, 500m, 1billion parameters verisions with similiar hyperparameters from these 2 similiar models
 
 [concept of mind's PALM](https://github.com/conceptofmind/PaLM)
 Model Size	Num Tokens	Dim	Depth	Dim Head	Heads	Flash Attention	Learning Rate
