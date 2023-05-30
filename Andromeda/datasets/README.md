@@ -1,5 +1,14 @@
 #  Andromeda
 
+We should train an 100m param, 500m, 1billion parameters with the same hyperparameters as 2 similiar models
+
+[concept of mind's PALM](https://github.com/conceptofmind/PaLM)
+
+[MPT HF](https://huggingface.co/mosaicml/mpt-7b)
+
+
+
+
 ## Data prioritization: Prioritize datasets based on their relevance to the desired AI capabilities and the quality of the data.
 
 High priority: openwebtext, super_glue, piqa, Falcon-40B (RefinedWeb-English, RefinedWeb-Europe, Books, Conversations, Code, Technical), glue
@@ -32,3 +41,6 @@ Evaluation and iteration: Continuously evaluate the model's performance on the v
 Monitor the model's performance using relevant metrics, such as perplexity, F1 score, or BLEU score, depending on the task.
 Adjust hyperparameters, learning rate, and training duration as needed to optimize the model's performance.
 If necessary, revisit the data prioritization and preprocessing steps to refine the training data.
+
+
+

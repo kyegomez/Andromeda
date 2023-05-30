@@ -93,95 +93,6 @@ def get_lr_scheduler_with_warmup(
         )
 
 
-# optimizers
-
-
-# def decoupled_optimizer(
-#     model, learning_rate, weight_decay, beta_1, beta_2, use_adamw=False
-# ):
-#     # Create an empty dictionary called param_dict to store the model's named parameters.
-#     param_dict = {}
-#     # Iterate over the model's named parameters and populate the param_dict with key-value pairs.
-#     for param_name, param in model.named_parameters():
-#         param_dict[param_name] = param
-
-#     # Separate the model's named modules into two groups: decay and no_decay.
-
-#     # Create an empty list to store the names of the LayerNorm and Embedding layer weights with no weight decay.
-#     no_decay = []
-
-#     # Iterate through the named modules of the model.
-#     for module_name, module in model.named_modules():
-#         # Check if the current module is an instance of any of the desired types (LayerNorm or torch.nn.Embedding).
-#         for ndim in [LayerNorm, torch.nn.Embedding]:
-#             if isinstance(module, ndim):
-#                 # If torch.nn.Embedding, append its name with a ".weight" suffix to the no_decay list.
-#                 if module_name == "token_emb":
-#                     no_decay.append(f"{module_name}.weight")
-#                 else:
-#                     # If the module is an instance of LayerNorm
-#                     no_decay.append(f"{module_name}.gamma")
-#                 # Exit the inner loop since the desired module has been found.
-#                 break
-
-#     # Create an empty list to store the names of the Linear layer weights with weight decay.
-#     decay = []
-
-#     # Iterate through the named modules of the model.
-#     for module_name, module in model.named_modules():
-#         # Check if the current module is an instance of the desired type (torch.nn.Linear).
-#         for ndim in [torch.nn.Linear]:
-#             if isinstance(module, ndim):
-#                 # If the module is an instance of torch.nn.Linear, append its name with a ".weight" suffix to the decay list.
-#                 decay.append(f"{module_name}.weight")
-#                 # Exit the inner loop since the desired module has been found.
-#                 break
-
-#     # Create two separate lists of model parameters: decay_param and no_decay_param.
-#     # The decay_param list contains the parameters that should have weight decay applied.
-#     # The no_decay_param list contains the parameters that should not have weight decay applied, excluding the 'to_logits.weight' parameter.
-
-#     # Create an empty list called decay_param to store the parameters with weight decay.
-#     decay_param = []
-
-#     # Iterate over the decay list, which contains the names of the parameters with weight decay.
-#     for param in decay:
-#         # Check if the current parameter is not 'to_logits.weight'.
-#         # Append the corresponding parameter from param_dict to the decay_param list.
-#         if param != "to_logits.weight":
-#             decay_param.append(param_dict[param])
-
-#     # Create an empty list called no_decay_param to store the parameters without weight decay.
-#     no_decay_param = []
-
-#     # Iterate over the no_decay list, which contains the names of the parameters without weight decay.
-#     for param in no_decay:
-#         # Append the corresponding parameter from param_dict to the no_decay_param list.
-#         no_decay_param.append(param_dict[param])
-
-#     # Create a list called grouped_params that contains two dictionaries.
-#     # The first dictionary has the decay_param list and the corresponding weight_decay value.
-#     # The second dictionary has the no_decay_param list and a weight_decay value of 0.0.
-#     grouped_params = [
-#         {"params": decay_param, "weight_decay": weight_decay},
-#         {"params": no_decay_param, "weight_decay": 0.0},
-#     ]
-
-#     # Create a variable called optimizer that stores an instance of the optimizer.
-#     if use_adamw:
-#         optimizer = AdamW(grouped_params, lr=learning_rate, betas=(beta_1, beta_2),)
-#     else:
-#         optimizer = StableAdamWUnfused(
-#             grouped_params, lr=learning_rate, betas=(beta_1, beta_2),
-#         )
-
-#     # Return the optimizer.
-#     return optimizer
-
-
-
-# dataloaders
-
 
 def build_dataloaders():
     tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neox-20b")
@@ -259,7 +170,6 @@ def TrainAndromeda():
         use_abs_pos_emb = False,
         # tokenizer=custom_tokenizer,
         attn_layers = Decoder(
-            layers=32,
             dim=2048,
             depth=16,
             dim_head=128,
@@ -279,7 +189,7 @@ def TrainAndromeda():
 
     model = AutoregressiveWrapper(model).to(accelerator.device)
 
-    optim = Lion(model.parameters(), lr=1e-4, weight_decay=1e-2)
+    optim = Lion(model.parameters(), lr=1e-4, weight_decay=1e-2, use_triton=True)
 
 
 
