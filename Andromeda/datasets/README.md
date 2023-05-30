@@ -38,7 +38,6 @@ Tokenize the text using a suitable tokenizer, such as BPE or SentencePiece.
 
 Split the datasets into training, validation, and testing sets.
 
-## Model architecture: Choose a suitable transformer architecture, such as GPT-3, BERT, or RoBERTa, depending on the desired AI capabilities (e.g., language generation, classification, or question-answering).
 
 ## Training strategy: Train the AI model using the prioritized datasets in a multi-stage process.
 
