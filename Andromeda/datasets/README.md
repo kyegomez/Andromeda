@@ -34,7 +34,7 @@ Low priority: JosephusCheung/GuanacoDataset, anon8231489123/ShareGPT_Vicuna_unfi
 
 Remove duplicates, irrelevant content, and low-quality data.
 
-Tokenize the text using a suitable tokenizer, such as BPE or SentencePiece.
+Tokenize the text using a suitable tokenizer, such as GPT Neox tokenizer or potentially falcon's tokenizer
 
 Split the datasets into training, validation, and testing sets.
 
