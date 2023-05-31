@@ -1,294 +1,365 @@
-#quantization + paralleism
-import time
+import math
+import multiprocessing
+import os
+import collections
+
+from datetime import timedelta
+from functools import partial
+from itertools import chain
 
 import torch
-from accelerate.utils import set_seed
-from datasets import load_dataset
-from torch.nn import CrossEntropyLoss
-from torch.utils.data import DataLoader
-from transformers import default_data_collator, get_linear_schedule_with_warmup
+
 from accelerate import Accelerator
+from accelerate.utils import InitProcessGroupKwargs
 
-from rich.progress import Progress
+from datasets import concatenate_datasets, load_dataset
 
+from torch.distributed.algorithms._checkpoint.checkpoint_wrapper import (
+    CheckpointImpl, apply_activation_checkpointing, checkpoint_wrapper)
+
+from torch.optim import AdamW
+from torch.utils.data import DataLoader
+
+from tqdm import tqdm
+
+from transformers import (AutoTokenizer, default_data_collator,
+                          get_cosine_schedule_with_warmup,
+                          get_linear_schedule_with_warmup, set_seed)
+
+from datasets import Dataset
+
+# from stable_adamw import StableAdamWUnfused
+# sd
+
+from optimus_prime import TransformerWrapper, Decoder, AutoregressiveWrapper
+from optimus_prime import AndromedaEmbedding
 
 from lion_pytorch import Lion
-# from x_transformers import TransformerWrapper, Decoder, AutoregressiveWrapper
-from optimus_prim import TransformerWrapper, Decoder, AutoregressiveWrapper
 
-from torch.nn.parallel import DataParallel, DistributedDataParallel
-import torch.distributed as dist
+import numpy as np
 
-from torch.distributed.fsdp import (
-    FullyShardedDataParallel,
-    CPUOffload,
-)
+# constants
 
-from torch.distributed.fsdp.wrap import (
-    default_auto_wrap_policy,
-)
+class CFG:
+    BATCH_SIZE: int = 3 # 3
+    GRADIENT_ACCUMULATE_EVERY: int = 1
+    SEED: int = 42
+    LEARNING_RATE: float = 1e-4
+    WEIGHT_DECAY: float = 1e-2
+    SEQ_LEN: int = 8192 # 8192
+    NUM_CPU: int = multiprocessing.cpu_count()
+    USE_PRETOKENIZED: bool = True
+    USE_ACTIVATION_CHECKPOINTING: bool = True
+    RESUME_FROM_CHECKPOINT: str = None
+    CHECKPOINTING_STEPS: int = 1000
+    OUTPUT_DIR: str = "output"
+    ENTITY_NAME: str = "wanb" # Put your wandb username here
 
-from transformers import AutoTokenizer
+# helpers
 
-#logging
-import boto3
+def print_num_params(model, accelerator: Accelerator):
+    n_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    accelerator.print(f"Number of parameters in model: {n_params}")
 
+def fsdp_activation_checkpointing(
+    model, accelerator: Accelerator, offload_to_cpu=False
+):
 
-#training
-import wandb
+    accelerator.print(f"Using FSDP activation checkpointing")
 
-from torch.utils.tensorboard import SummaryWriter
+    # check_fn = lambda submodule: isinstance(submodule, ParallelTransformerBlock)
 
-class CustomGPTNeoXTokenizer:
-    def __init__(self):
-        self.tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neox-20b")
-    
-    def tokenize(self, text):
-        return self.tokenizer(text, return_tensors="pt", truncation=True, padding=True)
-
-custom_tokenizer = CustomGPTNeoXTokenizer()
-
-Andromeda = TransformerWrapper(
-    num_tokens=64007,
-    max_seq_len=8192,
-    use_abs_pos_emb = False,
-    tokenizer=custom_tokenizer,
-    attn_layers = Decoder(
-        dim=2048,
-        depth=6,
-        heads=16,
-        alibi_pos_bias=True,
-        alibi_num_heads=8,
-        rotary_xpos=True,
-        attn_flash = True,
-        deepnorm=True,
-        shift_tokens=1,
-        attn_one_kv_head = True,
-        qk_norm=True
+    non_reentrant_wrapper = partial(
+        checkpoint_wrapper,
+        offload_to_cpu=offload_to_cpu,
+        checkpoint_impl=CheckpointImpl.NO_REENTRANT,
     )
-)
 
-Andromeda = AutoregressiveWrapper(Andromeda)
-
-
-
-AWS_ACCESS_KEY_ID=""
-AWS_SECRET_ACCESS_KEY="d"
+    apply_activation_checkpointing(
+        model, checkpoint_wrapper_fn=non_reentrant_wrapper)
 
 
-def save_model_to_s3(model, bucket_name, key_prefix, step):
-    s3 = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
-    model_path = f"checkpoint_at_step_{step}.pt"
-    torch.save(model.state_dict(), model_path)
-    s3.upload_file(model_path, bucket_name, f"{key_prefix}/{model_path}")
+def get_lr_scheduler_with_warmup(
+    optimizer, scheduler_type, num_warmup_steps, max_train_steps, grad_accumulate_every
+):
+    NUM_WARMUP_STEPS = num_warmup_steps
+    GRADIENT_ACCUMULATE_EVERY = grad_accumulate_every
 
-
-
-def count_number_of_parameters(model, only_trainable: bool = True) -> int:
-    if only_trainable:
-        num_params: int = sum(p.numel()
-                              for p in model.parameters() if p.requires_grad)
+    if scheduler_type == "linear":
+        return get_linear_schedule_with_warmup(
+            optimizer=optimizer,
+            num_warmup_steps=NUM_WARMUP_STEPS * GRADIENT_ACCUMULATE_EVERY,
+            num_training_steps=max_train_steps * GRADIENT_ACCUMULATE_EVERY
+        )
+    elif scheduler_type == "cosine":
+        return get_cosine_schedule_with_warmup(
+            optimizer=optimizer,
+            num_warmup_steps=NUM_WARMUP_STEPS * GRADIENT_ACCUMULATE_EVERY,
+            num_training_steps=max_train_steps * GRADIENT_ACCUMULATE_EVERY
+        )
     else:
-        num_params: int = sum(p.numel() for p in model.parameters() if p)
-    return int(num_params)
+        raise ValueError(
+            "Invalid scheduler_type. Expected 'linear' or 'cosine', got: {}".format(
+                scheduler_type
+            )
+        )
 
 
+def build_dataloaders():
+    tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neox-20b")
+    dataset = load_dataset("openwebtext", split="train")
 
-def prep_sample(sample):
-    title = sample["title"]
-    text = sample["text"]
-    return {
-        "title": title,
-        "text": text
-    }
+    tokenized_dataset = dataset.map(
+        lambda example: tokenizer([t + tokenizer.eos_token for t in example["text"]]),
+        batched=True,
+        num_proc=CFG.NUM_CPU,
+        remove_columns=["text"],
+    )
 
+    block_size = CFG.SEQ_LEN
 
-def train(args):
+    # Main data processing function that will concatenate all texts from our dataset and generate chunks of block_size.
+    def group_texts(examples):
+        # Concatenate all texts.
+        concatenated_examples = {k: list(chain(*examples[k])) for k in examples.keys()}
+        total_length = len(concatenated_examples[list(examples.keys())[0]])
+        # We drop the small remainder, we could add padding if the model supported it instead of this drop, you can
+        # customize this part to your needs.
+        if total_length >= block_size:
+            total_length = (total_length // block_size) * block_size
+        # Split by chunks of max_len.
+        result = {
+            k: [t[i : i + block_size] for i in range(0, total_length, block_size)]
+            for k, t in concatenated_examples.items()
+        }
+        return result
 
-    if args.use_ddp:
-        dist.init_process_group(backend="nccl")
+    train_dataset = tokenized_dataset.map(
+        group_texts, batched=True, num_proc=CFG.NUM_CPU,
+    )
 
+    return train_dataset
+
+# main
+
+def TrainAndromeda():
+    # accelerator
+
+    timeout = InitProcessGroupKwargs(timeout=timedelta(seconds=1_000_000))
 
     accelerator = Accelerator(
+        gradient_accumulation_steps=CFG.GRADIENT_ACCUMULATE_EVERY,
         mixed_precision="fp16",
-        gradient_accumulation_steps=1,
+        log_with="wandb",
+        kwargs_handlers=[timeout]
     )
 
-    # If passed along, set the training seed now.
-    if args.seed is not None:
-        set_seed(args.seed)
+    accelerator.init_trackers(
+        project_name="andromeda",
+        config={
+            "batch_size": CFG.BATCH_SIZE,
+            "gradient_accumulate_every": CFG.GRADIENT_ACCUMULATE_EVERY,
+            "learning_rate": CFG.LEARNING_RATE,
+            "seq_len": CFG.SEQ_LEN,
+        },
+        init_kwargs={"wandb": {"entity": CFG.ENTITY_NAME}}
+    )
 
-    #v1
-    model = Andromeda()
-    if args.use_ddp:
-        model = DistributedDataParallel(model)
+    accelerator.print(f"Total GPUS: {accelerator.num_processes}")
+
+    # set seed
+
+    set_seed(CFG.SEED)
+
+    # Create the tokenizer
+
+    tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neox-20b")
+
+    # instantiate andromeda
+
+    model = TransformerWrapper(
+        num_tokens=64007,
+        max_seq_len=8192,
+        use_abs_pos_emb=False,
+        tokenizer=tokenizer, # !
+        embedding_provider=AndromedaEmbedding(),
+        attn_layers = Decoder(
+            dim=128, # 2048
+            depth=8, # 16
+            dim_head=128,
+            heads=8,
+            alibi_pos_bias=True,
+            alibi_num_heads=4,
+            rotary_xpos=True,
+            attn_flash = True,
+            deepnorm=True,
+            shift_tokens=1,
+            attn_one_kv_head = True,
+            qk_norm=True,
+            attn_qk_norm=True,
+            attn_qk_norm_dim_scale=True # set this to True, in addition to `attn_qk_norm = True`
+        )
+    ).to(accelerator.device)
+
+    model = AutoregressiveWrapper(model).to(accelerator.device)
+
+    optim = Lion(model.parameters(), lr=1e-4, weight_decay=1e-2)
+
+    print_num_params(model, accelerator)
+
+    if CFG.USE_ACTIVATION_CHECKPOINTING:
+        fsdp_activation_checkpointing(model, accelerator)
+
+    # dataloaders
+
+    if CFG.USE_PRETOKENIZED:
+        d0 = load_dataset("conceptofmind/c4_0-to-20_neox_with_eos_8k", split="train")
+        d1 = load_dataset("conceptofmind/c4_21-to-40_neox_with_eos_8k", split="train")
+        d2 = load_dataset("conceptofmind/c4_41-to-60_neox_with_eos_8k", split="train")
+        d3 = load_dataset("conceptofmind/c4_61-to-80_neox_with_eos_8k", split="train")
+        d4 = load_dataset("conceptofmind/c4_81-to-100_neox_with_eos_8k", split="train")
+
+        train_dataset = concatenate_datasets([d0, d1, d2, d3, d4])
     else:
-        model = DataParallel(model)
+        train_dataset = build_dataloaders()
 
-    fsdp_model = FullyShardedDataParallel(
-        model(),
-        fsdp_auto_wrap_policy=default_auto_wrap_policy,
-        cpu_offload=CPUOffload(offload_params=True),
+    train_loader = DataLoader(
+        train_dataset, batch_size=CFG.BATCH_SIZE, collate_fn=default_data_collator,
     )
 
-    fsdp_model = fsdp_model.to(accelerator.device)
+    # optimizer
 
-    #device count
-    if torch.cuda.device_count() > 1:
-        print(f"Let's use ${torch.cuda.device_count()} GPUS")
+    # optim = decoupled_optimizer(
+    #     model,
+    #     learning_rate=CFG.LEARNING_RATE,
+    #     weight_decay=CFG.WEIGHT_DECAY,
+    #     beta_1=0.9,
+    #     beta_2=0.95,
+    #     use_adamw=False,
+    # )
 
+    # Determine number of training steps
 
+    max_train_steps = math.ceil(len(train_loader) / CFG.GRADIENT_ACCUMULATE_EVERY)
+    accelerator.print(f"Max train steps: {max_train_steps}")
 
+    # lr scheduler
+    # We cant decide on an actual number
 
-    optimizer = Lion(model.parameters(), lr=args.learning_rate / 3, weight_decay=args.weight_decay * 3)
-    
-    lr_scheduler = get_linear_schedule_with_warmup(
-        optimizer=optimizer,
-        num_warmup_steps=args.warmup_steps,
-        num_training_steps=args.max_steps,
+    NUM_WARMUP_STEPS = int(max_train_steps * 0.01)
+    accelerator.print(f"Num warmup steps: {NUM_WARMUP_STEPS}")
+
+    lr_scheduler = get_lr_scheduler_with_warmup(
+        optimizer=optim,
+        scheduler_type="cosine",
+        num_warmup_steps=NUM_WARMUP_STEPS,
+        max_train_steps=max_train_steps,
+        grad_accumulate_every=CFG.GRADIENT_ACCUMULATE_EVERY
     )
 
-    # tokenizer = KosmosTokenizer()
+    # prepare
 
-    #====================> load data #====================> load data #====================> load data 
-
-
-    dataset = load_dataset("the_pile_books3")
-
-    # dataset = dataset.map(prep_sample, num_proc=8)
-    dataset = dataset.map(prep_sample, num_proc=8)
-
-
-    #new removed columns
-    remove_columns = ['title']
-
-
-    dataset = dataset.map(Andromeda.decoder.tokenizer, batched=True,
-                          batch_size=128, remove_columns=remove_columns)
-
-    train_dataloader = DataLoader(
-        dataset, collate_fn=default_data_collator, batch_size=args.batch_size, pin_memory=True
+    model, optim, train_loader, lr_scheduler = accelerator.prepare(
+        model, optim, train_loader, lr_scheduler
     )
 
+    # checkpoint scheduler
 
-
-    #====================> load data #====================> load data #====================> load data #====================> load data 
-
-    fsdp_model, train_dataloader, optimizer, lr_scheduler = accelerator.prepare(fsdp_model, train_dataloader, optimizer,
-                                                                           lr_scheduler)
-    fsdp_model.train()
     accelerator.register_for_checkpointing(lr_scheduler)
 
-    accelerator.print(
-        f"Number of parameters: {count_number_of_parameters(model):,}")
-    accelerator.print(
-        f"Number of trainable parameters: {count_number_of_parameters(model, only_trainable=True):,}")
+    # I do not know why Huggingface recommends recalculation of max_train_steps
 
-    # Log model and optimizer parameters to wandb
-    accelerator.init_trackers(project_name="Andromeda")
+    max_train_steps = math.ceil(len(train_loader) / CFG.GRADIENT_ACCUMULATE_EVERY)
+    accelerator.print(f"Max train steps recalculated: {max_train_steps}")
 
-    #wandb
-    wandb.init(project="Andromeda", config=args)
-    
-    #init tensorboard writer
-    tb_writer = SummaryWriter()
+    # Total batch size for logging
 
+    total_batch_size = (
+        CFG.BATCH_SIZE * accelerator.num_processes * CFG.GRADIENT_ACCUMULATE_EVERY
+    )
+    accelerator.print(f"Total batch size: {total_batch_size}")
 
-    train_loader = iter(train_dataloader)
-    epoch_loss = 0
-    total_loss = 0
-    start_time = time.time()
+    # resume training
 
-    with Progress() as progress:
-        task = progress.add_task("[red]Training...", total=args.max_steps)
-        for step in range(0, args.max_steps):
-            batch_start = time.time()
-            batch = next(train_loader)
-            outputs = fsdp_model(**batch, self_attn_padding_mask=batch["attention_mask"])
-            # Shift so that tokens < n predict n
-            outputs = torch.cat([outputs[:, :1], outputs[:, 67:]], dim=1).contiguous()
-            # shift_logits = outputs[..., :-1, :].contiguous()
-            # shift_labels = batch["labels"][..., 1:].contiguous()
-            # Flatten the tokens
-            loss_fct = CrossEntropyLoss()
-            one_hot_labels = torch.nn.functional.one_hot(batch["labels"][:, 1:], num_classes=32002).float()
-            loss = loss_fct(outputs[:,:-1], one_hot_labels)
+    progress_bar = tqdm(
+        range(max_train_steps), disable=not accelerator.is_local_main_process
+    )
+    completed_steps = 0
 
-            epoch_loss += loss.detach().float()
+    if CFG.RESUME_FROM_CHECKPOINT:
+        if CFG.RESUME_FROM_CHECKPOINT is not None or CFG.RESUME_FROM_CHECKPOINT != "":
+            accelerator.print(f"Resuming from checkpoint {CFG.RESUME_FROM_CHECKPOINT}")
+            accelerator.load_state(CFG.RESUME_FROM_CHECKPOINT)
+            path = os.path.basename(CFG.RESUME_FROM_CHECKPOINT)
+        
+        training_difference = os.path.splitext(path)[0]
 
+        # need to multiply `gradient_accumulation_steps` to reflect real steps
+        resume_step = (
+            int(training_difference.replace("step_", ""))
+            * CFG.GRADIENT_ACCUMULATE_EVERY
+        )
+
+    if CFG.RESUME_FROM_CHECKPOINT and resume_step is not None:
+        train_loader = accelerator.skip_first_batches(train_loader, resume_step)
+        completed_steps += resume_step
+        progress_bar.update(resume_step)
+
+    # training
+
+    model.train()
+
+    for step, batch in enumerate(train_loader):
+        with accelerator.accumulate(model):
+            inputs = batch["input_ids"].to(accelerator.device)
+            _, loss = model(inputs, return_loss=True)
             accelerator.backward(loss)
-            optimizer.step()
-            optimizer.zero_grad()
 
-            batch_end = time.time()
-            logs = {
-                "loss": loss.item(),
-                "perplexity": torch.exp(loss).item(),
-                "lr": lr_scheduler.get_last_lr()[0],
-                "examples": args.batch_size * (step + 1),
-                "examples_per_second": args.batch_size / (batch_end - batch_start),
-            }
-            if step % args.log_every == args.log_every - 1:
-                #log metrics to wandb
-                wandb.log(logs, step=step)
+            # print(loss.item())
 
-                #log metrics to tensorboard 
-                                # Log metrics to TensorBoard
-                tb_writer.add_scalar("loss", logs["loss"], step)
-                tb_writer.add_scalar("perplexity", logs["perplexity"], step)
-                tb_writer.add_scalar("lr", logs["lr"], step)
-                tb_writer.add_scalar("examples", logs["examples"], step)
-                tb_writer.add_scalar("examples_per_second", logs["examples_per_second"], step)
+            accelerator.log({"loss": loss.item()}, step=step)
 
-                #accelerator
-                accelerator.log(logs, step=step)
-                progress.update(task, advance=1, description=f"Step Loss: {loss.item():.5f} "
-                                                             f"| Mean Loss: {(total_loss + epoch_loss) / step:.5f} "
-                                                             f"| Mean PPL: {torch.exp((total_loss + epoch_loss) / step):.2f} "
-                                                             f"| Examples: {args.batch_size * (step + 1)} "
-                                                             f"| Examples/s: {args.batch_size / (batch_end - batch_start):.2f} "
-                                                             f"| Elapsed: {time.strftime('%H:%M:%S', time.gmtime(time.time() - start_time))}")
+            if accelerator.sync_gradients:
+                accelerator.clip_grad_norm_(model.parameters(), 0.5)
 
-            if step % args.save_every == args.save_every - 1:
-                train_epoch_loss = epoch_loss / args.save_every
-                total_loss += epoch_loss
-                epoch_loss = 0
+            optim.step()
+            lr_scheduler.step()
+            optim.zero_grad()
 
-                accelerator.log({
-                    "train_ppl": torch.exp(train_epoch_loss),
-                    "train_epoch_loss": train_epoch_loss,
-                }, step=step)
+        if accelerator.sync_gradients:
+            progress_bar.update(1)
+            completed_steps += 1
 
-                progress.print(f"Saving checkpoint at step {step}...")
-                accelerator.save_state(
-                    f"{args.checkpoint_dir}/checkpoint_at_step_{step}/")
-                
-                #save the model weights to s3 
-                save_model_to_s3(model, "kosmostraining", "kosmosv1/checkpoints", step)
-                print(f"Saved to s3: {save_model_to_s3} ")
+        if isinstance(CFG.CHECKPOINTING_STEPS, int):
+            if completed_steps % CFG.CHECKPOINTING_STEPS == 0:
+                output_dir = f"step_{completed_steps }"
+                if CFG.OUTPUT_DIR is not None:
+                    output_dir = os.path.join(CFG.OUTPUT_DIR, output_dir)
+                accelerator.save_state(output_dir)
 
-        #finish tensorboard writer
-        tb_writer.close()
+        if completed_steps >= max_train_steps:
+            break
 
-        #finish wnabd run
-        wandb.finish()
+    # end training
 
+    accelerator.print(f"Training Finished")
+    accelerator.end_training()
+
+    # save final model
+
+    # accelerator.print(f"Saving model to {CFG.OUTPUT_DIR}")
+    if CFG.OUTPUT_DIR is not None:
+        base_path = f'{CFG.OUTPUT_DIR}/final'
+
+        if not os.path.exists(base_path):
+            os.makedirs(base_path)
+
+        accelerator.wait_for_everyone()
+        unwrapped_model = accelerator.unwrap_model(model)
+        with accelerator.main_process_first():
+            accelerator.save(
+                unwrapped_model.state_dict(), os.path.join(base_path, 'final_model.pt')
+            )
 
 if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--checkpoint_dir", type=str, default="checkpoints")
-    parser.add_argument("--learning_rate", type=float, default=1e-5)
-    parser.add_argument("--weight_decay", type=float, default=0.01)
-    parser.add_argument("--warmup_steps", type=int, default=0)
-    parser.add_argument("--max_steps", type=int, default=100000)
-    parser.add_argument("--batch_size", type=int, default=4)
-    parser.add_argument("--log_every", type=int, default=1)
-    parser.add_argument("--save_every", type=int, default=100)
-    parser.add_argument("--seed", type=int, default=None)
-    parser.add_argument("--use_ddp", action="store_true", help="Use DistributedDataParallel")
-
-    args = parser.parse_args()
-
-    train(args)
+    TrainAndromeda()
