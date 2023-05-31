@@ -1,0 +1,123 @@
+Total GPUS: 1
+Non-A100 GPU detected, using math or mem efficient attention if input tensor is on cuda
+Number of parameters in model: 18690311
+Using FSDP activation checkpointing
+Found cached dataset sentiment140 (/home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997)
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-e9095aaa5faf5c7d.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-aaae6c8ab9b1bb4d.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-b004a12b7d6c6529.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-f33d1c57de6769d7.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-352c0fa8421d374d.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-b24028e3e86315b3.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-27e7737a440ef64d.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-a2d2a86cc7313ddf.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-422da379ca73fe39.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-2b73300bcb4b651b.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-5c354a699359384a.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-0302917070d9edb5.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-011af2b8440b5c55.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-d4bc865363f297f8.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-dcdf7a450e4ba2b0.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-75094ca6d0649986.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-7759013230faa34c.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-69bd271603223e2b.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-ea4f000c180fcf8c.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-5544fcd8035ed937.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-3170f10f7570aea3.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-123e7c6f0749da7f.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-71739c3ae60eec7a.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-2bb162d151a54244.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-6723dcf68f2ee620.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-97b9efaca42fe42d.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-8de60b16fad93a7b.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-7d3df4f486e5518d.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-04e6253a8f2b3bfd.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-7fb890730ec8048c.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-a3b37fb48cb7d146.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-52c816ee64316c07.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-7487df33f3856ef8.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-e2b34aaf3407bf2a.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-89fdf6998e16da9b.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-992e324b8c5d71de.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-127a3371f0602a68.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-c9465b2292d6ad0c.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-21809ef1af501843.arrow
+Loading cached processed dataset at /home/user/.cache/huggingface/datasets/sentiment140/sentiment140/1.0.0/f81c014152931b776735658d8ae493b181927de002e706c4d5244ecb26376997/cache-7ec8a9bd8ef9d76f.arrow
+  0%|                                                                     | 4/278933 [00:01<15:14:43,  5.08it/s]
+Max train steps: 278933
+Num warmup steps: 2789
+Max train steps recalculated: 278933
+  0%|                                                                    | 13/278933 [00:02<10:12:59,  7.58it/s]Traceback (most recent call last):
+  File "/home/user/Desktop/Andromeda/Andromeda/trainingv2.py", line 459, in <module>
+    TrainAndromeda()
+  File "/home/user/Desktop/Andromeda/Andromeda/trainingv2.py", line 410, in TrainAndromeda
+    accelerator.backward(loss)
+  File "/home/user/anaconda3/lib/python3.9/site-packages/accelerate/accelerator.py", line 1745, in backward
+    loss.backward(**kwargs)
+  File "/home/user/anaconda3/lib/python3.9/site-packages/torch/_tensor.py", line 487, in backward
+    torch.autograd.backward(
+  File "/home/user/anaconda3/lib/python3.9/site-packages/torch/autograd/__init__.py", line 200, in backward
+    Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+KeyboardInterrupt
+Error in sys.excepthook:
+Traceback (most recent call last):
+  File "/home/user/anaconda3/lib/python3.9/site-packages/rich/console.py", line 1673, in print
+    extend(render(renderable, render_options))
+  File "/home/user/anaconda3/lib/python3.9/site-packages/rich/console.py", line 1309, in render
+    yield from self.render(render_output, _options)
+  File "/home/user/anaconda3/lib/python3.9/site-packages/rich/console.py", line 1305, in render
+    for render_output in iter_render:
+  File "/home/user/anaconda3/lib/python3.9/site-packages/rich/constrain.py", line 29, in __rich_console__
+    yield from console.render(self.renderable, child_options)
+  File "/home/user/anaconda3/lib/python3.9/site-packages/rich/console.py", line 1305, in render
+    for render_output in iter_render:
+  File "/home/user/anaconda3/lib/python3.9/site-packages/rich/panel.py", line 175, in __rich_console__
+    lines = console.render_lines(renderable, child_options, style=style)
+  File "/home/user/anaconda3/lib/python3.9/site-packages/rich/console.py", line 1345, in render_lines
+    lines = list(
+  File "/home/user/anaconda3/lib/python3.9/site-packages/rich/segment.py", line 292, in split_and_crop_lines
+    for segment in segments:
+  File "/home/user/anaconda3/lib/python3.9/site-packages/rich/console.py", line 1305, in render
+    for render_output in iter_render:
+  File "/home/user/anaconda3/lib/python3.9/site-packages/rich/padding.py", line 97, in __rich_console__
+    lines = console.render_lines(
+  File "/home/user/anaconda3/lib/python3.9/site-packages/rich/console.py", line 1345, in render_lines
+    lines = list(
+  File "/home/user/anaconda3/lib/python3.9/site-packages/rich/segment.py", line 292, in split_and_crop_lines
+    for segment in segments:
+  File "/home/user/anaconda3/lib/python3.9/site-packages/rich/console.py", line 1309, in render
+    yield from self.render(render_output, _options)
+  File "/home/user/anaconda3/lib/python3.9/site-packages/rich/console.py", line 1305, in render
+    for render_output in iter_render:
+  File "/home/user/anaconda3/lib/python3.9/site-packages/rich/syntax.py", line 598, in __rich_console__
+    segments = Segments(self._get_syntax(console, options))
+  File "/home/user/anaconda3/lib/python3.9/site-packages/rich/segment.py", line 668, in __init__
+    self.segments = list(segments)
+  File "/home/user/anaconda3/lib/python3.9/site-packages/rich/syntax.py", line 626, in _get_syntax
+    text = self.highlight(processed_code, self.line_range)
+  File "/home/user/anaconda3/lib/python3.9/site-packages/rich/syntax.py", line 508, in highlight
+    text.append_tokens(tokens_to_spans())
+  File "/home/user/anaconda3/lib/python3.9/site-packages/rich/text.py", line 970, in append_tokens
+    for content, style in tokens:
+  File "/home/user/anaconda3/lib/python3.9/site-packages/rich/syntax.py", line 496, in tokens_to_spans
+    _token_type, token = next(tokens)
+  File "/home/user/anaconda3/lib/python3.9/site-packages/rich/syntax.py", line 483, in line_tokenize
+    for token_type, token in lexer.get_tokens(code):
+  File "/home/user/anaconda3/lib/python3.9/site-packages/pygments/lexer.py", line 187, in streamer
+    for _, t, v in self.get_tokens_unprocessed(text):
+  File "/home/user/anaconda3/lib/python3.9/site-packages/pygments/lexer.py", line 629, in get_tokens_unprocessed
+    m = rexmatch(text, pos)
+KeyboardInterrupt
+Original exception was:
+Traceback (most recent call last):
+  File "/home/user/Desktop/Andromeda/Andromeda/trainingv2.py", line 459, in <module>
+    TrainAndromeda()
+  File "/home/user/Desktop/Andromeda/Andromeda/trainingv2.py", line 410, in TrainAndromeda
+    accelerator.backward(loss)
+  File "/home/user/anaconda3/lib/python3.9/site-packages/accelerate/accelerator.py", line 1745, in backward
+    loss.backward(**kwargs)
+  File "/home/user/anaconda3/lib/python3.9/site-packages/torch/_tensor.py", line 487, in backward
+    torch.autograd.backward(
+  File "/home/user/anaconda3/lib/python3.9/site-packages/torch/autograd/__init__.py", line 200, in backward
+    Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+KeyboardInterrupt

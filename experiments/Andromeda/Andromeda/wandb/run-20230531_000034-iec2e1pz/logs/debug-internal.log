@@ -1,0 +1,245 @@
+2023-05-31 00:00:34,595 INFO    StreamThr :28713 [internal.py:wandb_internal():86] W&B internal server running at pid: 28713, started at: 2023-05-31 00:00:34.595305
+2023-05-31 00:00:34,596 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: status
+2023-05-31 00:00:34,599 INFO    WriterThread:28713 [datastore.py:open_for_write():85] open: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/run-iec2e1pz.wandb
+2023-05-31 00:00:34,600 DEBUG   SenderThread:28713 [sender.py:send():375] send: header
+2023-05-31 00:00:34,612 DEBUG   SenderThread:28713 [sender.py:send():375] send: run
+2023-05-31 00:00:35,071 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: check_version
+2023-05-31 00:00:35,072 INFO    SenderThread:28713 [dir_watcher.py:__init__():219] watching files in: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files
+2023-05-31 00:00:35,072 INFO    SenderThread:28713 [sender.py:_start_run_threads():1124] run started: iec2e1pz with start time 1685484034.596293
+2023-05-31 00:00:35,072 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: summary_record
+2023-05-31 00:00:35,072 INFO    SenderThread:28713 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-05-31 00:00:35,072 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: check_version
+2023-05-31 00:00:35,171 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: run_start
+2023-05-31 00:00:35,175 DEBUG   HandlerThread:28713 [system_info.py:__init__():31] System info init
+2023-05-31 00:00:35,175 DEBUG   HandlerThread:28713 [system_info.py:__init__():46] System info init done
+2023-05-31 00:00:35,175 INFO    HandlerThread:28713 [system_monitor.py:start():181] Starting system monitor
+2023-05-31 00:00:35,176 INFO    SystemMonitor:28713 [system_monitor.py:_start():145] Starting system asset monitoring threads
+2023-05-31 00:00:35,176 INFO    HandlerThread:28713 [system_monitor.py:probe():201] Collecting system info
+2023-05-31 00:00:35,176 INFO    SystemMonitor:28713 [interfaces.py:start():190] Started cpu monitoring
+2023-05-31 00:00:35,176 INFO    SystemMonitor:28713 [interfaces.py:start():190] Started disk monitoring
+2023-05-31 00:00:35,177 INFO    SystemMonitor:28713 [interfaces.py:start():190] Started gpu monitoring
+2023-05-31 00:00:35,177 INFO    SystemMonitor:28713 [interfaces.py:start():190] Started memory monitoring
+2023-05-31 00:00:35,177 INFO    SystemMonitor:28713 [interfaces.py:start():190] Started network monitoring
+2023-05-31 00:00:35,189 DEBUG   HandlerThread:28713 [system_info.py:probe():195] Probing system
+2023-05-31 00:00:35,190 DEBUG   HandlerThread:28713 [system_info.py:_probe_git():180] Probing git
+2023-05-31 00:00:35,196 DEBUG   HandlerThread:28713 [system_info.py:_probe_git():188] Probing git done
+2023-05-31 00:00:35,196 DEBUG   HandlerThread:28713 [system_info.py:probe():240] Probing system done
+2023-05-31 00:00:35,196 DEBUG   HandlerThread:28713 [system_monitor.py:probe():210] {'os': 'Linux-5.19.0-42-generic-x86_64-with-glibc2.35', 'python': '3.9.12', 'heartbeatAt': '2023-05-30T22:00:35.189791', 'startedAt': '2023-05-30T22:00:34.590174', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': '/home/user/Desktop/Andromeda/Andromeda/trainingv2.py', 'codePath': 'Andromeda/trainingv2.py', 'git': {'remote': 'https://github.com/kyegomez/Andromeda.git', 'commit': 'ca7473c7a4f0e97e1840d75cc659c06df9bee9d2'}, 'email': 'me@nicolomonti.it', 'root': '/home/user/Desktop/Andromeda', 'host': 'pc', 'username': 'user', 'executable': '/home/user/anaconda3/bin/python3', 'cpu_count': 12, 'cpu_count_logical': 20, 'cpu_freq': {'current': 3099.2833, 'min': 800.0, 'max': 4580.0}, 'cpu_freq_per_core': [{'current': 3840.525, 'min': 800.0, 'max': 4800.0}, {'current': 2100.0, 'min': 800.0, 'max': 4800.0}, {'current': 4500.0, 'min': 800.0, 'max': 4800.0}, {'current': 4499.221, 'min': 800.0, 'max': 4800.0}, {'current': 4410.908, 'min': 800.0, 'max': 4800.0}, {'current': 2100.0, 'min': 800.0, 'max': 4800.0}, {'current': 1596.051, 'min': 800.0, 'max': 4800.0}, {'current': 2100.0, 'min': 800.0, 'max': 4800.0}, {'current': 2971.474, 'min': 800.0, 'max': 4900.0}, {'current': 2100.0, 'min': 800.0, 'max': 4900.0}, {'current': 3943.538, 'min': 800.0, 'max': 4900.0}, {'current': 2100.0, 'min': 800.0, 'max': 4900.0}, {'current': 3770.095, 'min': 800.0, 'max': 4800.0}, {'current': 3078.813, 'min': 800.0, 'max': 4800.0}, {'current': 4244.571, 'min': 800.0, 'max': 4800.0}, {'current': 2100.0, 'min': 800.0, 'max': 4800.0}, {'current': 3399.849, 'min': 800.0, 'max': 3600.0}, {'current': 3202.747, 'min': 800.0, 'max': 3600.0}, {'current': 2580.666, 'min': 800.0, 'max': 3600.0}, {'current': 3347.208, 'min': 800.0, 'max': 3600.0}], 'disk': {'total': 460.0309371948242, 'used': 338.58642196655273}, 'gpu': 'NVIDIA GeForce RTX 3060 Ti', 'gpu_count': 1, 'gpu_devices': [{'name': 'NVIDIA GeForce RTX 3060 Ti', 'memory_total': 8589934592}], 'memory': {'total': 15.386760711669922}}
+2023-05-31 00:00:35,196 INFO    HandlerThread:28713 [system_monitor.py:probe():211] Finished collecting system info
+2023-05-31 00:00:35,196 INFO    HandlerThread:28713 [system_monitor.py:probe():214] Publishing system info
+2023-05-31 00:00:35,196 DEBUG   HandlerThread:28713 [system_info.py:_save_pip():51] Saving list of pip packages installed into the current environment
+2023-05-31 00:00:35,197 DEBUG   HandlerThread:28713 [system_info.py:_save_pip():67] Saving pip packages done
+2023-05-31 00:00:35,197 DEBUG   HandlerThread:28713 [system_info.py:_save_conda():74] Saving list of conda packages installed into the current environment
+2023-05-31 00:00:36,073 INFO    Thread-12 :28713 [dir_watcher.py:_on_file_created():278] file/dir created: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/requirements.txt
+2023-05-31 00:00:36,073 INFO    Thread-12 :28713 [dir_watcher.py:_on_file_created():278] file/dir created: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/wandb-summary.json
+2023-05-31 00:00:36,073 INFO    Thread-12 :28713 [dir_watcher.py:_on_file_created():278] file/dir created: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/conda-environment.yaml
+2023-05-31 00:00:43,264 DEBUG   HandlerThread:28713 [system_info.py:_save_conda():86] Saving conda packages done
+2023-05-31 00:00:43,264 INFO    HandlerThread:28713 [system_monitor.py:probe():216] Finished publishing system info
+2023-05-31 00:00:43,267 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: status_report
+2023-05-31 00:00:43,267 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-31 00:00:43,267 DEBUG   SenderThread:28713 [sender.py:send():375] send: files
+2023-05-31 00:00:43,267 INFO    SenderThread:28713 [sender.py:_save_file():1378] saving file wandb-metadata.json with policy now
+2023-05-31 00:00:43,271 DEBUG   SenderThread:28713 [sender.py:send():375] send: telemetry
+2023-05-31 00:00:43,271 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: stop_status
+2023-05-31 00:00:43,271 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: stop_status
+2023-05-31 00:00:43,496 DEBUG   SenderThread:28713 [sender.py:send():375] send: config
+2023-05-31 00:00:43,799 INFO    wandb-upload_0:28713 [upload_job.py:push():137] Uploaded file /tmp/tmp7bmkbwyewandb/eujjkyyq-wandb-metadata.json
+2023-05-31 00:00:44,074 INFO    Thread-12 :28713 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/conda-environment.yaml
+2023-05-31 00:00:44,075 INFO    Thread-12 :28713 [dir_watcher.py:_on_file_created():278] file/dir created: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/output.log
+2023-05-31 00:00:44,075 INFO    Thread-12 :28713 [dir_watcher.py:_on_file_created():278] file/dir created: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/wandb-metadata.json
+2023-05-31 00:00:45,798 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: status_report
+2023-05-31 00:00:46,075 INFO    Thread-12 :28713 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/output.log
+2023-05-31 00:00:50,306 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-31 00:00:50,446 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-31 00:00:50,446 DEBUG   SenderThread:28713 [sender.py:send():375] send: history
+2023-05-31 00:00:50,446 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: summary_record
+2023-05-31 00:00:50,447 INFO    SenderThread:28713 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-05-31 00:00:50,576 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-31 00:00:50,576 DEBUG   SenderThread:28713 [sender.py:send():375] send: history
+2023-05-31 00:00:50,576 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: summary_record
+2023-05-31 00:00:50,576 INFO    SenderThread:28713 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-05-31 00:00:50,707 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-31 00:00:50,707 DEBUG   SenderThread:28713 [sender.py:send():375] send: history
+2023-05-31 00:00:50,707 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: summary_record
+2023-05-31 00:00:50,707 INFO    SenderThread:28713 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-05-31 00:00:50,836 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-31 00:00:50,837 DEBUG   SenderThread:28713 [sender.py:send():375] send: history
+2023-05-31 00:00:50,837 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: summary_record
+2023-05-31 00:00:50,837 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: status_report
+2023-05-31 00:00:50,837 INFO    SenderThread:28713 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-05-31 00:00:50,967 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-31 00:00:50,967 DEBUG   SenderThread:28713 [sender.py:send():375] send: history
+2023-05-31 00:00:50,967 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: summary_record
+2023-05-31 00:00:50,967 INFO    SenderThread:28713 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-05-31 00:00:51,076 INFO    Thread-12 :28713 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/wandb-summary.json
+2023-05-31 00:00:51,095 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-31 00:00:51,096 DEBUG   SenderThread:28713 [sender.py:send():375] send: history
+2023-05-31 00:00:51,096 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: summary_record
+2023-05-31 00:00:51,096 INFO    SenderThread:28713 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-05-31 00:00:51,225 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-31 00:00:51,225 DEBUG   SenderThread:28713 [sender.py:send():375] send: history
+2023-05-31 00:00:51,225 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: summary_record
+2023-05-31 00:00:51,225 INFO    SenderThread:28713 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-05-31 00:00:51,353 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-31 00:00:51,353 DEBUG   SenderThread:28713 [sender.py:send():375] send: history
+2023-05-31 00:00:51,354 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: summary_record
+2023-05-31 00:00:51,354 INFO    SenderThread:28713 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-05-31 00:00:51,482 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-31 00:00:51,483 DEBUG   SenderThread:28713 [sender.py:send():375] send: history
+2023-05-31 00:00:51,483 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: summary_record
+2023-05-31 00:00:51,483 INFO    SenderThread:28713 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-05-31 00:00:51,611 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-31 00:00:51,611 DEBUG   SenderThread:28713 [sender.py:send():375] send: history
+2023-05-31 00:00:51,611 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: summary_record
+2023-05-31 00:00:51,612 INFO    SenderThread:28713 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-05-31 00:00:51,741 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-31 00:00:51,741 DEBUG   SenderThread:28713 [sender.py:send():375] send: history
+2023-05-31 00:00:51,741 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: summary_record
+2023-05-31 00:00:51,742 INFO    SenderThread:28713 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-05-31 00:00:51,872 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-31 00:00:51,872 DEBUG   SenderThread:28713 [sender.py:send():375] send: history
+2023-05-31 00:00:51,872 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: summary_record
+2023-05-31 00:00:51,873 INFO    SenderThread:28713 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-05-31 00:00:52,064 DEBUG   SenderThread:28713 [sender.py:send():375] send: exit
+2023-05-31 00:00:52,064 INFO    SenderThread:28713 [sender.py:send_exit():598] handling exit code: 255
+2023-05-31 00:00:52,064 INFO    SenderThread:28713 [sender.py:send_exit():600] handling runtime: 16
+2023-05-31 00:00:52,064 INFO    SenderThread:28713 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-05-31 00:00:52,064 INFO    SenderThread:28713 [sender.py:send_exit():606] send defer
+2023-05-31 00:00:52,064 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: defer
+2023-05-31 00:00:52,064 INFO    HandlerThread:28713 [handler.py:handle_request_defer():170] handle defer: 0
+2023-05-31 00:00:52,064 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: defer
+2023-05-31 00:00:52,064 INFO    SenderThread:28713 [sender.py:send_request_defer():622] handle sender defer: 0
+2023-05-31 00:00:52,064 INFO    SenderThread:28713 [sender.py:transition_state():626] send defer: 1
+2023-05-31 00:00:52,064 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: defer
+2023-05-31 00:00:52,064 INFO    HandlerThread:28713 [handler.py:handle_request_defer():170] handle defer: 1
+2023-05-31 00:00:52,065 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: defer
+2023-05-31 00:00:52,065 INFO    SenderThread:28713 [sender.py:send_request_defer():622] handle sender defer: 1
+2023-05-31 00:00:52,065 INFO    SenderThread:28713 [sender.py:transition_state():626] send defer: 2
+2023-05-31 00:00:52,065 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: defer
+2023-05-31 00:00:52,065 INFO    HandlerThread:28713 [handler.py:handle_request_defer():170] handle defer: 2
+2023-05-31 00:00:52,065 INFO    HandlerThread:28713 [system_monitor.py:finish():190] Stopping system monitor
+2023-05-31 00:00:52,065 DEBUG   SystemMonitor:28713 [system_monitor.py:_start():159] Starting system metrics aggregation loop
+2023-05-31 00:00:52,065 DEBUG   SystemMonitor:28713 [system_monitor.py:_start():166] Finished system metrics aggregation loop
+2023-05-31 00:00:52,065 INFO    HandlerThread:28713 [interfaces.py:finish():202] Joined cpu monitor
+2023-05-31 00:00:52,065 DEBUG   SystemMonitor:28713 [system_monitor.py:_start():170] Publishing last batch of metrics
+2023-05-31 00:00:52,065 INFO    HandlerThread:28713 [interfaces.py:finish():202] Joined disk monitor
+2023-05-31 00:00:52,076 INFO    Thread-12 :28713 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/output.log
+2023-05-31 00:00:52,076 INFO    Thread-12 :28713 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/wandb-summary.json
+2023-05-31 00:00:52,087 INFO    HandlerThread:28713 [interfaces.py:finish():202] Joined gpu monitor
+2023-05-31 00:00:52,087 INFO    HandlerThread:28713 [interfaces.py:finish():202] Joined memory monitor
+2023-05-31 00:00:52,087 INFO    HandlerThread:28713 [interfaces.py:finish():202] Joined network monitor
+2023-05-31 00:00:52,087 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: defer
+2023-05-31 00:00:52,087 INFO    SenderThread:28713 [sender.py:send_request_defer():622] handle sender defer: 2
+2023-05-31 00:00:52,087 INFO    SenderThread:28713 [sender.py:transition_state():626] send defer: 3
+2023-05-31 00:00:52,087 DEBUG   SenderThread:28713 [sender.py:send():375] send: stats
+2023-05-31 00:00:52,087 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: defer
+2023-05-31 00:00:52,087 INFO    HandlerThread:28713 [handler.py:handle_request_defer():170] handle defer: 3
+2023-05-31 00:00:52,088 DEBUG   SenderThread:28713 [sender.py:send():375] send: history
+2023-05-31 00:00:52,088 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: summary_record
+2023-05-31 00:00:52,088 INFO    SenderThread:28713 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-05-31 00:00:52,088 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: defer
+2023-05-31 00:00:52,088 INFO    SenderThread:28713 [sender.py:send_request_defer():622] handle sender defer: 3
+2023-05-31 00:00:52,088 INFO    SenderThread:28713 [sender.py:transition_state():626] send defer: 4
+2023-05-31 00:00:52,088 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: defer
+2023-05-31 00:00:52,088 INFO    HandlerThread:28713 [handler.py:handle_request_defer():170] handle defer: 4
+2023-05-31 00:00:52,088 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: defer
+2023-05-31 00:00:52,088 INFO    SenderThread:28713 [sender.py:send_request_defer():622] handle sender defer: 4
+2023-05-31 00:00:52,088 INFO    SenderThread:28713 [sender.py:transition_state():626] send defer: 5
+2023-05-31 00:00:52,088 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: defer
+2023-05-31 00:00:52,088 INFO    HandlerThread:28713 [handler.py:handle_request_defer():170] handle defer: 5
+2023-05-31 00:00:52,088 DEBUG   SenderThread:28713 [sender.py:send():375] send: summary
+2023-05-31 00:00:52,088 INFO    SenderThread:28713 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-05-31 00:00:52,088 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: defer
+2023-05-31 00:00:52,089 INFO    SenderThread:28713 [sender.py:send_request_defer():622] handle sender defer: 5
+2023-05-31 00:00:52,089 INFO    SenderThread:28713 [sender.py:transition_state():626] send defer: 6
+2023-05-31 00:00:52,089 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: defer
+2023-05-31 00:00:52,089 INFO    HandlerThread:28713 [handler.py:handle_request_defer():170] handle defer: 6
+2023-05-31 00:00:52,089 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: defer
+2023-05-31 00:00:52,089 INFO    SenderThread:28713 [sender.py:send_request_defer():622] handle sender defer: 6
+2023-05-31 00:00:52,090 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: status_report
+2023-05-31 00:00:52,276 INFO    SenderThread:28713 [sender.py:transition_state():626] send defer: 7
+2023-05-31 00:00:52,277 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: defer
+2023-05-31 00:00:52,277 INFO    HandlerThread:28713 [handler.py:handle_request_defer():170] handle defer: 7
+2023-05-31 00:00:52,277 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: defer
+2023-05-31 00:00:52,277 INFO    SenderThread:28713 [sender.py:send_request_defer():622] handle sender defer: 7
+2023-05-31 00:00:53,063 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: poll_exit
+2023-05-31 00:00:53,077 INFO    Thread-12 :28713 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/wandb-summary.json
+2023-05-31 00:00:53,077 INFO    Thread-12 :28713 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/config.yaml
+2023-05-31 00:00:54,077 INFO    Thread-12 :28713 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/output.log
+2023-05-31 00:00:55,296 INFO    SenderThread:28713 [sender.py:transition_state():626] send defer: 8
+2023-05-31 00:00:55,296 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: poll_exit
+2023-05-31 00:00:55,296 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: defer
+2023-05-31 00:00:55,296 INFO    HandlerThread:28713 [handler.py:handle_request_defer():170] handle defer: 8
+2023-05-31 00:00:55,296 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: defer
+2023-05-31 00:00:55,296 INFO    SenderThread:28713 [sender.py:send_request_defer():622] handle sender defer: 8
+2023-05-31 00:00:55,299 INFO    SenderThread:28713 [sender.py:transition_state():626] send defer: 9
+2023-05-31 00:00:55,299 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: defer
+2023-05-31 00:00:55,299 INFO    HandlerThread:28713 [handler.py:handle_request_defer():170] handle defer: 9
+2023-05-31 00:00:55,299 DEBUG   SenderThread:28713 [sender.py:send():375] send: artifact
+2023-05-31 00:00:56,077 INFO    Thread-12 :28713 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/output.log
+2023-05-31 00:00:56,353 INFO    wandb-upload_1:28713 [upload_job.py:push():92] Skipped uploading /home/user/.local/share/wandb/artifacts/staging/tmpvpw27a_o
+2023-05-31 00:00:56,667 INFO    wandb-upload_0:28713 [upload_job.py:push():95] Uploaded file /home/user/.local/share/wandb/artifacts/staging/tmptw2mg3hl
+2023-05-31 00:00:57,801 INFO    SenderThread:28713 [sender.py:send_artifact():1474] sent artifact job-https___github.com_kyegomez_Andromeda.git_Andromeda_trainingv2.py - {'id': 'QXJ0aWZhY3Q6NDcxMTY1MTQy', 'digest': '3dd6420ec7f4d8db7f8ee5368f89b9de', 'state': 'PENDING', 'aliases': [], 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjczMDYzNjc3', 'latestArtifact': {'id': 'QXJ0aWZhY3Q6NDcxMTI5MDQ1', 'versionIndex': 0}}, 'version': 'latest'}
+2023-05-31 00:00:57,801 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: defer
+2023-05-31 00:00:57,801 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: status_report
+2023-05-31 00:00:57,801 INFO    SenderThread:28713 [sender.py:send_request_defer():622] handle sender defer: 9
+2023-05-31 00:00:57,801 INFO    SenderThread:28713 [dir_watcher.py:finish():365] shutting down directory watcher
+2023-05-31 00:00:58,064 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-31 00:00:58,078 INFO    SenderThread:28713 [dir_watcher.py:finish():395] scan: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files
+2023-05-31 00:00:58,078 INFO    SenderThread:28713 [dir_watcher.py:finish():409] scan save: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/output.log output.log
+2023-05-31 00:00:58,078 INFO    SenderThread:28713 [dir_watcher.py:finish():409] scan save: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/wandb-metadata.json wandb-metadata.json
+2023-05-31 00:00:58,078 INFO    SenderThread:28713 [dir_watcher.py:finish():409] scan save: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/wandb-summary.json wandb-summary.json
+2023-05-31 00:00:58,078 INFO    SenderThread:28713 [dir_watcher.py:finish():409] scan save: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/requirements.txt requirements.txt
+2023-05-31 00:00:58,079 INFO    SenderThread:28713 [dir_watcher.py:finish():409] scan save: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/conda-environment.yaml conda-environment.yaml
+2023-05-31 00:00:58,082 INFO    SenderThread:28713 [dir_watcher.py:finish():409] scan save: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/config.yaml config.yaml
+2023-05-31 00:00:58,082 INFO    SenderThread:28713 [sender.py:transition_state():626] send defer: 10
+2023-05-31 00:00:58,082 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: defer
+2023-05-31 00:00:58,082 INFO    HandlerThread:28713 [handler.py:handle_request_defer():170] handle defer: 10
+2023-05-31 00:00:58,083 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: defer
+2023-05-31 00:00:58,083 INFO    SenderThread:28713 [sender.py:send_request_defer():622] handle sender defer: 10
+2023-05-31 00:00:58,083 INFO    SenderThread:28713 [file_pusher.py:finish():167] shutting down file pusher
+2023-05-31 00:00:58,510 INFO    wandb-upload_0:28713 [upload_job.py:push():137] Uploaded file /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/wandb-summary.json
+2023-05-31 00:00:58,596 INFO    wandb-upload_1:28713 [upload_job.py:push():137] Uploaded file /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/output.log
+2023-05-31 00:00:58,674 INFO    wandb-upload_3:28713 [upload_job.py:push():137] Uploaded file /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/conda-environment.yaml
+2023-05-31 00:00:58,684 INFO    wandb-upload_4:28713 [upload_job.py:push():137] Uploaded file /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/config.yaml
+2023-05-31 00:00:58,702 INFO    wandb-upload_2:28713 [upload_job.py:push():137] Uploaded file /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/files/requirements.txt
+2023-05-31 00:00:58,902 INFO    Thread-11 :28713 [sender.py:transition_state():626] send defer: 11
+2023-05-31 00:00:58,902 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: defer
+2023-05-31 00:00:58,902 INFO    HandlerThread:28713 [handler.py:handle_request_defer():170] handle defer: 11
+2023-05-31 00:00:58,902 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: defer
+2023-05-31 00:00:58,902 INFO    SenderThread:28713 [sender.py:send_request_defer():622] handle sender defer: 11
+2023-05-31 00:00:58,902 INFO    SenderThread:28713 [file_pusher.py:join():172] waiting for file pusher
+2023-05-31 00:00:58,902 INFO    SenderThread:28713 [sender.py:transition_state():626] send defer: 12
+2023-05-31 00:00:58,902 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: defer
+2023-05-31 00:00:58,902 INFO    HandlerThread:28713 [handler.py:handle_request_defer():170] handle defer: 12
+2023-05-31 00:00:58,903 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: defer
+2023-05-31 00:00:58,903 INFO    SenderThread:28713 [sender.py:send_request_defer():622] handle sender defer: 12
+2023-05-31 00:00:59,108 INFO    SenderThread:28713 [sender.py:transition_state():626] send defer: 13
+2023-05-31 00:00:59,108 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: defer
+2023-05-31 00:00:59,108 INFO    HandlerThread:28713 [handler.py:handle_request_defer():170] handle defer: 13
+2023-05-31 00:00:59,108 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: defer
+2023-05-31 00:00:59,108 INFO    SenderThread:28713 [sender.py:send_request_defer():622] handle sender defer: 13
+2023-05-31 00:00:59,108 INFO    SenderThread:28713 [sender.py:transition_state():626] send defer: 14
+2023-05-31 00:00:59,109 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: defer
+2023-05-31 00:00:59,109 INFO    HandlerThread:28713 [handler.py:handle_request_defer():170] handle defer: 14
+2023-05-31 00:00:59,109 DEBUG   SenderThread:28713 [sender.py:send():375] send: final
+2023-05-31 00:00:59,109 DEBUG   SenderThread:28713 [sender.py:send():375] send: footer
+2023-05-31 00:00:59,109 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: defer
+2023-05-31 00:00:59,109 INFO    SenderThread:28713 [sender.py:send_request_defer():622] handle sender defer: 14
+2023-05-31 00:00:59,109 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: poll_exit
+2023-05-31 00:00:59,109 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: poll_exit
+2023-05-31 00:00:59,109 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: server_info
+2023-05-31 00:00:59,109 DEBUG   SenderThread:28713 [sender.py:send_request():402] send_request: server_info
+2023-05-31 00:00:59,110 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: get_summary
+2023-05-31 00:00:59,110 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: sampled_history
+2023-05-31 00:00:59,268 INFO    MainThread:28713 [wandb_run.py:_footer_history_summary_info():3469] rendering history
+2023-05-31 00:00:59,269 INFO    MainThread:28713 [wandb_run.py:_footer_history_summary_info():3501] rendering summary
+2023-05-31 00:00:59,269 INFO    MainThread:28713 [wandb_run.py:_footer_sync_info():3428] logging synced files
+2023-05-31 00:00:59,269 DEBUG   HandlerThread:28713 [handler.py:handle_request():144] handle_request: shutdown
+2023-05-31 00:00:59,269 INFO    HandlerThread:28713 [handler.py:finish():845] shutting down handler
+2023-05-31 00:00:59,618 WARNING StreamThr :28713 [internal.py:is_dead():414] Internal process exiting, parent pid 28647 disappeared
+2023-05-31 00:00:59,618 ERROR   StreamThr :28713 [internal.py:wandb_internal():152] Internal process shutdown.
+2023-05-31 00:01:00,109 INFO    WriterThread:28713 [datastore.py:close():298] close: /home/user/Desktop/Andromeda/Andromeda/wandb/run-20230531_000034-iec2e1pz/run-iec2e1pz.wandb
+2023-05-31 00:01:00,268 INFO    SenderThread:28713 [sender.py:finish():1550] shutting down sender
+2023-05-31 00:01:00,268 INFO    SenderThread:28713 [file_pusher.py:finish():167] shutting down file pusher
+2023-05-31 00:01:00,269 INFO    SenderThread:28713 [file_pusher.py:join():172] waiting for file pusher
