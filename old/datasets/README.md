@@ -24,11 +24,12 @@ sequence length	2048
 
 ## Data prioritization: Prioritize datasets based on their relevance to the desired AI capabilities and the quality of the data.
 
-High priority: C4, openwebtext, super_glue, piqa, Falcon-40B (RefinedWeb-English, RefinedWeb-Europe, Books, Conversations, Code, Technical), glue
+High priority: C4, openwebtext, super_glue, piqa, Falcon-40B (RefinedWeb-English, RefinedWeb-Europe, Books, Conversations, Code, Technical), glue, tiiuae/falcon-refinedweb, math_dataset
 
-Medium priority: bigcode/ta-prompt, bigcode/the-stack-dedup, OpenAssistant/oasst1, ehartford/wizard_vicuna_70k_unfiltered, tiiuae/falcon-refinedweb
+Medium priority:  bigcode/ta-prompt, bigcode/the-stack-dedup, OpenAssistant/oasst1, ehartford/wizard_vicuna_70k_unfiltered, tiiuae/falcon-refinedweb
 
-Low priority: JosephusCheung/GuanacoDataset, anon8231489123/ShareGPT_Vicuna_unfiltered, togethercomputer/RedPajama-Data, togethercomputer/RedPajama-Data-1T, Anthropic/hh-rlhf, databricks/databricks-dolly-15k, QingyiSi/Alpaca-CoT
+Low priority: timdettmers/openassistant-guanaco, JosephusCheung/GuanacoDataset,  JosephusCheung/GuanacoDataset, anon8231489123/ShareGPT_Vicuna_unfiltered, togethercomputer/RedPajama-Data, togethercomputer/RedPajama-Data-1T, Anthropic/hh-rlhf, databricks/databricks-dolly-15k, QingyiSi/Alpaca-CoT, alpaca,
+distillation, timdettmers/openassistant-guanaco, OpenAssistant/oasst1, dmayhem93/toolformer-v0-postprocessed, openai_humaneval, yahma/alpaca-cleaned, 
 
 ## Data preprocessing: Clean, preprocess, and tokenize the datasets to ensure consistency and compatibility with the AI model.
 
