@@ -17,13 +17,9 @@ Get started:
 git clone https://github.com/kyegomez/Andromeda/tree/e2
 cd Andromeda
 pip3 install -r requirements.txt
+cd Andromeda
+python3 training.py
 ```
-
-or:
-```bash
-pip install andromeda_transformer
-```
-
 
 
 ## Dataset building building
