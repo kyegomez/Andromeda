@@ -30,26 +30,6 @@ You can preprocess a different dataset in a way similar to the C4 dataset used d
 ```python3 Andromeda/build_dataset.py --seed 42 --seq_len 8192 --hf_account "HUGGINGFACE APIKEY" --tokenizer "EleutherAI/gpt-neox-20b" --dataset_name "EleutherAI/the_pile_deduplicated"```
 
 
-# Training
-
-2. Run the training script:
-
-```python
-from andromeda import TrainAndromeda
-
-if __name__ == "__main__":
-    TrainAndromeda()
-
-```
-
-run the file:
-
-```
-python3 trainandromeda.py
-```
-This script will train the Andromeda model on the enwik8 dataset, leveraging the advanced techniques discussed above. The model's progress will be displayed during training, and the model will be saved periodically.
-
-By incorporating these cutting-edge techniques, Andromeda is designed to outperform other language models like OpenAI's GPT-4 and PALM in terms of efficiency, flexibility, and scalability.
 
 # Inference
 
