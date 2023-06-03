@@ -36,7 +36,7 @@ from optimus_prime import AndromedaEmbedding
 
 from lion_pytorch import Lion
 
-import numpy as np
+from torch.nn.parallel import DistributedDataParallel as DDP
 
 # constants
 
@@ -202,6 +202,8 @@ def TrainAndromeda():
     ).to(accelerator.device)
 
     model = AutoregressiveWrapper(model).to(accelerator.device)
+    
+    model = DDP(model)
 
     optim = Lion(model.parameters(), lr=1e-4, weight_decay=1e-2)
 
@@ -226,19 +228,6 @@ def TrainAndromeda():
     train_loader = DataLoader(
         train_dataset, batch_size=CFG.BATCH_SIZE, collate_fn=default_data_collator,
     )
-
-    # optimizer
-
-    # optim = decoupled_optimizer(
-    #     model,
-    #     learning_rate=CFG.LEARNING_RATE,
-    #     weight_decay=CFG.WEIGHT_DECAY,
-    #     beta_1=0.9,
-    #     beta_2=0.95,
-    #     use_adamw=False,
-    # )
-
-    # Determine number of training steps
 
     max_train_steps = math.ceil(len(train_loader) / CFG.GRADIENT_ACCUMULATE_EVERY)
     accelerator.print(f"Max train steps: {max_train_steps}")
