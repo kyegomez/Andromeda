@@ -36,7 +36,6 @@ from optimus_prime import AndromedaEmbedding
 
 from lion_pytorch import Lion
 
-from torch.nn.parallel import DistributedDataParallel as DDP
 
 # constants
 
@@ -202,8 +201,6 @@ def TrainAndromeda():
     ).to(accelerator.device)
 
     model = AutoregressiveWrapper(model).to(accelerator.device)
-    
-    model = DDP(model)
 
     optim = Lion(model.parameters(), lr=1e-4, weight_decay=1e-2)
 
