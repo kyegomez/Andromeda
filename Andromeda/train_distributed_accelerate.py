@@ -471,10 +471,13 @@ def main():
 
     set_seed(CFG.SEED)
 
+    tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neox-20b")
+
     model = TransformerWrapper(
         num_tokens=64007,
         max_seq_len=8192,
         use_abs_pos_emb=False,
+        tokenizer=tokenizer
         embedding_provider=AndromedaEmbedding(),
         attn_layers = Decoder(
             dim=128, # 2048
