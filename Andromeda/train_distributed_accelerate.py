@@ -12,7 +12,7 @@ from torch.distributed.fsdp import (
     BackwardPrefetch,
     ShardingStrategy,
 )
-from accelerate import Accelerator, AcceleratorState
+from accelerate import Accelerator
 from accelerate.utils import (DummyOptim, DummyScheduler,
                               InitProcessGroupKwargs)
 from datasets import concatenate_datasets, load_dataset
@@ -28,6 +28,7 @@ from torch.distributed.fsdp.wrap import (
     transformer_auto_wrap_policy,
 )
 
+from accelerate.state import AcceleratorState
 
 from torch.optim import AdamW
 from torch.utils.data import DataLoader
