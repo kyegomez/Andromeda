@@ -56,7 +56,7 @@ class CFG:
     RESUME_FROM_CHECKPOINT: str = None
     CHECKPOINTING_STEPS: int = 1000
     OUTPUT_DIR: str = "andromeda_v1"
-    ENTITY_NAME: str = "YOUR_ENTITY_NAME"
+    ENTITY_NAME: str = "wanb" # Put your wandb username here
 
 
 # helpers
@@ -471,14 +471,6 @@ def main():
 
     set_seed(CFG.SEED)
 
-    # instantiate palm
-
-    # 410m
-    # model = PaLM(
-    #     num_tokens=50304, dim=1024, depth=24, dim_head=128, heads=8, flash_attn=True, #qk_rmsnorm = True,
-    # ).to(accelerator.device)
-
-    # 1B
     model = TransformerWrapper(
         num_tokens=64007,
         max_seq_len=8192,
