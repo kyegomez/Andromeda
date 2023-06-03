@@ -455,7 +455,7 @@ def main():
     )
 
     accelerator.init_trackers(
-        project_name="palm",
+        project_name="Andromeda",
         config={
             "batch_size": CFG.BATCH_SIZE,
             "gradient_accumulate_every": CFG.GRADIENT_ACCUMULATE_EVERY,
