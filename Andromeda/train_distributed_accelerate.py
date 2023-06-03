@@ -39,7 +39,6 @@ from transformers import (AutoTokenizer, default_data_collator,
 
 from utils.stable_adamw import StableAdamWUnfused
 
-AcceleratorState().deepspeed_plugin.deepspeed_config['train_micro_batch_size_per_gpu']
 
 # constants
 class CFG:
@@ -454,6 +453,8 @@ def main():
         log_with="wandb",
         kwargs_handlers=[timeout],
     )
+    AcceleratorState().deepspeed_plugin.deepspeed_config['train_micro_batch_size_per_gpu']
+
 
     accelerator.init_trackers(
         project_name="Andromeda",
