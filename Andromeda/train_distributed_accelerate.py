@@ -453,7 +453,7 @@ def main():
         log_with="wandb",
         kwargs_handlers=[timeout],
     )
-    AcceleratorState().deepspeed_plugin.deepspeed_config['train_micro_batch_size_per_gpu']
+    AcceleratorState().deepspeed_plugin.deepspeed_config['train_micro_batch_size_per_gpu'] = 4
 
 
     accelerator.init_trackers(
