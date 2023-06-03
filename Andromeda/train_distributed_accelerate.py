@@ -38,8 +38,8 @@ from transformers import (AutoTokenizer, default_data_collator,
 
 from utils.stable_adamw import StableAdamWUnfused
 
-accelerator_state = AcceleratorState()
-accelerator_state.deepspeed_plugin.deepspeed_config["train_micro_batch_size_per_gpu"]
+aaccelerator_state = AcceleratorState()
+accelerator_state.deepspeed_plugin.deepspeed_config['train_micro_batch_size_per_gpu'] = 4
 
 # constants
 class CFG:
