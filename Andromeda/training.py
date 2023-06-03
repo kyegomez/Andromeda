@@ -205,7 +205,7 @@ def TrainAndromeda():
 
     model = AutoregressiveWrapper(model).to(accelerator.device)
 
-    optim = Lion(model.parameters(), lr=1e-4, weight_decay=1e-2)
+    optim = Lion(model.parameters(), lr=1e-4, weight_decay=1e-2, use_triton=True)
 
     print_num_params(model, accelerator)
 

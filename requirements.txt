@@ -10,3 +10,4 @@ transformers
 SentencePiece
 bitsandbytes
 datasets
+Triton
