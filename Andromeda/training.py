@@ -9,7 +9,7 @@ from itertools import chain
 
 import torch
 
-from accelerate import Accelerator
+from accelerate import Accelerator, DeepSpeedPlugin
 from accelerate.utils import InitProcessGroupKwargs
 
 from datasets import concatenate_datasets, load_dataset
@@ -53,6 +53,8 @@ class CFG:
     CHECKPOINTING_STEPS: int = 1000
     OUTPUT_DIR: str = "output"
     ENTITY_NAME: str = "wanb" # Put your wandb username here
+
+deepspeed_plugin = DeepSpeedPlugin(zero_stage=2, gradient_accumulation_steps=CFG.GRADIENT_ACCUMULATE_EVERY)
 
 # helpers
 
@@ -150,7 +152,8 @@ def TrainAndromeda():
         gradient_accumulation_steps=CFG.GRADIENT_ACCUMULATE_EVERY,
         mixed_precision="fp16",
         log_with="wandb",
-        kwargs_handlers=[timeout]
+        kwargs_handlers=[timeout],
+        deepspeed_plugin=deepspeed_plugin
     )
 
     accelerator.init_trackers(
