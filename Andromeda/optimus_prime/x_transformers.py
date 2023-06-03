@@ -1266,7 +1266,7 @@ class TransformerWrapper(nn.Module):
         num_tokens,
         max_seq_len,
         attn_layers,
-        tokenizer: BaseTokenizer,
+        # tokenizer: BaseTokenizer,
         embedding_provider: BaseEmbedding,
         emb_dim = None,
         max_mem_len = 0.,
@@ -1289,7 +1289,7 @@ class TransformerWrapper(nn.Module):
         emb_dim = default(emb_dim, dim)
 
         # your own tokenizer
-        self.tokenizer = tokenizer
+        # self.tokenizer = tokenizer
 
         #your own embedding function
         self.token_emb = TokenEmbedding(emb_dim, num_tokens, embedding_provider, l2norm_embed=l2norm_embed)
