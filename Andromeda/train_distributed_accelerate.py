@@ -18,9 +18,9 @@ from accelerate.utils import (DummyOptim, DummyScheduler,
 from datasets import concatenate_datasets, load_dataset
 from lion_pytorch import Lion
 # from palm_rlhf_pytorch import PaLM
+# from palm_rlhf_pytorch.palm import LayerNorm, TransformerWrapper
 from torch.nn import LayerNorm
-# from palm_rlhf_pytorch.palm import LayerNorm, ParallelTransformerBlock
-
+from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 from torch.distributed.algorithms._checkpoint.checkpoint_wrapper import (
     CheckpointImpl, apply_activation_checkpointing, checkpoint_wrapper)
 
@@ -36,12 +36,8 @@ from transformers import (AutoTokenizer, default_data_collator,
                           get_cosine_schedule_with_warmup,
                           get_linear_schedule_with_warmup, set_seed)
 
-# from palm.stable_adamw import StableAdamWUnfused
 from utils.stable_adamw import StableAdamWUnfused
 
-from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
-
-ParallelTransformerBlock = TransformerWrapper()
 # constants
 
 
@@ -53,13 +49,13 @@ class CFG:
     WEIGHT_DECAY: float = 0.1
     SEQ_LEN: int = 8192
     NUM_CPU: int = multiprocessing.cpu_count()
-    USE_DEEPSPEED: bool = False
-    USE_FSDP: bool = False
+    USE_DEEPSPEED: bool = True
+    USE_FSDP: bool = True
     USE_PRETOKENIZED: bool = True
-    USE_ACTIVATION_CHECKPOINTING: bool = False
+    USE_ACTIVATION_CHECKPOINTING: bool = True
     RESUME_FROM_CHECKPOINT: str = None
     CHECKPOINTING_STEPS: int = 1000
-    OUTPUT_DIR: str = "YOUR_OUTPUT_DIR"
+    OUTPUT_DIR: str = "andromeda_v1"
     ENTITY_NAME: str = "YOUR_ENTITY_NAME"
 
 
@@ -89,7 +85,7 @@ def activation_checkpointing(
     """
     if accelerator is not None:
         accelerator.print(f"Using activation checkpointing")
-    check_fn = lambda submodule: isinstance(submodule, ParallelTransformerBlock)
+    check_fn = lambda submodule: isinstance(submodule, TransformerWrapper)
     non_reentrant_wrapper = partial(
         checkpoint_wrapper,
         offload_to_cpu=offload_to_cpu,
@@ -129,7 +125,7 @@ def fsdp(
         palm_auto_wrap_policy = partial(
             transformer_auto_wrap_policy,
             transformer_layer_cls={
-                ParallelTransformerBlock,
+                TransformerWrapper,
             },
         )
     else:
@@ -483,7 +479,6 @@ def main():
     # ).to(accelerator.device)
 
     # 1B
-
     model = TransformerWrapper(
         num_tokens=64007,
         max_seq_len=8192,
@@ -508,8 +503,6 @@ def main():
     ).to(accelerator.device)
 
     model = AutoregressiveWrapper(model).to(accelerator.device)
-
-
     print_num_params(model, accelerator)
 
     if CFG.USE_FSDP:
