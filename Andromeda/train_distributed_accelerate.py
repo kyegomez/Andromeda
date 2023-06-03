@@ -395,7 +395,7 @@ def build_dataloaders():
         Dataset: The processed dataset ready for training.
     """
     tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neox-20b")
-    dataset = load_dataset("openwebtext", split="train")
+    dataset = load_dataset("openwebtext", split="train", streaming=True)
 
     tokenized_dataset = dataset.map(
         lambda example: tokenizer([t + tokenizer.eos_token for t in example["text"]]),
