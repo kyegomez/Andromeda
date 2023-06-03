@@ -12,7 +12,7 @@ from torch.distributed.fsdp import (
     BackwardPrefetch,
     ShardingStrategy,
 )
-from accelerate import Accelerator, AcceleratorState
+from accelerate import Accelerator
 from accelerate.utils import (DummyOptim, DummyScheduler,
                               InitProcessGroupKwargs)
 from datasets import concatenate_datasets, load_dataset
@@ -38,8 +38,6 @@ from transformers import (AutoTokenizer, default_data_collator,
 
 from utils.stable_adamw import StableAdamWUnfused
 
-aaccelerator_state = AcceleratorState()
-accelerator_state.deepspeed_plugin.deepspeed_config['train_micro_batch_size_per_gpu'] = 4
 
 # constants
 class CFG:
