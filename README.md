@@ -21,6 +21,17 @@ cd Andromeda
 python3 training.py
 ```
 
+# Training
+
+First:
+
+`Accelerate Config`
+
+Enable Deepspeed 3: 
+
+`Accelerate launch train_distributed_accelerate.py``
+
+
 
 ## Dataset building building
 
