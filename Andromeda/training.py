@@ -54,7 +54,7 @@ class CFG:
     OUTPUT_DIR: str = "output"
     ENTITY_NAME: str = "wanb" # Put your wandb username here
 
-deepspeed_plugin = DeepSpeedPlugin(zero_stage=2, gradient_accumulation_steps=CFG.GRADIENT_ACCUMULATE_EVERY)
+# deepspeed_plugin = DeepSpeedPlugin(zero_stage=2, gradient_accumulation_steps=CFG.GRADIENT_ACCUMULATE_EVERY)
 
 # helpers
 
