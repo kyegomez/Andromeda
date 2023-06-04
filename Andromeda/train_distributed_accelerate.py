@@ -345,8 +345,9 @@ def decoupled_optimizer(
 
     # Iterate over the no_decay list, which contains the names of the parameters without weight decay.
     for param in no_decay:
+        if param in param_dict:
         # Append the corresponding parameter from param_dict to the no_decay_param list.
-        no_decay_param.append(param_dict[param])
+            no_decay_param.append(param_dict[param])
 
     # Create a list called grouped_params that contains two dictionaries.
     # The first dictionary has the decay_param list and the corresponding weight_decay value.
