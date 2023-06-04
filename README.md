@@ -168,3 +168,15 @@ Join us on this exciting journey to create a powerful, efficient, and intelligen
 At Agora we're creating Artificial Intelligence's with the impact to potentially solve some of Humanity's biggest problems like labor, disease, and even death.
 
 [Join us and Advance Humanity](https://discord.gg/yqQtRnCH)
+
+## Todo:
+
+* [Integrate Token Monster ](https://github.com/alasdairforsythe/tokenmonster)
+
+* Establish 200k instruction sample long for Tool API Calls
+
+* [Train on Gorilla Dataset](https://github.com/ShishirPatil/gorilla)
+
+* Establish FineTuning scripts using quantization + 4bit precision, + other tactics like LoRA
+
+* Establish Reinforcement Scripts to train on rewards from Human and Agent feedback

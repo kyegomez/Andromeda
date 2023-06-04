@@ -431,7 +431,7 @@ def build_dataloaders():
 
 
 def build_pre_tokenized():
-    d0 = load_dataset("conceptofmind/c4_0-to-20_neox_with_eos_8k", split="train")
+    d0 = load_dataset("conceptofmind/c4_0-to-20_neox_with_eos_8k", split="train", streaming=True)
     # d1 = load_dataset("conceptofmind/c4_21-to-40_neox_with_eos_8k", split="train")
     # d2 = load_dataset("conceptofmind/c4_41-to-60_neox_with_eos_8k", split="train")
     # d3 = load_dataset("conceptofmind/c4_61-to-80_neox_with_eos_8k", split="train")
