@@ -3,19 +3,33 @@ import argparse
 from itertools import chain
 from datasets import load_dataset
 from transformers import AutoTokenizer
+#falcon tokenizer
+"""
+Falcon dataset 
+Data Fields
+content: the processed and cleaned text contained in the page;
+url: the url of the webpage crawled to produce the sample;
+timestamp: timestamp of when the webpage was crawled by CommonCrawl;
+dump: the CommonCrawl dump the sample is a part of;
+segment: the CommonCrawl segment the sample is a part of;
+image_urls: a list of elements in the type [image_url, image_alt_text] for all the images found in the content of the sample.
 
+"""
 
 class CFG:
     SEED: int = 42
     SEQ_LEN: int = 8192
     NUM_CPU: int = multiprocessing.cpu_count()
     HF_ACCOUNT_REPO: str = "YOUR HUGGINGFACE API KEY"
-    TOKENIZER: str = "EleutherAI/gpt-neox-20b"
-    DATASET_NAME: str = "EleutherAI/the_pile_deduplicated"
+    TOKENIZER: str = "tiiuae/falcon-40b-instruct"
+    # DATASET_NAME: str = "EleutherAI/the_pile_deduplicated"
+    DATASET_NAME: str = "tiiuae/falcon-refinedweb"
 
+
+#perhaps will need finetuning
 def built_dataset(args):
     tokenizer = AutoTokenizer.from_pretrained(CFG.TOKENIZER)
-    train_dataset = load_dataset(CFG.DATASET_NAME, split="train")
+    train_dataset = load_dataset(CFG.DATASET_NAME, split="train", streaming=True)
 
 
     def tokenize_function(example):
