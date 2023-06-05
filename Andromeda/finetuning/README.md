@@ -55,7 +55,8 @@ Here is a list of advanced techniques to perfect the fine-tuning process:
 
 2. **Knowledge Distillation**: This technique involves training a smaller student model to mimic a larger teacher model. The student model is generally easier to fine-tune.
 
-   **Resource**: [DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter](https://arxiv
+   **Resource**: DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter
+
    **Resource** [LLAMA CPP](https://github.com/ggerganov/llama.cpp)
 
 .org/abs/1910.01108)
@@ -88,3 +89,45 @@ Fine-tuning large language models is a critical step towards making these models
 * Constituional Reinforcement
 
 * Process Supervision -> 'Lets verify step by step'
+
+
+
+1. **Differential Learning Rates**: Apply different learning rates to different layers in the model to adjust for the variations in feature extraction capabilities of the layers.
+   
+   **Resource**: [Universal Language Model Fine-tuning for Text Classification](https://arxiv.org/abs/1801.06146)
+
+2. **Prompt Engineering**: Careful design of prompts or queries to guide the model towards expected results.
+   
+   **Resource**: [The Power of Scale for Parameter-Efficient Prompt Tuning](https://arxiv.org/abs/2104.08691)
+
+3. **Layer-wise Learning Rate Decay**: Utilize a learning rate that decays exponentially from the initial layers to the final layers.
+
+   **Resource**: [Fine-tuning Large-Scale Transformer Models: A Learning Rate Schedule Perspective](https://arxiv.org/abs/2106.06801)
+
+4. **Multitask Learning**: Fine-tune the model on multiple tasks simultaneously to help it generalize better.
+
+   **Resource**: [Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer](https://arxiv.org/abs/1910.10683)
+
+5. **Task-specific Pretraining**: Pretrain the model on a task-specific dataset before fine-tuning on the final task.
+
+   **Resource**: [How to Fine-Tune BERT for Text Classification?](https://arxiv.org/abs/1905.05583)
+
+6. **Dynamic Quantization**: Speed up model inference and reduce model size with dynamic quantization.
+
+   **Resource**: [Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference](https://arxiv.org/abs/1712.05877)
+
+7. **Knowledge Distillation**: Train a smaller student model to mimic a larger teacher model, which is generally easier to fine-tune.
+
+   **Resource**: [DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter](https://arxiv.org/abs/1910.01108)
+
+8. **Temperature Scaling**: Scale the outputs of the model's softmax layer by a constant to improve the calibration of the model's probabilities.
+
+   **Resource**: [On Calibration of Modern Neural Networks](https://arxiv.org/abs/1706.04599)
+
+9. **Mixout**: Apply dropout during the fine-tuning process to prevent catastrophic forgetting and stabilize the process.
+
+   **Resource**: [Mixout: Effective Regularization to Finetune Large-scale Pretrained Language Models](https://arxiv.org/abs/2004.10161)
+
+10. **Bayesian Fine-tuning**: Treat fine-tuning as a Bayesian posterior inference to help in preventing overfitting.
+
+    **Resource**: [BayesFormer: Bayesian Fine-tuning of Pretrained Transformers](https://arxiv.org/abs/2106.05237)
