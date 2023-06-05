@@ -51,10 +51,12 @@ Here is a list of advanced techniques to perfect the fine-tuning process:
 1. **Dynamic Quantization**: Quantization is the process of reducing the number of bits that represent a number, which can speed up model inference and reduce model size.
 
    **Resource**: [Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference](https://arxiv.org/abs/1712.05877)
+   
 
 2. **Knowledge Distillation**: This technique involves training a smaller student model to mimic a larger teacher model. The student model is generally easier to fine-tune.
 
    **Resource**: [DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter](https://arxiv
+   **Resource** [LLAMA CPP](https://github.com/ggerganov/llama.cpp)
 
 .org/abs/1910.01108)
 
@@ -73,3 +75,16 @@ Here is a list of advanced techniques to perfect the fine-tuning process:
 ## Conclusion
 
 Fine-tuning large language models is a critical step towards making these models useful for specific tasks or domains. The variety of strategies and techniques outlined above provides a comprehensive suite of approaches to optimize this process and realize the full potential of these large models.
+
+
+# Ideas:
+
+* Process Supervision
+
+* RLH
+
+* RLA - Reinforcement learning from agents
+
+* Constituional Reinforcement
+
+* Process Supervision -> 'Lets verify step by step'
