@@ -1,3 +1,11 @@
+# Agora
+Agora is an new open source Multi-Modality AI Research Organization devoted to advancing Humanity!
+
+![Agora banner](agora-banner.png)
+
+[Join our Agora discord and contribute to this project or 40+ others!](https://discord.gg/qUtxnK2NMf)
+
+
 # Andromeda: Ultra-Fast and Ultra-Intelligent SOTA Language Model 🚀🌌
 
 ![Andromeda Next Generation Open Source Language Model](/andromedabanner.png)
@@ -163,11 +171,6 @@ Deep normalization is a technique that normalizes the activations within a layer
 - **Community-driven**: As an open-source project, Andromeda thrives on contributions from the community, fostering an environment of collaboration, innovation, and continuous improvement.
 
 Join us on this exciting journey to create a powerful, efficient, and intelligent language model that will revolutionize the NLP landscape! 🚀🌟
-
-# Join Agora
-At Agora we're creating Artificial Intelligence's with the impact to potentially solve some of Humanity's biggest problems like labor, disease, and even death.
-
-[Join us and Advance Humanity](https://discord.gg/yqQtRnCH)
 
 ## Todo:
 
