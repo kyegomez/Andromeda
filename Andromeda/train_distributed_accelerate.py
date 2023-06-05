@@ -454,7 +454,7 @@ def main():
         log_with="wandb",
         kwargs_handlers=[timeout],
     )
-    AcceleratorState().deepspeed_plugin.deepspeed_config['train_micro_batch_size_per_gpu'] = 4
+    # AcceleratorState().deepspeed_plugin.deepspeed_config['train_micro_batch_size_per_gpu'] = 4 #??????
 
 
     accelerator.init_trackers(
@@ -474,7 +474,7 @@ def main():
 
     set_seed(CFG.SEED)
 
-    tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neox-20b")
+    # tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neox-20b")
 
     model = TransformerWrapper(
         num_tokens=64007,
