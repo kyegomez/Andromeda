@@ -52,9 +52,9 @@ from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEm
 
 
 ############ SETUP CONFIG
-import torch.distributed as dist
+# import torch.distributed as dist
 
-dist.init_process_group(backend='nccl', init_method="env://")
+# dist.init_process_group(backend='nccl', init_method="env://")
 
 ################
 
