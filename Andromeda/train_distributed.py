@@ -44,7 +44,7 @@ from utils.stable_adamw import StableAdamWUnfused
 
 from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 
-TransformerWrapper = TransformerWrapper()
+# TransformerWrapper = TransformerWrapper()
 # constants
 
 
