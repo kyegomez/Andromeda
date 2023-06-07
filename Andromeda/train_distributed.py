@@ -19,7 +19,10 @@ from datasets import concatenate_datasets, load_dataset
 from lion_pytorch import Lion
 # from palm_rlhf_pytorch import PaLM
 from torch.nn import LayerNorm
-# from palm_rlhf_pytorch.palm import LayerNorm, ParallelTransformerBlock
+# from palm_rlhf_pytorch.palm import LayerNorm, TransformerWrapper
+
+from torch.nn import LayerNorm
+from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 
 from torch.distributed.algorithms._checkpoint.checkpoint_wrapper import (
     CheckpointImpl, apply_activation_checkpointing, checkpoint_wrapper)
@@ -41,7 +44,7 @@ from utils.stable_adamw import StableAdamWUnfused
 
 from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 
-ParallelTransformerBlock = TransformerWrapper()
+TransformerWrapper = TransformerWrapper()
 # constants
 
 
@@ -53,9 +56,9 @@ class CFG:
     WEIGHT_DECAY: float = 0.1
     SEQ_LEN: int = 8192
     NUM_CPU: int = multiprocessing.cpu_count()
-    USE_DEEPSPEED: bool = False
-    USE_FSDP: bool = False
-    USE_PRETOKENIZED: bool = True
+    USE_DEEPSPEED: bool = True
+    USE_FSDP: bool = True
+    USE_PRETOKENIZED: bool = False
     USE_ACTIVATION_CHECKPOINTING: bool = False
     RESUME_FROM_CHECKPOINT: str = None
     CHECKPOINTING_STEPS: int = 1000
@@ -89,7 +92,7 @@ def activation_checkpointing(
     """
     if accelerator is not None:
         accelerator.print(f"Using activation checkpointing")
-    check_fn = lambda submodule: isinstance(submodule, ParallelTransformerBlock)
+    check_fn = lambda submodule: isinstance(submodule, TransformerWrapper)
     non_reentrant_wrapper = partial(
         checkpoint_wrapper,
         offload_to_cpu=offload_to_cpu,
@@ -129,7 +132,7 @@ def fsdp(
         palm_auto_wrap_policy = partial(
             transformer_auto_wrap_policy,
             transformer_layer_cls={
-                ParallelTransformerBlock,
+                TransformerWrapper,
             },
         )
     else:
@@ -398,7 +401,7 @@ def build_dataloaders():
     Returns:
         Dataset: The processed dataset ready for training.
     """
-    tokenizer = AutoTokenizer.from_pretrained("tiiuae/falcon-40b-instruct")
+    tokenizer = AutoTokenizer.from_pretrained("tiiuae/falcon-40b")
     dataset = load_dataset("openwebtext", split="train")
 
     tokenized_dataset = dataset.map(
@@ -443,8 +446,6 @@ def build_pre_tokenized():
     return train_dataset
 
 
-# main
-
 
 def main():
     # accelerator
@@ -457,9 +458,11 @@ def main():
         log_with="wandb",
         kwargs_handlers=[timeout],
     )
+    # AcceleratorState().deepspeed_plugin.deepspeed_config['train_micro_batch_size_per_gpu'] = 4 #??????
+
 
     accelerator.init_trackers(
-        project_name="palm",
+        project_name="Andromeda",
         config={
             "batch_size": CFG.BATCH_SIZE,
             "gradient_accumulate_every": CFG.GRADIENT_ACCUMULATE_EVERY,
@@ -475,19 +478,13 @@ def main():
 
     set_seed(CFG.SEED)
 
-    # instantiate palm
-
-    # 410m
-    # model = PaLM(
-    #     num_tokens=50304, dim=1024, depth=24, dim_head=128, heads=8, flash_attn=True, #qk_rmsnorm = True,
-    # ).to(accelerator.device)
-
-    # 1B
+    # tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neox-20b")
 
     model = TransformerWrapper(
         num_tokens=64007,
         max_seq_len=8192,
         use_abs_pos_emb=False,
+        # tokenizer=tokenizer,
         embedding_provider=AndromedaEmbedding(),
         attn_layers = Decoder(
             dim=128, # 2048
@@ -508,8 +505,6 @@ def main():
     ).to(accelerator.device)
 
     model = AutoregressiveWrapper(model).to(accelerator.device)
-
-
     print_num_params(model, accelerator)
 
     if CFG.USE_FSDP:
@@ -543,7 +538,7 @@ def main():
         weight_decay=CFG.WEIGHT_DECAY, 
         beta_1=0.90, 
         beta_2=0.95, 
-        optimizer_type='adamw',  
+        optimizer_type='stable_adamw',  
         use_fsdp=True,
         accelerator=accelerator
     )

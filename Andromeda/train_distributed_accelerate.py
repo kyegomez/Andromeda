@@ -395,7 +395,7 @@ def build_dataloaders():
     Returns:
         Dataset: The processed dataset ready for training.
     """
-    tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neox-20b")
+    tokenizer = AutoTokenizer.from_pretrained("tiiuae/falcon-40b")
     dataset = load_dataset("openwebtext", split="train", streaming=True)
 
     tokenized_dataset = dataset.map(
