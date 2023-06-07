@@ -454,7 +454,7 @@ def main():
 
     accelerator = Accelerator(
         gradient_accumulation_steps=CFG.GRADIENT_ACCUMULATE_EVERY,
-        mixed_precision="bf16",
+        mixed_precision="fp16",
         log_with="wandb",
         kwargs_handlers=[timeout],
     )
@@ -510,7 +510,7 @@ def main():
     if CFG.USE_FSDP:
         model = fsdp(
             model,
-            mp="bf16",
+            mp="fp16",
             shard_strat="SHARD_GRAD"
         )
 
