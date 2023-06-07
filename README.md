@@ -22,7 +22,7 @@ Get started:
 
 
 ```
-git clone https://github.com/kyegomez/Andromeda/tree/e2
+git clone https://github.com/kyegomez/Andromeda
 cd Andromeda
 pip3 install -r requirements.txt
 cd Andromeda
