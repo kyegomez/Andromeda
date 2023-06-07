@@ -47,9 +47,16 @@ from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEm
 # TransformerWrapper = TransformerWrapper()
 # constants
 
+
+
+
+
+############ SETUP CONFIG
 import torch.distributed as dist
 
 dist.init_process_group(backend='nccl', init_method="env://")
+
+################
 
 class CFG:
     BATCH_SIZE: int = 3
@@ -60,7 +67,7 @@ class CFG:
     SEQ_LEN: int = 8192
     NUM_CPU: int = multiprocessing.cpu_count()
     USE_DEEPSPEED: bool = True
-    USE_FSDP: bool = True
+    USE_FSDP: bool = False
     USE_PRETOKENIZED: bool = False
     USE_ACTIVATION_CHECKPOINTING: bool = False
     RESUME_FROM_CHECKPOINT: str = None
