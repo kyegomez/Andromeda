@@ -47,6 +47,9 @@ from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEm
 # TransformerWrapper = TransformerWrapper()
 # constants
 
+import torch.distributed as dist
+
+dist.init_process_group(backend='nccl', init_method="env://")
 
 class CFG:
     BATCH_SIZE: int = 3
