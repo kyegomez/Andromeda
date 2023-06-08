@@ -496,6 +496,7 @@ def main():
         use_abs_pos_emb=False,
         # tokenizer=tokenizer,
         embedding_provider=AndromedaEmbedding(),
+        #config from concept of minds PALM
         attn_layers = Decoder(
             dim=2560, # 2048
             depth=32, # 16
@@ -548,7 +549,7 @@ def main():
         weight_decay=CFG.WEIGHT_DECAY, 
         beta_1=0.90, 
         beta_2=0.95, 
-        optimizer_type='stable_adamw',  
+        optimizer_type='deepspeed',  
         use_fsdp=True,
         accelerator=accelerator
     )
