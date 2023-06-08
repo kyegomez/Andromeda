@@ -21,7 +21,9 @@ class CFG:
     SEQ_LEN: int = 8192
     NUM_CPU: int = multiprocessing.cpu_count()
     HF_ACCOUNT_REPO: str = "YOUR HUGGINGFACE API KEY"
-    TOKENIZER: str = "tiiuae/falcon-40b-instruct"
+    #"EleutherAI/gpt-neox-20b"
+    # TOKENIZER: str = "tiiuae/falcon-40b-instruct"
+    TOKENIZER: str = "EleutherAI/gpt-neox-20b"
     # DATASET_NAME: str = "EleutherAI/the_pile_deduplicated"
     DATASET_NAME: str = "tiiuae/falcon-refinedweb"
 
