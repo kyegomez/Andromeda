@@ -497,12 +497,12 @@ def main():
         # tokenizer=tokenizer,
         embedding_provider=AndromedaEmbedding(),
         attn_layers = Decoder(
-            dim=128, # 2048
-            depth=8, # 16
+            dim=2560, # 2048
+            depth=32, # 16
             dim_head=128,
-            heads=8,
+            heads=24,
             alibi_pos_bias=True,
-            alibi_num_heads=4,
+            alibi_num_heads=12,
             rotary_xpos=True,
             attn_flash = True,
             deepnorm=True,

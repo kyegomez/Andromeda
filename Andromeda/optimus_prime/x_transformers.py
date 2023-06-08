@@ -895,7 +895,7 @@ class AttentionLayers(nn.Module):
         self,
         dim,
         depth,
-        heads = 8,
+        heads = None,
         causal = False,
         cross_attend = False,
         only_cross = False,
