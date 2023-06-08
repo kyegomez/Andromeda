@@ -68,7 +68,7 @@ class CFG:
     NUM_CPU: int = multiprocessing.cpu_count()
     USE_DEEPSPEED: bool = True
     USE_FSDP: bool = False
-    USE_PRETOKENIZED: bool = False
+    USE_PRETOKENIZED: bool = True
     USE_ACTIVATION_CHECKPOINTING: bool = False
     RESUME_FROM_CHECKPOINT: str = None
     CHECKPOINTING_STEPS: int = 1000
@@ -448,12 +448,12 @@ def build_dataloaders():
 #switch to falconwebdataset
 def build_pre_tokenized():
     d0 = load_dataset("conceptofmind/c4_0-to-20_neox_with_eos_8k", split="train")
-    d1 = load_dataset("conceptofmind/c4_21-to-40_neox_with_eos_8k", split="train")
-    d2 = load_dataset("conceptofmind/c4_41-to-60_neox_with_eos_8k", split="train")
-    d3 = load_dataset("conceptofmind/c4_61-to-80_neox_with_eos_8k", split="train")
-    d4 = load_dataset("conceptofmind/c4_81-to-100_neox_with_eos_8k", split="train")
-    train_dataset = concatenate_datasets([d0, d1, d2, d3, d4])
-    return train_dataset
+    # d1 = load_dataset("conceptofmind/c4_21-to-40_neox_with_eos_8k", split="train")
+    # d2 = load_dataset("conceptofmind/c4_41-to-60_neox_with_eos_8k", split="train")
+    # d3 = load_dataset("conceptofmind/c4_61-to-80_neox_with_eos_8k", split="train")
+    # d4 = load_dataset("conceptofmind/c4_81-to-100_neox_with_eos_8k", split="train")
+    # train_dataset = concatenate_datasets([d0, d1, d2, d3, d4])
+    return d0
 
 
 
