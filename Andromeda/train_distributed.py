@@ -139,14 +139,14 @@ def fsdp(
         torch.nn.Module: The input model wrapped with FSDP.
     """
     if auto_wrap:
-        palm_auto_wrap_policy = partial(
+        andromeda_auto_wrap_policy = partial(
             transformer_auto_wrap_policy,
             transformer_layer_cls={
                 TransformerWrapper,
             },
         )
     else:
-        palm_auto_wrap_policy = None
+        andromeda_auto_wrap_policy = None
 
     if mp == "bf16":
         mp_fsdp = MixedPrecision(
@@ -194,7 +194,7 @@ def fsdp(
 
     model = FullyShardedDataParallel(
         model,
-        auto_wrap_policy=palm_auto_wrap_policy,
+        auto_wrap_policy=andromeda_auto_wrap_policy,
         mixed_precision=mp_fsdp,
         backward_prefetch=BackwardPrefetch.BACKWARD_PRE,
         sharding_strategy=sharding_strat_fsdp,
