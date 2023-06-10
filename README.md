@@ -8,7 +8,7 @@ Agora is an new open source Multi-Modality AI Research Organization devoted to a
 
 # Andromeda: Ultra-Fast and Ultra-Intelligent SOTA Language Model 🚀🌌
 
-![Andromeda Next Generation Open Source Language Model](/andromedabanner.png)
+![Andromeda Next Generation Open Source Language Model](/andromeda-banner.png)
 
 Andromeda is a state-of-the-art language model that pushes the boundaries of natural language understanding and generation. Designed for high performance and efficiency, Andromeda is built upon advanced techniques that make it a strong contender against the likes of OpenAI's GPT-4 and PALM.
 
