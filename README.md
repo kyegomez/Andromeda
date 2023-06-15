@@ -15,7 +15,7 @@ Andromeda is a state-of-the-art language model that pushes the boundaries of nat
 
 
 # Usage
-
+[label](https://console.cloud.google.com/compute/soleTenancy?authuser%3D2%26project%3Dandromeda-389913)
 Get started:
 
 1. Clone the repository and install the required packages.
@@ -183,3 +183,9 @@ Join us on this exciting journey to create a powerful, efficient, and intelligen
 * Establish FineTuning scripts using quantization + 4bit precision, + other tactics like LoRA
 
 * Establish Reinforcement Scripts to train on rewards from Human and Agent feedback
+
+
+
+
+
+gcloud alpha compute tpus tpu-vm create v2-8 --zone=us-central1-f --version=pytorch-nightly

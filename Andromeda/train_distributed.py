@@ -59,7 +59,7 @@ from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEm
 ################
 
 class CFG:
-    BATCH_SIZE: int = 3
+    BATCH_SIZE = 3
     GRADIENT_ACCUMULATE_EVERY: int = 1
     SEED: int = 42
     LEARNING_RATE: float = 3e-4
@@ -67,10 +67,10 @@ class CFG:
     SEQ_LEN: int = 8192
     NUM_CPU: int = multiprocessing.cpu_count()
     USE_DEEPSPEED: bool = True
-    USE_FSDP: bool = False
+    USE_FSDP: bool = True
     USE_PRETOKENIZED: bool = True
-    USE_ACTIVATION_CHECKPOINTING: bool = False
-    RESUME_FROM_CHECKPOINT: str = None
+    USE_ACTIVATION_CHECKPOINTING: bool = True
+    RESUME_FROM_CHECKPOINT: str = True
     CHECKPOINTING_STEPS: int = 1000
     OUTPUT_DIR: str = "YOUR_OUTPUT_DIR"
     ENTITY_NAME: str = "YOUR_ENTITY_NAME"
