@@ -28,7 +28,7 @@ from torch.distributed.algorithms._checkpoint.checkpoint_wrapper import (
     CheckpointImpl, apply_activation_checkpointing, checkpoint_wrapper)
 
 from torch.distributed.fsdp.wrap import (
-    transformer_auto_wrap_policy,
+    transformer_auto_wrap_policy
 )
 
 
