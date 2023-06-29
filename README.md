@@ -1,3 +1,5 @@
+# READY FOR TRAINING!!!!!!
+
 # Agora
 Agora is an new open source Multi-Modality AI Research Organization devoted to advancing Humanity!
 
