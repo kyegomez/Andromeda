@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 
 setup(
-  name = 'andromeda_transformer',
+  name = 'Andromeda',
   packages = find_packages(exclude=['examples']),
-  version = '1.1.4',
+  version = '0.0.1',
   license='MIT',
   description = 'andromeda - Pytorch',
   author = 'Kye Gomez',
@@ -16,13 +16,20 @@ setup(
     'transformers'
   ],
   install_requires=[
-    'torch>=1.6',
-    'einops>=0.6.1',
-    'datasets',
-    'accelerate',
-    'transformers',
-    'optimus-prime-transformers',
-    'lion_pytorch'
+    "torch -f https://download.pytorch.org/whl/nightly/cu118/torch_nightly.html",
+    "lion-pytorch",
+    "numpy",
+    # colt5_attention
+    "einops",
+    # local_attention
+    "accelerate",
+    "transformers",
+    # triton
+    "SentencePiece",
+    "bitsandbytes",
+    "datasets",
+    "Triton",
+    "deepspeed"
   ],
   classifiers=[
     'Development Status :: 4 - Beta',
