@@ -16,7 +16,7 @@ setup(
     'transformers'
   ],
   install_requires=[
-    "torch -f https://download.pytorch.org/whl/nightly/cu118/torch_nightly.html",
+    "torch"
     "lion-pytorch",
     "numpy",
     # colt5_attention
