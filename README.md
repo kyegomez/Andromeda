@@ -27,13 +27,16 @@ First `pip install Andromeda-llm` then
 
 ```python
 import torch
-from Andromeda import Andromeda
+from Andromeda import Andromeda, Train
 
 
 x = torch.randint(0, 20000, (1, 1024))
 
 Andromea(x)
 
+# or train
+
+Train()
 
 ```
 
