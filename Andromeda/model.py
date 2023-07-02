@@ -1,6 +1,6 @@
 from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 
-model = TransformerWrapper(
+Andromeda = TransformerWrapper(
     num_tokens=64007,
     max_seq_len=8192,
     use_abs_pos_emb=False,
@@ -24,4 +24,4 @@ model = TransformerWrapper(
     )
 )
 
-model = AutoregressiveWrapper(model)
+Andromeda = AutoregressiveWrapper(Andromeda)
