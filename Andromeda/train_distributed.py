@@ -457,7 +457,7 @@ def build_pre_tokenized():
 
 
 
-def main():
+def Train():
     # accelerator
 
     timeout = InitProcessGroupKwargs(timeout=timedelta(seconds=1_000_000))
@@ -676,4 +676,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    Train()
