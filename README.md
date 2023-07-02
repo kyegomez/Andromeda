@@ -20,6 +20,26 @@ Andromeda is a state-of-the-art language model that pushes the boundaries of nat
 
 
 # Usage
+There are 2 methods to use Andromeda, 1 by `pip install Andromeda-llm` and the other by `git clone`
+
+# Method1
+First `pip install Andromeda-llm` then
+
+```python
+import torch
+from Andromeda import Andromeda
+
+
+x = torch.randint(0, 20000, (1, 1024))
+
+Andromea(x)
+
+
+```
+
+
+## Method 2
+
 Get started:
 
 1. Clone the repository and install the required packages.
