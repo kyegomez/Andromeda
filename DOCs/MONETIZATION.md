@@ -48,6 +48,4 @@ The following is a representative list of contributors who have helped make Agor
 1. Kye
 2. Nicolo
 
-(Note: Actual names and contributions can be filled as per the Agora's contributor list)
-
 Each contributor brings unique expertise and value to the project, helping to shape Andromeda into a powerful, efficient, and intelligent language model that will revolutionize the NLP landscape.
