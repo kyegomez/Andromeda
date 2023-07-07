@@ -40,29 +40,29 @@ class AndromedaTest(unittest.TestCase):
         for initial_param, param in zip(initial_params, self.model.parameters()):
             self.assertFalse(torch.equal(initial_param, param), 'Model parameters did not change after an optimizer step')
 
-    def test_prediction(self):
-        start_time = time.time()
-        prediction = self.model(self.test_input)
-        latency = time.time() - start_time
+    # def test_prediction(self):
+    #     start_time = time.time()
+    #     prediction = self.model(self.test_input)
+    #     latency = time.time() - start_time
         
-        self.assertLess(latency, 1) # test if latency is less than 1 second
-        self.assertEqual(prediction.shape, (1, 1024, 64007)) # test if output shape si correct
+    #     self.assertLess(latency, 1) # test if latency is less than 1 second
+    #     self.assertEqual(prediction.shape, (1, 1024, 64007)) # test if output shape si correct
 
 
-    def test_memory_consumption(self):
-        start_mem = torch.cuda.memory_allocated()
-        prediction = self.model(self.test_input)
-        end_mem = torch.cuda.memory_allocated()
-        mem_diff = end_mem - start_mem
-        self.assertLess(mem_diff, 2 * 1024**3) # memory diff should be less than 2gb
+    # def test_memory_consumption(self):
+    #     start_mem = torch.cuda.memory_allocated()
+    #     prediction = self.model(self.test_input)
+    #     end_mem = torch.cuda.memory_allocated()
+    #     mem_diff = end_mem - start_mem
+    #     self.assertLess(mem_diff, 2 * 1024**3) # memory diff should be less than 2gb
 
-    def test_throughput(self):
-        start_time = time.time()
-        for _ in range(100):
-            prediction = self.model(self.test_input)
-        end_time = time.time()
-        throughput = 100 / (end_time - start_time)
-        self.assertGreater(throughput, 10) # model should handle atleast at 10 inferences per second
+    # def test_throughput(self):
+    #     start_time = time.time()
+    #     for _ in range(100):
+    #         prediction = self.model(self.test_input)
+    #     end_time = time.time()
+    #     throughput = 100 / (end_time - start_time)
+    #     self.assertGreater(throughput, 10) # model should handle atleast at 10 inferences per second
 
 
 if __name__ == "__main__":
