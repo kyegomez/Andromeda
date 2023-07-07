@@ -19,8 +19,6 @@ class AndromedaTokenizer:
 
 
 
-
-
 Andromeda = TransformerWrapper(
     num_tokens=64007,
     max_seq_len=8192,
