@@ -12,3 +12,4 @@ bitsandbytes
 datasets
 Triton
 deepspeed
+bitsandbytes

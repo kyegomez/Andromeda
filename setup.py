@@ -29,7 +29,8 @@ setup(
     "bitsandbytes",
     "datasets",
     "Triton",
-    "deepspeed"
+    "deepspeed",
+    'bitsandbytes'
   ],
   classifiers=[
     'Development Status :: 4 - Beta',
