@@ -48,22 +48,13 @@ Andromeda = AutoregressiveWrapper(Andromeda)
 class AndromedaClass(Module):
     def __init__(self):
         super().__init__()
-        self.embed = bitsandbytes.nn.modules.Embedding(
-            320002,
-            2048,
-            padding_idx=1
-        )
-
-        self.output_projection = torch.nn.Linear(
-            2048, 32002, bias=False
-        )
 
         self.andromeda = TransformerWrapper(
             num_tokens=64007,
             max_seq_len=8192,
             use_abs_pos_emb=False,
             # tokenizer=tokenizer,
-            embedding_provider=AndromedaEmbedding(),
+            embedding_provider=AndromedaBnbEmbedding(),
             attn_layers = Decoder(
                 dim=2560, # 2048
                 depth=32, # 16
