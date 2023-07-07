@@ -60,7 +60,7 @@ class AndromedaClass(Module):
             2048, 32002, bias=False
         )
 
-        Andromeda = TransformerWrapper(
+        self.andromeda = TransformerWrapper(
             num_tokens=64007,
             max_seq_len=8192,
             use_abs_pos_emb=False,
@@ -84,7 +84,7 @@ class AndromedaClass(Module):
             )
         )
 
-        Andromeda = AutoregressiveWrapper(Andromeda)
+        self.decoder = AutoregressiveWrapper(self.andromeda)
 
     def forward(self, text_tokens, **kwargs):
         model_input = self.decoder.forward_embedding(text_tokens)[0]
