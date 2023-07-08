@@ -69,4 +69,14 @@ The final step is to train the Andromeda model using the `train_distributed.py` 
 6. The script will train the Andromeda model using the specified configuration and dataset.
 7. During training, the progress will be displayed in the terminal, and logs will be saved to the specified output directory.
 
-Congratulations! You have successfully trained the Andromeda model using the provided standard operating procedure. Adjust the configuration parameters and experiment with different datasets to further enhance the model's performance.
+# Other Training methods
+
+First:
+
+`Accelerate Config`
+
+Enable Deepspeed 3: 
+
+`Accelerate launch train_distributed_accelerate.py`
+
+
