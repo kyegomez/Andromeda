@@ -1,4 +1,4 @@
-# READY FOR TRAINING!!!!!!
+# [READY FOR TRAINING, help us with the strategy!](https://www.figma.com/file/pfaU8Nhyw0EdXuT6z4Hutw/Andromeda-Strategy?type=whiteboard&node-id=0%3A1&t=Tub1wIzaPAXt2i86-1)
 
 # Agora
 Agora is an new open source Multi-Modality AI Research Organization devoted to advancing Humanity!
@@ -244,7 +244,7 @@ Join us on this exciting journey to create a powerful, efficient, and intelligen
 
 ## Todo:
 
-* Create the best and most validated, reliable training => finetuning strategy
+* [Create the best and most validated, reliable training => finetuning strategy](https://www.figma.com/file/pfaU8Nhyw0EdXuT6z4Hutw/Andromeda-Strategy?type=whiteboard&node-id=0%3A1&t=Tub1wIzaPAXt2i86-1)
 
 * [Integrate Token Monster ](https://github.com/alasdairforsythe/tokenmonster)
 
