@@ -244,6 +244,8 @@ Join us on this exciting journey to create a powerful, efficient, and intelligen
 
 ## Todo:
 
+* Create the best and most validated, reliable training => finetuning strategy
+
 * [Integrate Token Monster ](https://github.com/alasdairforsythe/tokenmonster)
 
 * Establish 200k instruction sample long for Tool API Calls
