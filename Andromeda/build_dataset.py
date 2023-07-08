@@ -4,17 +4,6 @@ from itertools import chain
 from datasets import load_dataset
 from transformers import AutoTokenizer
 #falcon tokenizer
-"""
-Falcon dataset 
-Data Fields
-content: the processed and cleaned text contained in the page;
-url: the url of the webpage crawled to produce the sample;
-timestamp: timestamp of when the webpage was crawled by CommonCrawl;
-dump: the CommonCrawl dump the sample is a part of;
-segment: the CommonCrawl segment the sample is a part of;
-image_urls: a list of elements in the type [image_url, image_alt_text] for all the images found in the content of the sample.
-
-"""
 
 class CFG:
     SEED: int = 42

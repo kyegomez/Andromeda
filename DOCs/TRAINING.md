@@ -1,62 +1,72 @@
 # Andromeda Model Training Standard Operating Procedure
 
-This document provides a standard operating procedure (SOP) for training the Andromeda model. The SOP includes step-by-step instructions on how to train the model end-to-end using the provided code.
+This document provides instructions on how to train the Andromeda model end-to-end using the provided code. The training procedure consists of three main scripts: `build_dataset.py`, `model.py`, and `train_distributed.py`. Follow the steps below to train the Andromeda model.
 
 ## Prerequisites
 
-Before proceeding with the training, make sure you have the following:
+Before starting the training process, ensure that you have the following requirements:
 
-1. Hugging Face API Key: Obtain an API key from the Hugging Face website (https://huggingface.co).
-2. Python Environment: Set up a Python environment with the required dependencies and packages.
+- Python 3.7 or higher
+- PyTorch 1.9 or higher
+- Transformers library
+- Datasets library
+- Accelerate library
+- Wandb library (optional, for logging)
 
-## Step 1: Dataset Preparation
+## Step 1: Building the Dataset
 
-The training script requires a dataset to train the Andromeda model. The dataset should be in the Falcon format, which includes the following data fields:
+The first step is to build the dataset required for training. The `build_dataset.py` script processes the training data and prepares it for training. Follow the instructions below to build the dataset:
 
-- `content`: The processed and cleaned text contained in the page.
-- `url`: The URL of the webpage crawled to produce the sample.
-- `timestamp`: Timestamp of when the webpage was crawled by CommonCrawl.
-- `dump`: The CommonCrawl dump the sample is a part of.
-- `segment`: The CommonCrawl segment the sample is a part of.
-- `image_urls`: A list of elements in the format `[image_url, image_alt_text]` for all the images found in the content of the sample.
+1. Open the `build_dataset.py` script.
+2. Set the configuration parameters in the `CFG` class according to your requirements:
+   - `HF_ACCOUNT_REPO`: Replace with your Hugging Face API key.
+   - `TOKENIZER`: Choose the tokenizer model to use (e.g., "EleutherAI/gpt-neox-20b").
+   - `DATASET_NAME`: Choose the dataset to process (e.g., "tiiuae/falcon-refinedweb").
+   - `SEQ_LEN`: Set the desired sequence length.
+3. Save the changes to the script.
+4. Open a terminal or command prompt and navigate to the directory containing the `build_dataset.py` script.
+5. Run the following command to execute the script:
+   ```
+   python build_dataset.py
+   ```
+6. The script will process the dataset and push it to your Hugging Face account repository specified by `HF_ACCOUNT_REPO`.
 
-Follow these steps to prepare the dataset:
+## Step 2: Defining the Andromeda Model
 
-1. Create a Python script named `build_dataset.py`.
-2. Copy the provided code for `build_dataset.py`.
-3. Replace `YOUR HUGGINGFACE API KEY` in the `CFG` class with your actual Hugging Face API key.
-4. Save the script.
+The second step is to define the Andromeda model architecture. The `model.py` script contains the model definition and configuration. Follow the instructions below to configure the Andromeda model:
 
-To run the dataset preparation script, execute the following command in the terminal:
+1. Open the `model.py` script.
+2. Set the configuration parameters in the `AndromedaTokenizer` and `AndromedaClass` classes according to your requirements:
+   - `tokenizer`: Configure the tokenizer with the desired parameters.
+   - `Andromeda`: Configure the Andromeda model with the desired architecture.
+3. Save the changes to the script.
 
-```
-python build_dataset.py --hf_account YOUR_HF_ACCOUNT_NAME/YOUR_REPOSITORY_NAME
-```
+## Step 3: Training the Andromeda Model
 
-The script will tokenize and process the dataset using the specified tokenizer and push it to the Hugging Face Hub using your API key.
+The final step is to train the Andromeda model using the `train_distributed.py` script. Follow the instructions below to start the training process:
 
-## Step 2: Model Definition
+1. Open the `train_distributed.py` script.
+2. Set the configuration parameters in the `TrainAndromeda.CFG` class according to your requirements:
+   - `BATCH_SIZE`: Set the batch size for training.
+   - `GRADIENT_ACCUMULATE_EVERY`: Set the number of gradient accumulation steps.
+   - `LEARNING_RATE`: Set the learning rate for the optimizer.
+   - `WEIGHT_DECAY`: Set the weight decay for the optimizer.
+   - `SEQ_LEN`: Set the desired sequence length.
+   - `USE_DEEPSPEED`: Set to `True` if using DeepSpeed for optimization.
+   - `USE_FSDP`: Set to `True` if using Fully Sharded Data Parallelism.
+   - `USE_PRETOKENIZED`: Set to `True` if using a pre-tokenized dataset.
+   - `USE_ACTIVATION_CHECKPOINTING`: Set to `True` if using activation checkpointing.
+   - `RESUME_FROM_CHECKPOINT`: Set to the path of a checkpoint to resume training from.
+   - `CHECKPOINTING_STEPS`: Set the number of steps between checkpoints.
+   - `OUTPUT_DIR`: Set the output directory for saving the model checkpoints and logs.
+   - `ENTITY_NAME`: Set the Wandb entity name for logging (optional).
+3. Save the changes to the script.
+4. Open a terminal or command prompt and navigate to the directory containing the `train_distributed.py` script.
+5. Run the following command to start the training:
+   ```
+   python train_distributed.py
+   ```
+6. The script will train the Andromeda model using the specified configuration and dataset.
+7. During training, the progress will be displayed in the terminal, and logs will be saved to the specified output directory.
 
-The Andromeda model is defined in the `model.py` script. This script includes the model architecture and configuration. No changes are required in this script unless you want to modify the model architecture.
-
-## Step 3: Distributed Training
-
-To train the Andromeda model using distributed training, follow these steps:
-
-1. Create a Python script named `train_distributed.py`.
-2. Copy the provided code for `train_distributed.py`.
-3. Replace `YOUR_OUTPUT_DIR` in the `CFG` class with the desired output directory path.
-4. Replace `YOUR_ENTITY_NAME` in the `CFG` class with your desired entity name for logging.
-5. Save the script.
-
-To start the training, execute the following command in the terminal:
-
-```
-python train_distributed.py
-```
-
-The training script will automatically load the dataset, initialize the model, and begin the training process. The script uses techniques such as gradient accumulation, mixed precision, and activation checkpointing to optimize the training process. The progress will be displayed in the console, and the trained model will be saved in the specified output directory.
-
-## Conclusion
-
-This SOP provides a guide for training the Andromeda model end-to-end. By following the steps outlined in this document, you will be able to prepare the dataset, define the model, and perform distributed training. Feel free to modify the code and experiment with different configurations to achieve the desired results.
+Congratulations! You have successfully trained the Andromeda model using the provided standard operating procedure. Adjust the configuration parameters and experiment with different datasets to further enhance the model's performance.
