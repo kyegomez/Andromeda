@@ -17,10 +17,8 @@ from accelerate.utils import (DummyOptim, DummyScheduler,
                               InitProcessGroupKwargs)
 from datasets import concatenate_datasets, load_dataset
 from lion_pytorch import Lion
-# from palm_rlhf_pytorch import PaLM
-from torch.nn import LayerNorm
-# from palm_rlhf_pytorch.palm import LayerNorm, TransformerWrapper
 
+from torch.nn import LayerNorm
 from torch.nn import LayerNorm
 from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 
@@ -41,14 +39,10 @@ from transformers import (AutoTokenizer, default_data_collator,
 
 # from palm.stable_adamw import StableAdamWUnfused
 from utils.stable_adamw import StableAdamWUnfused
-
 from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 
-# TransformerWrapper = TransformerWrapper()
-# constants
 
-
-
+import bitsandbytes as bnb
 
 
 ############ SETUP CONFIG
@@ -384,6 +378,9 @@ def decoupled_optimizer(
         optimizer = StableAdamWUnfused(
             grouped_params, lr=learning_rate, betas=(beta_1, beta_2),
         )
+    #preferably use this or integrate other optimizers from bnb
+    elif optimizer_type=="Adam8bit":
+        optimizer = bnb.optim.Adam8bit(grouped_params, lr=learning_rate, betas=(beta_1, beta_2))
     else:
         raise ValueError(
             "Invalid optimizer_type. Expected 'lion', 'adamw', 'deepspeed' or 'stable_adamw', got: {}".format(
