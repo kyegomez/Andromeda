@@ -38,7 +38,7 @@ Andromeda is a state-of-the-art language model that pushes the boundaries of nat
 
 
 # Usage
-There are 2 methods to use Andromeda, 1 by `pip install Andromeda-llm` and the other by `git clone`
+There are 2 methods to use Andromeda, 1 by `pip install Andromeda-llm` and the other by `git clone`. [Head over to the Training SOP for more](DOCs/TRAINING.md)
 
 # Method1
 First `pip install Andromeda-llm` then
