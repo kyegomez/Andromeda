@@ -15,27 +15,27 @@ from torch.nn import functional as F
 from transformers import AutoTokenizer, get_scheduler
 from datasets import load_dataset
 
-class Block:
+class Block: # Base unit of data representation
     def __init__(self, content, holds_embeddings=False):
         assert isinstance(content, list), 'The provided content should be a list'
 
         self.content          = content
-        self.holds_embeddings = holds_embeddings
+        self.holds_embeddings = holds_embeddings # Boolean
     
-    def get_idxs(self):
+    def get_indices(self): # Get idxs (tokens)
         raise NotImplementedError()
     
-    def get_embeddings(self):
+    def get_embeddings(self): # Get embeddings (pre-computed by a different encoder, as Kosmos-X would)
         raise NotImplementedError()
 
-class IndicesBlock(Block):
+class IndicesBlock(Block): # This block only holds idxs
     def __init__(self, content):
         super().__init__(content)
 
     def get_tokens(self):
         return self.content
 
-class EmbeddingBlock(Block):
+class EmbeddingBlock(Block): # This block only holds embeddings
     def __init__(self, content):
         super().__init__(content, holds_embeddings=True)
 
@@ -45,7 +45,7 @@ class EmbeddingBlock(Block):
     def get_embeddings(self):
         return self.content
 
-class Sequence:
+class Sequence: # This is a sequence of different blocks, it coule be used to represent multi-modal sequences
     def __init__(self, blocks=[]):
         self.blocks = blocks
     
@@ -64,7 +64,7 @@ class Sequence:
             position_idx_offset    = max(positions_idxs + embeddings_positions_idxs) + 1 if len(positions_idxs) > 0 else 0 # We add 1 because range starts from 0
             current_positions_idxs = []
 
-            if not block.holds_embeddings:
+            if not block.holds_embeddings: # If the current block does not hold embeddings, you add indices, otherwise embeddings 
                 current_tokens = block.get_tokens()
                 tokens         += current_tokens
 
@@ -81,7 +81,7 @@ class Sequence:
 
                 embeddings_positions_idxs += current_positions_idxs
 
-        if len(tokens) < 2:
+        if len(tokens) < 2: # If there are not enough tokens, we set everything to None
             tokens     = None
             embeddings = None
 
@@ -90,11 +90,11 @@ class Sequence:
 
         return tokens, embeddings, positions_idxs, embeddings_positions_idxs
 
-def sequence_slice(sequence, step_size):
+def sequence_slice(sequence, step_size): # This function slices the string into parts of length "step_size"
     for idx in range(0, len(sequence), step_size):
         yield sequence[idx:idx + step_size]
 
-class DatasetElement:
+class DatasetElement: # This class contains information about a single dataset, multiple "DatasetElement" (s) could be combined and weighted to create a data mixture
     def __init__(self, tokenizer, sequence_length=32, batch_size=8):
         self.sequence_length = sequence_length
         self.batch_size      = batch_size
@@ -107,24 +107,24 @@ class DatasetElement:
         self.dataset_data_column = 'content'
 
         self.dataset_split    = 'train'
-        self.dataset_skip_num = 6826
+        self.dataset_skip_num = 0 # We would like to start from a specific dataset index when resuming the training run
 
         self.dataset     = iter(load_dataset(self.dataset_name, split=self.dataset_split, streaming=True).shuffle(seed=self.seed).skip(self.dataset_skip_num + 1))
         self.dataset_idx = 0
 
         self.data_stack = []
 
-    def sequence_slice(self, sequence, step_size):
+    def sequence_slice(self, sequence, step_size): # This function creates slices from the sequence and pads the ones shorter than the specified sequence length
         for idx in range(0, len(sequence), step_size):
             chunk = sequence[idx:idx + step_size]
 
-            if idx + step_size >= len(sequence):
+            if idx + step_size >= len(sequence): # Padding
                 padding_length = step_size - len(chunk)
                 chunk.extend([self.tokenizer.pad_token_id] * padding_length)
 
             yield chunk
 
-    def ingest(self):
+    def ingest(self): # Ingest a new element from the dataset
         data             = next(self.dataset)[self.dataset_data_column]
         self.dataset_idx += 1
 
@@ -132,7 +132,7 @@ class DatasetElement:
 
         chunks = self.sequence_slice(tokens, self.sequence_length)
 
-        for chunk in chunks:
+        for chunk in chunks: # Create sequences from the chunks
             sequence = Sequence(blocks=[
                 IndicesBlock(chunk)
             ])
@@ -148,7 +148,7 @@ class DatasetElement:
 
                 self.data_stack.append(element)
 
-    def get_batch(self):
+    def get_batch(self): # Get a batch for training
         batch_tokens     = []
         batch_embeddings = []
 
@@ -157,7 +157,7 @@ class DatasetElement:
 
         max_length = 0
 
-        while len(batch_tokens) < self.batch_size:
+        while len(batch_tokens) < self.batch_size: # Append examples to the batch until you reach the desired batch size
             if len(self.data_stack) == 0:
                 self.ingest()
 
