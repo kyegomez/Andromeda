@@ -16,10 +16,6 @@ Since Andromeda is ready to train Agora is actively seeking cloud providers or g
 ![Andromeda Next Generation Open Source Language Model](/andromeda-banner.png)
 
 
-<div align="center">
-  <img src="https://github.com/kyegomez/Andromeda/raw/main/logo.png" alt="Andromeda Logo" height="150">
-</div>
-
 ---
 
 <div align="center">
