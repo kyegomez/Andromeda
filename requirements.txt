@@ -10,6 +10,6 @@ transformers
 SentencePiece
 bitsandbytes
 datasets
-Triton
+triton
 deepspeed
 bitsandbytes
