@@ -21,7 +21,8 @@ from optimus_prime.attend import Attend, Intermediates
 from optimus_prime.autoregressive_wrapper import AutoregressiveWrapper
 
 from abc import ABC, abstractmethod
-import bitsandbytes as bnb
+
+# import bitsandbytes as bnb # TODO: Crashing, look into it
 
 # constants
 
@@ -205,11 +206,11 @@ class AndromedaEmbedding(BaseEmbedding):
 
         return embedding
     
-class AndromedaBnBEmbedding(BaseEmbedding):
-    def get_embedding(self, num_tokens: int, dim: int, padding_idx) -> bnb.nn.modules:
-        embedding = bnb.nn.modules.Embedding(num_tokens, dim, padding_idx)
+# class AndromedaBnBEmbedding(BaseEmbedding):
+#     def get_embedding(self, num_tokens: int, dim: int, padding_idx) -> bnb.nn.modules:
+#         embedding = bnb.nn.modules.Embedding(num_tokens, dim, padding_idx)
 
-        return embedding
+#         return embedding
 
 class TokenEmbedding(nn.Module):
     def __init__(self, dim, num_tokens, embedding_provider: BaseEmbedding, l2norm_embed = False):

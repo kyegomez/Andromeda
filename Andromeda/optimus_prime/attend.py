@@ -133,6 +133,7 @@ class Attend(nn.Module):
             if causal:
                 causal_mask = torch.ones((q_len, k_len), dtype = torch.bool, device = device).triu(k_len - q_len + 1)
                 mask = mask | causal_mask
+
                 causal = False
 
         # handle alibi positional bias
@@ -143,14 +144,15 @@ class Attend(nn.Module):
 
             # if mask given, the mask would already contain the causal mask from above logic
             # otherwise, if no mask given but still causal, mask out alibi positional bias to a large negative number
-
+            
             mask_value = -torch.finfo(q.dtype).max
 
             if exists(mask):
                 attn_bias = attn_bias.masked_fill(mask, mask_value // 2)
             elif causal:
                 causal_mask = torch.ones((q_len, k_len), dtype = torch.bool, device = device).triu(k_len - q_len + 1)
-                attn_bias = attn_bias.masked_fill(causal_mask, mask_value // 2)
+                attn_bias = attn_bias.masked_fill(causal_mask, -torch.inf) # !
+
                 causal = False
 
             # scaled_dot_product_attention handles attn_mask either as bool or additive bias
@@ -216,6 +218,7 @@ class Attend(nn.Module):
         pre_softmax_attn = dots.clone()
 
         mask_value = -torch.finfo(dots.dtype).max
+        mask_value = mask_value.half()
 
         if exists(mask):
             dots = dots.masked_fill(mask, mask_value)
