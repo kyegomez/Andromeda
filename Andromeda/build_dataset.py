@@ -3,17 +3,13 @@ import argparse
 from itertools import chain
 from datasets import load_dataset
 from transformers import AutoTokenizer
-#falcon tokenizer
 
 class CFG:
     SEED: int = 42
     SEQ_LEN: int = 8192
     NUM_CPU: int = multiprocessing.cpu_count()
     HF_ACCOUNT_REPO: str = "YOUR HUGGINGFACE API KEY"
-    #"EleutherAI/gpt-neox-20b"
-    # TOKENIZER: str = "tiiuae/falcon-40b-instruct"
     TOKENIZER: str = "EleutherAI/gpt-neox-20b"
-    # DATASET_NAME: str = "EleutherAI/the_pile_deduplicated"
     DATASET_NAME: str = "tiiuae/falcon-refinedweb"
 
 
@@ -58,7 +54,7 @@ def built_dataset(args):
     train_tokenized_dataset = tokenized_dataset.map(
         group_texts,
         batched=True,
-        num_proc=CFG.NUM_PROC,
+        num_proc=CFG.NUM_CPU,
     )
 
     train_tokenized_dataset.push_to_hub(CFG.HF_ACCOUNT_REPO)
