@@ -37,6 +37,7 @@ Andromeda is a state-of-the-art language model that pushes the boundaries of nat
 
 
 
+
 # Usage
 There are 2 methods to use Andromeda, 1 by `pip install Andromeda-llm` and the other by `git clone`. [Head over to the Training SOP for more](DOCs/TRAINING.md)
 
@@ -84,7 +85,11 @@ Enable Deepspeed 3:
 
 `Accelerate launch train_distributed_accelerate.py`
 
+# Environment variables
 
+* `ENTITY_NAME` ==> Your wandb project name
+
+* `OUTPUT_DIR` ==> Where you want the weights to go when it's finished training for example inside the root directory you can do something like: `./weights` and it'll create a folder called weights INSIDE of the Andromeda folder
 
 ## Dataset building building
 
