@@ -81,3 +81,31 @@ While model performance is crucial, it isn't the only factor that determines the
 4. **Sensitivity to Input Changes**: Evaluate how much the model's output changes when small modifications are made to the input. If the model is too sensitive, it might overreact to minor changes.
 
 Each of these metrics should be calculated across a range of situations to understand the model's behavior under different conditions. This exhaustive testing will allow us to optimize Andromeda for the best balance of speed, scalability, and context limits.
+
+# Key Metrics
+
+1. **Perplexity:** This is a common metric for assessing language models, which measures how well the model predicts a sample. Lower perplexity indicates better performance. However, it's worth noting that while perplexity is a useful indicator, it doesn't capture everything, especially for creative tasks like language generation.
+
+2. **Validation Loss:** While perplexity is great, you also want to track your validation loss directly. This is your primary optimization target and often gives the most actionable insights.
+
+3. **Speed Metrics:** This includes forward pass time, backward pass time, and end-to-end latency. Ensuring that your model operates quickly is crucial for scalability and user experience. The lower these metrics, the better.
+
+4. **Throughput:** Measures the number of instances your model can process per second. Higher throughput indicates a more efficient model.
+
+5. **Memory Footprint:** You need to measure the amount of memory your model uses during inference and training. This is especially important for larger models, as it could limit scalability. Lower memory usage is better.
+
+6. **Sequence Length Impact:** How does your model's performance change with the length of the input sequence? This is critical for understanding its applicability to real-world scenarios where sequence lengths can vary widely.
+
+7. **Parameter Efficiency:** How well does your model make use of its parameters? This is typically measured as performance relative to the number of parameters. More efficient use of parameters is better.
+
+8. **Accuracy on Benchmarked Datasets:** For instance, GLUE or SuperGLUE benchmark scores for natural language understanding tasks, or SQuAD for question answering. Higher scores on these benchmarks indicate better performance.
+
+9. **Consistency over Time:** Does the model's performance degrade or remain consistent over multiple, identical runs? If performance varies greatly, the model may be unstable.
+
+10. **Robustness to Noise:** How well does your model handle noise in the input data? This can be simulated by adding random noise to your validation data and measuring the model's performance.
+
+11. **Fairness and Bias:** Test the model on a variety of fairness metrics to ensure it treats all users and inputs equally. This can be complex and requires a dataset that is diverse and representative.
+
+Remember that these metrics will vary depending on your specific use case and model. For example, a translation model may need to prioritize sequence length performance, while a chatbot may need to emphasize throughput and latency.
+
+Also, be aware that these are just some of the metrics you could test before pre-training. The exact list will depend on your specific use case and requirements.
