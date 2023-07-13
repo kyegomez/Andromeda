@@ -79,10 +79,10 @@ class TrainAndromeda:
         USE_FSDP: bool = True
         USE_PRETOKENIZED: bool = True
         USE_ACTIVATION_CHECKPOINTING: bool = True
-        RESUME_FROM_CHECKPOINT: str = False
-        CHECKPOINTING_STEPS: int = 1000
+        RESUME_FROM_CHECKPOINT: str = True
+        CHECKPOINTING_STEPS: int = 32 # !
         OUTPUT_PATH: str = 'checkpoints/' # Folder
-        CHECKPOINT_NAME: str = 'step_737_1000'
+        CHECKPOINT_NAME: str = 'step_151_224'
 
         MAX_STEPS: int = 16_000_000
 
@@ -397,7 +397,7 @@ class TrainAndromeda:
                 'batch_size': TrainAndromeda.CFG.BATCH_SIZE,
                 'gradient_accumulate_every': TrainAndromeda.CFG.GRADIENT_ACCUMULATE_EVERY,
                 'learning_rate': TrainAndromeda.CFG.LEARNING_RATE,
-                'seq_len': TrainAndromeda.CFG.SEQ_LEN,
+                'seq_len': TrainAndromeda.CFG.SEQ_LEN
             }
         )
 
@@ -526,11 +526,15 @@ class TrainAndromeda:
 
             loaded_parameters = list(map(lambda x: x.strip(), TrainAndromeda.CFG.CHECKPOINT_NAME.split('_')))
 
-            resume_dataset_step = int(loaded_parameters[1])
-            resume_step         = int(loaded_parameters[2])
-            
+            resume_dataset_step       = int(loaded_parameters[1])
+            resume_step               = int(loaded_parameters[2])
+
+            # OUTPUT_PATH = f'step_{steps_skip_dataset}_{steps_dataset}_{completed_steps}'
+
             dataset.dataset_skip_num = resume_dataset_step
-            training_step = resume_step # It's important to set this before the ACCUMULATE_EVERY
+            dataset.dataset_idx      = resume_dataset_step
+            
+            training_step = resume_step # It's important to set this before the "ACCUMULATE_EVERY"
 
             resume_step = resume_step * TrainAndromeda.CFG.GRADIENT_ACCUMULATE_EVERY
             
@@ -576,9 +580,12 @@ class TrainAndromeda:
             if isinstance(TrainAndromeda.CFG.CHECKPOINTING_STEPS, int):
                 if completed_steps % TrainAndromeda.CFG.CHECKPOINTING_STEPS == 0:
                     steps_dataset = dataset.dataset_idx
+                    
                     OUTPUT_PATH = f'step_{steps_dataset}_{completed_steps}'
+                    
                     if TrainAndromeda.CFG.OUTPUT_PATH is not None:
                         OUTPUT_PATH = os.path.join(TrainAndromeda.CFG.OUTPUT_PATH, OUTPUT_PATH)
+
                     accelerator.save_state(OUTPUT_PATH)
 
             if completed_steps >= max_train_steps:

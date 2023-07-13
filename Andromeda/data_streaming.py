@@ -60,7 +60,6 @@ class Sequence: # This is a sequence of different blocks, it coule be used to re
         embeddings_positions_idxs = []
 
         for block in self.blocks:
-
             position_idx_offset    = max(positions_idxs + embeddings_positions_idxs) + 1 if len(positions_idxs) > 0 else 0 # We add 1 because range starts from 0
             current_positions_idxs = []
 
