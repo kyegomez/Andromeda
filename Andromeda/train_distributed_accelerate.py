@@ -20,7 +20,7 @@ from lion_pytorch import Lion
 # from palm_rlhf_pytorch import PaLM
 # from palm_rlhf_pytorch.palm import LayerNorm, TransformerWrapper
 from torch.nn import LayerNorm
-from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
+from Andromeda.optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 from torch.distributed.algorithms._checkpoint.checkpoint_wrapper import (
     CheckpointImpl, apply_activation_checkpointing, checkpoint_wrapper)
 

@@ -22,7 +22,7 @@ from torch.nn import LayerNorm
 # from palm_rlhf_pytorch.palm import LayerNorm, TransformerWrapper
 
 from torch.nn import LayerNorm
-from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
+from Andromeda.optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 
 from torch.distributed.algorithms._checkpoint.checkpoint_wrapper import (
     CheckpointImpl, apply_activation_checkpointing, checkpoint_wrapper)
@@ -42,7 +42,7 @@ from transformers import (AutoTokenizer, default_data_collator,
 # from palm.stable_adamw import StableAdamWUnfused
 from utils.stable_adamw import StableAdamWUnfused
 
-from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
+from Andromeda.optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 
 
 class TrainAndromeda:
