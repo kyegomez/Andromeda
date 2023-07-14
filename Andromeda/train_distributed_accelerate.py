@@ -37,7 +37,7 @@ from transformers import (AutoTokenizer, default_data_collator,
                           get_cosine_schedule_with_warmup,
                           get_linear_schedule_with_warmup, set_seed)
 
-from utils.stable_adamw import StableAdamWUnfused
+from Andromeda.utils.stable_adamw import StableAdamWUnfused
 
 
 # constants

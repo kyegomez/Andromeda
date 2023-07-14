@@ -40,7 +40,7 @@ from transformers import (AutoTokenizer, default_data_collator,
                           get_linear_schedule_with_warmup, set_seed)
 
 # from palm.stable_adamw import StableAdamWUnfused
-from utils.stable_adamw import StableAdamWUnfused
+from Andromeda.utils.stable_adamw import StableAdamWUnfused
 
 from Andromeda.optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 
