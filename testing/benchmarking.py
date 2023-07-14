@@ -7,7 +7,9 @@ import numpy as np
 from memory_profiler import profile
 import tracemalloc
 
-from Andromeda.model import AndromedaClass
+# from Andromeda.model import AndromedaClass
+
+from ..Andromeda.model import AndromedaClass
 
 
 

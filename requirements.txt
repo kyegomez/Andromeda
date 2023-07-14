@@ -13,3 +13,4 @@ datasets
 triton
 deepspeed
 bitsandbytes
+memory-profiler
