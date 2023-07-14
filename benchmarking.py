@@ -19,12 +19,12 @@ class SpeedMetrics:
 
     def forward_pass_time(self):
         start_time = time.time()
-        model_input = self.model.decoder.forward_embedding(torch.randint(0, 640006, (1, 8192)))[0]
+        model_input = self.model.decoder.forward(torch.randint(0, 640006, (1, 8192)))[0]
         end_time = time.time()
         return end_time - start_time
     
     def backward_pass_time(self):
-        model_input = self.model.decoder.forward_embedding(torch.randint(0, 64006, (1, 8192)))[0]
+        model_input = self.model.decoder.forward(torch.randint(0, 64006, (1, 8192)))[0]
         start_time = time.time()
         loss = torch.nn.CrossEntropyLoss()(model_input, torch.randint(0, 64006, (1, 8192)))
         loss.backward()
