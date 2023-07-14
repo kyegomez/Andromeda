@@ -206,7 +206,7 @@ class AndromedaEmbedding(BaseEmbedding):
         return embedding
     
 class AndromedaBnBEmbedding(BaseEmbedding):
-    def get_embedding(self, num_tokens: int, dim: int, padding_idx: int) = 0 -> bnb.nn.modules:
+    def get_embedding(self, num_tokens: int, dim: int, padding_idx: int = 0) -> bnb.nn.modules:
         embedding = bnb.nn.modules.Embedding(num_tokens, dim, padding_idx)
 
         return embedding
