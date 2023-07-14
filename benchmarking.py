@@ -13,6 +13,7 @@ from Andromeda.model import AndromedaClass
 
 
 
+
 class SpeedMetrics:
     def __init__(self, model):
         self.model = model
@@ -108,7 +109,14 @@ class SequenceMetrics:
 test_dataset = datasets.FakeData(size=1000, transform=transforms.ToTensor())
 
 #model
-model = AndromedaClass()
+model = AndromedaClass(
+    num_tokens=50304, 
+    dim=1024,
+    depth=24,
+    dim_head=128,
+    heads=8,
+    alibi_num_heads=4
+)
 
 #speed test metrics test 
 speed_metrics = SpeedMetrics(model)

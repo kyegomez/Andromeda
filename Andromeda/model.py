@@ -51,10 +51,22 @@ class AndromedaClass(Module):
     AndromedaClass is a transformer-based model architecture. It initializes with 
     a TransformerWrapper and AutoregressiveWrapper with default or user-specified parameters.
     """
-    def __init__(self, num_tokens=50304, max_seq_len=8192, dim=2560, depth=32, dim_head=128, heads=24,
-                 use_abs_pos_emb=False, alibi_pos_bias=True, alibi_num_heads=12, rotary_xpos=True,
-                 attn_flash=True, deepnorm=True, shift_tokens=1, attn_one_kv_head=True, 
-                 qk_norm=True, attn_qk_norm=True, attn_qk_norm_dim_scale=True, 
+    def __init__(self, num_tokens=50304, 
+                 max_seq_len=8192, 
+                 dim=2560, depth=32, 
+                 dim_head=128, 
+                 heads=24,
+                 use_abs_pos_emb=False, 
+                 alibi_pos_bias=True, 
+                 alibi_num_heads=12, 
+                 rotary_xpos=True,
+                 attn_flash=True, 
+                 deepnorm=True, 
+                 shift_tokens=1, 
+                 attn_one_kv_head=True, 
+                 qk_norm=True, 
+                 attn_qk_norm=True, 
+                 attn_qk_norm_dim_scale=True, 
                  embedding_provider=AndromedaEmbedding()):
         """
         Initialize the model with specified or default parameters.
