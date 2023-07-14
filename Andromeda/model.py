@@ -1,7 +1,7 @@
 import torch 
 from torch.nn import Module
 import bitsandbytes
-from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaBnbEmbedding, Decoder
+from Andromeda.optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaBnbEmbedding, Decoder
 from transformers import AutoTokenizer
 
 class AndromedaTokenizer:
