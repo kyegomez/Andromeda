@@ -6,7 +6,7 @@ if version.parse(torch.__version__) >= version.parse('2.0.0'):
     allow_ops_in_compiled_graph()
 
 from Andromeda.optimus_prime.x_transformers import XTransformer, Encoder, Decoder, CrossAttender, Attention, TransformerWrapper, ViTransformerWrapper, ContinuousTransformerWrapper
-from Andromeda.optimus_prime.x_transformers import AndromedaEmbedding
+from Andromeda.optimus_prime.x_transformers import AndromedaEmbedding, AndromedaBnBEmbedding
 
 # d
 from Andromeda.optimus_prime.autoregressive_wrapper import AutoregressiveWrapper
