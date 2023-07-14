@@ -50,7 +50,7 @@ class AndromedaClass(Module):
         super().__init__()
 
         self.andromeda = TransformerWrapper(
-            num_tokens=64007,
+            num_tokens=50304,
             max_seq_len=8192,
             use_abs_pos_emb=False,
             # tokenizer=tokenizer,
