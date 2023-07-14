@@ -19,21 +19,21 @@ class SpeedMetrics:
 
     def forward_pass_time(self):
         start_time = time.time()
-        model_input = self.model.decoder.forward(torch.randint(0, 640006, (1, 8192)))[0]
+        model_input = self.model.decoder.forward(torch.randint(0, 50304, (1, 8192)))[0]
         end_time = time.time()
         return end_time - start_time
     
     def backward_pass_time(self):
-        model_input = self.model.decoder.forward(torch.randint(0, 64006, (1, 8192)))[0]
+        model_input = self.model.decoder.forward(torch.randint(0, 50304, (1, 8192)))[0]
         start_time = time.time()
-        loss = torch.nn.CrossEntropyLoss()(model_input, torch.randint(0, 64006, (1, 8192)))
+        loss = torch.nn.CrossEntropyLoss()(model_input, torch.randint(0, 50304, (1, 8192)))
         loss.backward()
         end_time = time.time()
         return end_time - start_time
     
     def end_to_end_latency(self):
         start_time = time.time()
-        self.model.forward(torch.randint(0, 64006, (1, 8192)))
+        self.model.forward(torch.randint(0, 50304, (1, 8192)))
         end_time = time.time()
         return end_time - start_time
 
@@ -61,7 +61,7 @@ class ConsistencyMetrics:
         outputs_list = []
         for _ in range(10):
             start_time = time.time()
-            outputs = self.model.forward(torch.randint(0, 64006, (1, 8192)))
+            outputs = self.model.forward(torch.randint(0, 50304, (1, 8192)))
             end_time = time.time()
             consistency_times.append(end_time - start_time)
             outputs_list.append(outputs.detach().numpy())
@@ -82,7 +82,7 @@ class MemoryMetrics:
 
     def memory_footprint(self):
         tracemalloc.start()
-        self.model.forward(torch.randint(0, 64006, (1, 8192)))
+        self.model.forward(torch.randint(0, 50304, (1, 8192)))
         current, peak = tracemalloc.get_traced_memory()
         tracemalloc.stop()
         return current, peak
@@ -97,7 +97,7 @@ class SequenceMetrics:
         seq_impact_times = []
         for length in seq_lengths:
             start_time = time.time()
-            self.model.forward(torch.randint(0, 64006, (1, length)))
+            self.model.forward(torch.randint(0, 50304, (1, length)))
             end_time = time.time()
             seq_impact_times.append(end_time - start_time)
         return seq_lengths, seq_impact_times
