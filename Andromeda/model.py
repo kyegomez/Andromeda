@@ -1,7 +1,7 @@
 import torch 
 from torch.nn import Module
 import bitsandbytes
-from Andromeda.optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaBnBEmbedding, Decoder
+from Andromeda.optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 from transformers import AutoTokenizer
 
 class AndromedaTokenizer:
@@ -54,7 +54,7 @@ class AndromedaClass(Module):
             max_seq_len=8192,
             use_abs_pos_emb=False,
             # tokenizer=tokenizer,
-            embedding_provider=AndromedaBnBEmbedding(),
+            embedding_provider=AndromedaEmbedding(),
             attn_layers = Decoder(
                 dim=2560, # 2048
                 depth=32, # 16
