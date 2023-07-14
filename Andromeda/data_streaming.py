@@ -115,6 +115,8 @@ class DatasetElement: # This class contains information about a single dataset, 
         self.dataset_idx = 0
 
         self.data_stack = []
+        
+        self.max_ingestion_attempts = 128
 
     def sequence_slice(self, sequence, step_size): # This function creates slices from the sequence and pads the ones shorter than the specified sequence length
         for idx in range(0, len(sequence), step_size):
@@ -159,9 +161,18 @@ class DatasetElement: # This class contains information about a single dataset, 
 
         max_length = 0
 
+        
+        
         while len(batch_tokens) < self.batch_size: # Append examples to the batch until you reach the desired batch size
-            if len(self.data_stack) == 0:
+            ingestion_attempts = 0
+            
+            while len(self.data_stack) == 0:
+                if ingestion_attempts >= self.max_ingestion_attempts:
+                    break
+                
                 self.ingest()
+                
+                ingestion_attempts += 1
 
             element = self.data_stack[0]
 

@@ -70,7 +70,7 @@ from data_streaming import DatasetElement
 
 class TrainAndromeda:
     class CFG:
-        BATCH_SIZE: int = 16
+        BATCH_SIZE: int = 32
         GRADIENT_ACCUMULATE_EVERY: int = 1
         SEED: int = 42
         LEARNING_RATE: float = 3e-4
@@ -81,10 +81,10 @@ class TrainAndromeda:
         USE_FSDP: bool = True
         USE_PRETOKENIZED: bool = True
         USE_ACTIVATION_CHECKPOINTING: bool = True
-        RESUME_FROM_CHECKPOINT: str = False
-        CHECKPOINTING_STEPS: int = 128 # !
+        RESUME_FROM_CHECKPOINT: str = True
+        CHECKPOINTING_STEPS: int = 512 # !
         OUTPUT_PATH: str = 'checkpoints/' # Folder
-        CHECKPOINT_NAME: str = 'step_151_224'
+        CHECKPOINT_NAME: str = 'step_38967_5632'
 
         DATASET_NAME: str = 'tiiuae/falcon-refinedweb'
         DATASET_DATA_COLUMN: str = 'content'

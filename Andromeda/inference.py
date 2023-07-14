@@ -91,8 +91,6 @@ class EvalAndromeda:
         
         for _ in range(generation_steps):
             tokens_tensor = torch.tensor([tokens], device=self.device)
-
-            print(tokens_tensor.shape)
             
             # Forward pass
             
@@ -136,7 +134,7 @@ class EvalAndromeda:
 def main():
     prompt = 'My name is'
 
-    andromeda = EvalAndromeda(path='checkpoints/step_1676_640/pytorch_model.bin')
+    andromeda = EvalAndromeda(path='checkpoints/step_44927_6656/pytorch_model.bin')
     
     num_params = andromeda.get_num_params()
     print(f'The model has {num_params} parameters')
