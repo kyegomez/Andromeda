@@ -18,37 +18,9 @@ class AndromedaTokenizer:
         return self.tokenizer(texts, return_tensors='pt', padding=True, truncation=True).input_ids
 
 
-
-Andromeda = TransformerWrapper(
-    num_tokens=64007,
-    max_seq_len=8192,
-    use_abs_pos_emb=False,
-    # tokenizer=tokenizer,
-    embedding_provider=AndromedaEmbedding(),
-    attn_layers = Decoder(
-        dim=2560, # 2048
-        depth=32, # 16
-        dim_head=128,
-        heads=24,
-        alibi_pos_bias=True,
-        alibi_num_heads=12,
-        rotary_xpos=True,
-        attn_flash = True,
-        deepnorm=True,
-        shift_tokens=1,
-        attn_one_kv_head = True,
-        qk_norm=True,
-        attn_qk_norm=True,
-        attn_qk_norm_dim_scale=True # set this to True, in addition to `attn_qk_norm = True`
-    )
-)
-
-Andromeda = AutoregressiveWrapper(Andromeda)
-
-
-class AndromedaClass(Module):
+class Andromeda(Module):
     """
-    AndromedaClass is a transformer-based model architecture. It initializes with 
+    Andromeda is a transformer-based model architecture. It initializes with 
     a TransformerWrapper and AutoregressiveWrapper with default or user-specified parameters.
     """
     def __init__(self, num_tokens=50304, 
@@ -133,7 +105,7 @@ class AndromedaClass(Module):
             self.decoder = AutoregressiveWrapper(self.andromeda)
 
         except Exception as e:
-            print("Failed to initialize AndromedaClass: ", e)
+            print("Failed to initialize Andromeda: ", e)
             raise
 
     def forward(self, text_tokens, **kwargs):

@@ -7,9 +7,9 @@ import numpy as np
 from memory_profiler import profile
 import tracemalloc
 
-from Andromeda.model import AndromedaClass
+from Andromeda.model import Andromeda
 
-# from ..Andromeda.model import AndromedaClass
+# from ..Andromeda.model import Andromeda
 
 
 
@@ -109,7 +109,7 @@ class SequenceMetrics:
 test_dataset = datasets.FakeData(size=1000, transform=transforms.ToTensor())
 
 #model
-model = AndromedaClass(
+model = Andromeda(
     num_tokens=50304, 
     dim=1024,
     depth=24,

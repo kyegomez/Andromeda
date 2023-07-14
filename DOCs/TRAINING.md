@@ -36,7 +36,7 @@ The first step is to build the dataset required for training. The `build_dataset
 The second step is to define the Andromeda model architecture. The `model.py` script contains the model definition and configuration. Follow the instructions below to configure the Andromeda model:
 
 1. Open the `model.py` script.
-2. Set the configuration parameters in the `AndromedaTokenizer` and `AndromedaClass` classes according to your requirements:
+2. Set the configuration parameters in the `AndromedaTokenizer` and `Andromeda` classes according to your requirements:
    - `tokenizer`: Configure the tokenizer with the desired parameters.
    - `Andromeda`: Configure the Andromeda model with the desired architecture.
 3. Save the changes to the script.

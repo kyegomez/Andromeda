@@ -1,2 +1,2 @@
-from Andromeda.model import AndromedaTokenizer, Andromeda, AndromedaClass
+from Andromeda.model import AndromedaTokenizer, Andromeda
 from Andromeda.train_distributed import Train
