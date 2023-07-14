@@ -5,6 +5,7 @@ sys.dont_write_bytecode = True
 import math
 import multiprocessing
 import os
+import time
 
 from datetime import timedelta
 
@@ -62,7 +63,8 @@ import wandb
 
 from utils.stable_adamw import StableAdamWUnfused
 
-from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
+from tokenizer import AndromedaTokenizer
+from model import andromeda_model
 
 from data_streaming import DatasetElement
 
@@ -79,17 +81,20 @@ class TrainAndromeda:
         USE_FSDP: bool = True
         USE_PRETOKENIZED: bool = True
         USE_ACTIVATION_CHECKPOINTING: bool = True
-        RESUME_FROM_CHECKPOINT: str = True
-        CHECKPOINTING_STEPS: int = 32 # !
+        RESUME_FROM_CHECKPOINT: str = False
+        CHECKPOINTING_STEPS: int = 128 # !
         OUTPUT_PATH: str = 'checkpoints/' # Folder
         CHECKPOINT_NAME: str = 'step_151_224'
 
+        DATASET_NAME: str = 'tiiuae/falcon-refinedweb'
+        DATASET_DATA_COLUMN: str = 'content'
+        
         MAX_STEPS: int = 16_000_000
 
     @staticmethod
     def print_num_params(model, accelerator: Accelerator):
-        n_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
-        accelerator.print(f'Number of parameters in model: {n_params}')
+        num_params = sum(param.numel() for param in model.parameters() if param.requires_grad)
+        accelerator.print(f'Number of parameters in model: {num_params}')
 
     @staticmethod
     def activation_checkpointing(
@@ -345,42 +350,6 @@ class TrainAndromeda:
         return optimizer
 
     @staticmethod
-    def build_dataloaders():
-        dataset = load_dataset('openwebtext', split='train')
-        
-        tokenized_dataset = dataset.map(
-            lambda example: tokenizer([t + tokenizer.eos_token for t in example['text']]),
-            batched=True,
-            num_proc=TrainAndromeda.CFG.NUM_CPU,
-            remove_columns=['text']
-        )
-
-        block_size = TrainAndromeda.CFG.SEQ_LEN
-
-        def group_texts(examples):
-            concatenated_examples = {k: list(chain(*examples[k])) for k in examples.keys()}
-            total_length = len(concatenated_examples[list(examples.keys())[0]])
-            if total_length >= block_size:
-                total_length = (total_length // block_size) * block_size
-            result = {
-                k: [t[i:i + block_size] for i in range(0, total_length, block_size)]
-                for k, t in concatenated_examples.items()
-            }
-            return result
-
-        train_dataset = tokenized_dataset.map(
-            group_texts, batched=True, num_proc=TrainAndromeda.CFG.NUM_CPU,
-        )
-
-        return train_dataset
-
-    @staticmethod
-    def build_pre_tokenized():
-        d = load_dataset('conceptofmind/c4_0-to-20_neox_with_eos_8k', split='train', streaming=True)
-
-        return d
-
-    @staticmethod
     def train():
         timeout = InitProcessGroupKwargs(timeout=timedelta(seconds=1_000_000))
 
@@ -404,30 +373,8 @@ class TrainAndromeda:
         accelerator.print(f'Total GPUs: {accelerator.num_processes}')
         set_seed(TrainAndromeda.CFG.SEED)
 
-        model = TransformerWrapper(
-            num_tokens=64007,
-            max_seq_len=8192,
-            use_abs_pos_emb=False,
-            embedding_provider=AndromedaEmbedding(),
-            attn_layers = Decoder(
-                dim=768, # 2560
-                depth=12, # 32
-                dim_head=128, # 128
-                heads=8, # 24
-                alibi_pos_bias=True,
-                alibi_num_heads=4, # 12
-                rotary_xpos=False, # Why?!
-                attn_flash=True,
-                deepnorm=False,
-                shift_tokens=1,
-                attn_one_kv_head=True,
-                qk_norm=True,
-                attn_qk_norm=True,
-                attn_qk_norm_dim_scale=True
-            )
-        ).to(accelerator.device)
+        model = andromeda_model
 
-        model = AutoregressiveWrapper(model).to(accelerator.device)
         TrainAndromeda.print_num_params(model, accelerator)
 
         if TrainAndromeda.CFG.USE_FSDP:
@@ -508,12 +455,9 @@ class TrainAndromeda:
         )
         completed_steps = 0
 
-        tokenizer_checkpoint = 'EleutherAI/gpt-neox-20b'
-        tokenizer            = AutoTokenizer.from_pretrained(tokenizer_checkpoint)
+        tokenizer = AndromedaTokenizer()
         
-        tokenizer.pad_token = tokenizer.eos_token
-        
-        dataset = DatasetElement(tokenizer, sequence_length=TrainAndromeda.CFG.SEQ_LEN, batch_size=TrainAndromeda.CFG.BATCH_SIZE)
+        dataset = DatasetElement(TrainAndromeda.CFG.DATASET_NAME, TrainAndromeda.CFG.DATASET_DATA_COLUMN, tokenizer, sequence_length=TrainAndromeda.CFG.SEQ_LEN, batch_size=TrainAndromeda.CFG.BATCH_SIZE)
         
         if TrainAndromeda.CFG.RESUME_FROM_CHECKPOINT:
             path = os.path.join(
@@ -556,15 +500,18 @@ class TrainAndromeda:
                 
                 tokens, embeddings, positions_idxs, embeddings_positions_idxs = dataset.get_batch()
                 tokens                                                        = torch.tensor(tokens).long().to(accelerator.device)
-                
-                inputs = tokens
 
-                # inputs = batch['input_ids'].to(accelerator.device)
-                _, loss = model(inputs, return_loss=True)
+                _, loss = model(tokens, return_loss=True)
                 
+                time_backward_0 = time.time()
+
                 accelerator.backward(loss)
+
+                time_backward_1 = time.time()
                 
-                accelerator.log({'loss': loss.item()}, step=training_step)
+                time_backward = time_backward_1 - time_backward_0
+                
+                accelerator.log({'loss': loss.item(), 'time_backward (s)': time_backward}, step=training_step)
 
                 if accelerator.sync_gradients:
                     accelerator.clip_grad_norm_(model.parameters(), 1)
@@ -598,6 +545,7 @@ class TrainAndromeda:
         if TrainAndromeda.CFG.OUTPUT_PATH is not None:
             accelerator.wait_for_everyone()
             unwrapped_model = accelerator.unwrap_model(model)
+            
             with accelerator.main_process_first():
                 accelerator.save(
                     unwrapped_model.state_dict(), f'{TrainAndromeda.CFG.OUTPUT_PATH}/final/final_model.pt'

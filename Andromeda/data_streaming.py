@@ -94,18 +94,19 @@ def sequence_slice(sequence, step_size): # This function slices the string into 
         yield sequence[idx:idx + step_size]
 
 class DatasetElement: # This class contains information about a single dataset, multiple "DatasetElement" (s) could be combined and weighted to create a data mixture
-    def __init__(self, tokenizer, sequence_length=32, batch_size=8):
+    def __init__(self, dataset_name, dataset_data_column, tokenizer, dataset_split='train', sequence_length=32, batch_size=8):
+        self.dataset_name        = dataset_name
+        self.dataset_data_column = dataset_data_column
+
+        self.dataset_split = dataset_split
+        
         self.sequence_length = sequence_length
         self.batch_size      = batch_size
 
         self.tokenizer = tokenizer
-
+        
         self.seed = 42
 
-        self.dataset_name        = 'codeparrot/codeparrot-clean-train'
-        self.dataset_data_column = 'content'
-
-        self.dataset_split    = 'train'
         self.dataset_skip_num = 0 # We would like to start from a specific dataset index when resuming the training run
 
         self.dataset_buffer_size = 100_000 # Avoiding spike losses when streaming=True, might create RAM-related issues
@@ -121,7 +122,7 @@ class DatasetElement: # This class contains information about a single dataset, 
 
             if idx + step_size >= len(sequence): # Padding
                 padding_length = step_size - len(chunk)
-                chunk.extend([self.tokenizer.pad_token_id] * padding_length)
+                chunk.extend([self.tokenizer.tokenizer.pad_token_id] * padding_length)
 
             yield chunk
 

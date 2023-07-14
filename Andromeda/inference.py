@@ -2,565 +2,153 @@ import sys
 
 sys.dont_write_bytecode = True
 
-import math
-import multiprocessing
 import os
+import time
 
-from datetime import timedelta
+import tracemalloc
 
-from functools import partial
-from itertools import chain
+from pprint import pprint
 
 import torch
-
-from torch.distributed.fsdp import (
-    FullyShardedDataParallel,
-    MixedPrecision,
-    BackwardPrefetch,
-    ShardingStrategy
-)
-
-from accelerate import Accelerator
-
-from accelerate.utils import (DummyOptim, DummyScheduler,
-                              InitProcessGroupKwargs,
-                             )
-
-from datasets import concatenate_datasets, load_dataset
-from lion_pytorch import Lion
-
-# from palm_rlhf_pytorch import PaLM
-# from palm_rlhf_pytorch.palm import LayerNorm, TransformerWrapper
-
-from torch.nn import LayerNorm
-
-from torch.nn import LayerNorm
-from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
-
-from torch.distributed.algorithms._checkpoint.checkpoint_wrapper import (
-    CheckpointImpl, apply_activation_checkpointing, checkpoint_wrapper)
-
-from torch.distributed.fsdp.wrap import (
-    transformer_auto_wrap_policy
-)
-
-from torch.optim import AdamW
-from torch.utils.data import DataLoader
 
 from tqdm import tqdm
 
 import numpy as np
 
-from transformers import (AutoTokenizer, default_data_collator,
-                          get_cosine_schedule_with_warmup,
-                          get_linear_schedule_with_warmup, set_seed)
+from transformers import set_seed
 
-# from palm.stable_adamw import StableAdamWUnfused
-
-
-import wandb
-
-from utils.stable_adamw import StableAdamWUnfused
-
-from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
+from tokenizer import AndromedaTokenizer
+from model import andromeda_model
 
 from data_streaming import DatasetElement
 
-class TrainAndromeda:
-    class CFG:
-        BATCH_SIZE: int = 16
-        GRADIENT_ACCUMULATE_EVERY: int = 1
-        SEED: int = 42
-        LEARNING_RATE: float = 3e-4
-        WEIGHT_DECAY: float = 0.1
-        SEQ_LEN: int = 128 # 8192
-        NUM_CPU: int = multiprocessing.cpu_count()
-        USE_DEEPSPEED: bool = True
-        USE_FSDP: bool = True
-        USE_PRETOKENIZED: bool = True
-        USE_ACTIVATION_CHECKPOINTING: bool = True
-        RESUME_FROM_CHECKPOINT: str = True
-        CHECKPOINTING_STEPS: int = 1000
-        OUTPUT_PATH: str = 'checkpoints/' # Folder
-        CHECKPOINT_NAME: str = 'step_1382_4000'
-
-        MAX_STEPS: int = 16_000_000
-
-    @staticmethod
-    def print_num_params(model, accelerator: Accelerator):
-        n_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
-        accelerator.print(f'Number of parameters in model: {n_params}')
-
-    @staticmethod
-    def activation_checkpointing(
-        model: torch.nn.Module,
-        offload_to_cpu: bool = False,
-        accelerator: Accelerator = None,
-    ):
-        if accelerator is not None:
-            accelerator.print(f'Using activation checkpointing')
-        check_fn = lambda submodule: isinstance(submodule, TransformerWrapper)
-        non_reentrant_wrapper = partial(
-            checkpoint_wrapper,
-            offload_to_cpu=offload_to_cpu,
-            checkpoint_impl=CheckpointImpl.NO_REENTRANT,
-        )
-        apply_activation_checkpointing(
-            model, checkpoint_wrapper_fn=non_reentrant_wrapper, check_fn=check_fn
-        )
-
-    @staticmethod
-    def fsdp(
-        model: torch.nn.Module,
-        auto_wrap: bool = False,
-        mp: str = 'fp32',
-        shard_strat: str = 'NO_SHARD',
-    ):
-        if auto_wrap:
-            andromeda_auto_wrap_policy = partial(
-                transformer_auto_wrap_policy,
-                transformer_layer_cls={
-                    TransformerWrapper,
-                },
-            )
-        else:
-            andromeda_auto_wrap_policy = None
-
-        if mp == 'bf16':
-            mp_fsdp = MixedPrecision(
-                param_dtype=torch.bfloat16,
-                reduce_dtype=torch.bfloat16,
-                buffer_dtype=torch.bfloat16,
-            )
-        elif mp == 'fp16':
-            mp_fsdp = MixedPrecision(
-                param_dtype=torch.float16,
-                reduce_dtype=torch.float16,
-                buffer_dtype=torch.float16,
-            )
-        elif mp == 'fp32':
-            mp_fsdp = MixedPrecision(
-                param_dtype=torch.float32,
-                reduce_dtype=torch.float32,
-                buffer_dtype=torch.float32
-            )
-        else:
-            raise ValueError(
-                'Invalid scheduler_type. Expected \'bf16\', \'fp16\' or \'fp32\', got: {}'.format(
-                    mp
-                )
-            )
-
-        if shard_strat == 'SHARD_GRAD':
-            sharding_strat_fsdp = ShardingStrategy.SHARD_GRAD_OP 
-        elif shard_strat == 'FULL_SHARD':
-            sharding_strat_fsdp = ShardingStrategy.FULL_SHARD
-        elif shard_strat == 'NO_SHARD':
-            sharding_strat_fsdp = ShardingStrategy.NO_SHARD
-        else:
-            raise ValueError(
-                'Invalid scheduler_type. Expected \'SHARD_GRAD\', \'FULL_SHARD\' or \'NO_SHARD\', got: {}'.format(
-                    shard_strat
-                )
-            )
-
-        model = FullyShardedDataParallel(
-            model,
-            auto_wrap_policy=andromeda_auto_wrap_policy,
-            mixed_precision=mp_fsdp,
-            backward_prefetch=BackwardPrefetch.BACKWARD_PRE,
-            sharding_strategy=sharding_strat_fsdp,
-            forward_prefetch=True,
-            use_orig_params=True,
-        )
-
-        return model
-
-    @staticmethod
-    def get_lr_scheduler_with_warmup(
-        optimizer: torch.optim.Optimizer,
-        scheduler_type: str,
-        num_warmup_steps: int,
-        max_train_steps: int,
-        grad_accumulate_every: int = 1,
-        accelerator: Accelerator = None,
-    ):
-        NUM_WARMUP_STEPS = num_warmup_steps
-        GRADIENT_ACCUMULATE_EVERY = grad_accumulate_every
-        if accelerator is not None:
-            accelerator.print(f'Using {scheduler_type} lr scheduler')
-        if scheduler_type == 'linear':
-            return get_linear_schedule_with_warmup(
-                optimizer=optimizer,
-                num_warmup_steps=NUM_WARMUP_STEPS * GRADIENT_ACCUMULATE_EVERY,
-                num_training_steps=max_train_steps * GRADIENT_ACCUMULATE_EVERY,
-            )
-        elif scheduler_type == 'cosine':
-            return get_cosine_schedule_with_warmup(
-                optimizer=optimizer,
-                num_warmup_steps=NUM_WARMUP_STEPS * GRADIENT_ACCUMULATE_EVERY,
-                num_training_steps=max_train_steps * GRADIENT_ACCUMULATE_EVERY,
-            )
-        else:
-            raise ValueError(
-                'Invalid scheduler_type. Expected \'linear\' or \'cosine\', got: {}'.format(
-                    scheduler_type
-                )
-            )
-
-    def decoupled_optimizer(
-        model: torch.nn.Module,
-        learning_rate: float,
-        weight_decay: float,
-        beta_1: float,
-        beta_2: float,
-        optimizer_type: str,
-        use_fsdp: bool = True,
-        accelerator: Accelerator = None,
-    ):
-        '''
-        Decouples the optimizer from the training process.
-
-        This function sets up the optimizer for the model by creating two groups of parameters:
-        one for weight decay and one without weight decay. Then, it initializes the optimizer
-        with these two groups of parameters.
-
-        Args:
-            model (Module): The model whose parameters are optimized.
-            learning_rate (float): The learning rate for the optimizer.
-            weight_decay (float): The weight decay for the optimizer.
-            beta_1 (float): The exponential decay rate for the 1st moment estimates.
-            beta_2 (float): The exponential decay rate for the 2nd moment estimates.
-            optimizer_type (str): The type of the optimizer. Can be 'lion', 'adamw', or 'stable_adamw'.
-            use_fsdp (bool, optional): If True, the optimizer will work with fully sharded data parallelism. Defaults to True.
-            accelerator (Accelerator, optional): The accelerator from HuggingFace's Accelerate library. Defaults to None.
-
-        Returns:
-            Optimizer: The initialized optimizer.
-
-        Raises:
-            ValueError: If the optimizer type is not 'lion', 'adamw' or 'stable_adamw'.
-        '''
-        accelerator.print(f'Using {optimizer_type} optimizer')
-        # Create an empty dictionary called param_dict to store the model's named parameters.
-        param_dict = {}
-        # Iterate over the model's named parameters and populate the param_dict with key-value pairs.
-        for param_name, param in model.named_parameters():
-            param_dict[param_name] = param
-
-        # Separate the model's named modules into two groups: decay and no_decay.
-
-        # Create an empty list to store the names of the LayerNorm and Embedding layer weights with no weight decay.
-        no_decay = []
-
-        if use_fsdp:
-            exclude_module = '_fsdp_wrapped_module.token_emb'
-        else:
-            exclude_module = 'token_emb'
-
-        # Iterate through the named modules of the model.
-        for module_name, module in model.named_modules():
-            # Check if the current module is an instance of any of the desired types (LayerNorm or torch.nn.Embedding).
-            for ndim in [LayerNorm, torch.nn.Embedding]:
-                if isinstance(module, ndim):
-                    # If torch.nn.Embedding, append its name with a '.weight' suffix to the no_decay list.
-                    if module_name == exclude_module:
-                        no_decay.append(f'{module_name}.weight')
-                    else:
-                        # If the module is an instance of LayerNorm
-                        no_decay.append(f'{module_name}.gamma')
-                    # Exit the inner loop since the desired module has been found.
-                    break
-
-        # Create an empty list to store the names of the Linear layer weights with weight decay.
-        decay = []
-
-        # Iterate through the named modules of the model.
-        for module_name, module in model.named_modules():
-            # Check if the current module is an instance of the desired type (torch.nn.Linear).
-            for ndim in [torch.nn.Linear]:
-                if isinstance(module, ndim):
-                    # If the module is an instance of torch.nn.Linear, append its name with a '.weight' suffix to the decay list.
-                    decay.append(f'{module_name}.weight')
-                    # Exit the inner loop since the desired module has been found.
-                    break
-
-        # Create two separate lists of model parameters: decay_param and no_decay_param.
-        # The decay_param list contains the parameters that should have weight decay applied.
-        # The no_decay_param list contains the parameters that should not have weight decay applied, excluding the 'to_logits.weight' parameter.
-
-        # Create an empty list called decay_param to store the parameters with weight decay.
-        decay_param = []
-
-        if use_fsdp:
-            exclude_param = '_fsdp_wrapped_module.to_logits.weight'
-        else:
-            exclude_param = 'to_logits.weight'
-
-        # Iterate over the decay list, which contains the names of the parameters with weight decay.
-        for param in decay:
-            # Check if the current parameter is not 'to_logits.weight'.
-            # Append the corresponding parameter from param_dict to the decay_param list.
-
-            if param != exclude_param:
-                decay_param.append(param_dict[param])
-
-        # Create an empty list called no_decay_param to store the parameters without weight decay.
-        no_decay_param = []
-
-        # Iterate over the no_decay list, which contains the names of the parameters without weight decay.
-        for param in no_decay:
-            # Append the corresponding parameter from param_dict to the no_decay_param list.
-
-            if param in param_dict:
-                no_decay_param.append(param_dict[param])
-
-        # Create a list called grouped_params that contains two dictionaries.
-        # The first dictionary has the decay_param list and the corresponding weight_decay value.
-        # The second dictionary has the no_decay_param list and a weight_decay value of 0.0.
-        grouped_params = [
-            {'params': decay_param, 'weight_decay': weight_decay},
-            {'params': no_decay_param, 'weight_decay': 0.0},
-        ]
-
-        # Create a variable called optimizer that stores an instance of the optimizer.
-        if optimizer_type == 'lion':
-            optimizer = Lion(grouped_params, lr=learning_rate, betas=(beta_1, beta_2),)
-        elif optimizer_type == 'adamw':
-            optimizer = AdamW(grouped_params, lr=learning_rate, betas=(beta_1, beta_2),)
-        elif optimizer_type == 'deepspeed':
-            optimizer = DummyOptim(grouped_params, lr=learning_rate, betas=(beta_1, beta_2),) # >:(
-        elif optimizer_type == 'stable_adamw':
-            optimizer = StableAdamWUnfused(
-                grouped_params, lr=learning_rate, betas=(beta_1, beta_2),
-            )
-        else:
-            raise ValueError(
-                'Invalid optimizer_type. Expected \'lion\', \'adamw\', \'deepspeed\' or \'stable_adamw\', got: {}'.format(
-                    optimizer_type
-                )
-            )
-
-        # Return the optimizer.
-        return optimizer
-
-    @staticmethod
-    def build_dataloaders():
-        dataset = load_dataset('openwebtext', split='train')
+class EvalAndromeda:
+    def __init__(self, path, seed=42, device=None):
+        self.path = path
+        self.seed = seed
         
-        tokenized_dataset = dataset.map(
-            lambda example: tokenizer([t + tokenizer.eos_token for t in example['text']]),
-            batched=True,
-            num_proc=TrainAndromeda.CFG.NUM_CPU,
-            remove_columns=['text']
-        )
-
-        block_size = TrainAndromeda.CFG.SEQ_LEN
-
-        def group_texts(examples):
-            concatenated_examples = {k: list(chain(*examples[k])) for k in examples.keys()}
-            total_length = len(concatenated_examples[list(examples.keys())[0]])
-            if total_length >= block_size:
-                total_length = (total_length // block_size) * block_size
-            result = {
-                k: [t[i:i + block_size] for i in range(0, total_length, block_size)]
-                for k, t in concatenated_examples.items()
-            }
-            return result
-
-        train_dataset = tokenized_dataset.map(
-            group_texts, batched=True, num_proc=TrainAndromeda.CFG.NUM_CPU,
-        )
-
-        return train_dataset
-
-    @staticmethod
-    def build_pre_tokenized():
-        d = load_dataset('conceptofmind/c4_0-to-20_neox_with_eos_8k', split='train', streaming=True)
-
-        return d
-
-    @staticmethod
-    def train():
-        timeout = InitProcessGroupKwargs(timeout=timedelta(seconds=1_000_000))
-
-        accelerator = Accelerator(
-            gradient_accumulation_steps=TrainAndromeda.CFG.GRADIENT_ACCUMULATE_EVERY,
-            mixed_precision='fp16',
-            log_with='wandb',
-            kwargs_handlers=[timeout],
-        )
-
-        accelerator.print(f'Total GPUs: {accelerator.num_processes}')
-        set_seed(TrainAndromeda.CFG.SEED)
-
-        model = TransformerWrapper(
-            num_tokens=64007,
-            max_seq_len=8192,
-            use_abs_pos_emb=False,
-            embedding_provider=AndromedaEmbedding(),
-            attn_layers = Decoder(
-                dim=768, # 2560
-                depth=12, # 32
-                dim_head=128, # 128
-                heads=8, # 24
-                alibi_pos_bias=True,
-                alibi_num_heads=4, # 12
-                rotary_xpos=False, # Why?!
-                attn_flash=True,
-                deepnorm=False,
-                shift_tokens=1,
-                attn_one_kv_head=True,
-                qk_norm=True,
-                attn_qk_norm=True,
-                attn_qk_norm_dim_scale=True
-            )
-        ).to(accelerator.device)
-
-        model = AutoregressiveWrapper(model).to(accelerator.device)
-        TrainAndromeda.print_num_params(model, accelerator)
-
-        if TrainAndromeda.CFG.USE_FSDP:
-            model = TrainAndromeda.fsdp(
-                model,
-                mp='fp16',
-                shard_strat='SHARD_GRAD'
-            )
-
-        if TrainAndromeda.CFG.USE_ACTIVATION_CHECKPOINTING:
-            TrainAndromeda.activation_checkpointing(model, accelerator)
-
-        model = accelerator.prepare(model)
-
-        # if TrainAndromeda.CFG.USE_PRETOKENIZED:
-        #     train_dataset = TrainAndromeda.build_pre_tokenized()
-        # else:
-        #     train_dataset = TrainAndromeda.build_dataloaders()
-
-        # train_loader = DataLoader(
-        #     train_dataset, batch_size=TrainAndromeda.CFG.BATCH_SIZE, collate_fn=default_data_collator,
-        # )
-
-        optim = TrainAndromeda.decoupled_optimizer(
-            model=model,
-            learning_rate=TrainAndromeda.CFG.LEARNING_RATE, 
-            weight_decay=TrainAndromeda.CFG.WEIGHT_DECAY, 
-            beta_1=0.90, 
-            beta_2=0.95, 
-            optimizer_type='lion',
-            use_fsdp=True,
-            accelerator=accelerator
-        )
-
-        # optim = torch.optim.AdamW(model.parameters(), lr=6e-4)
+        self.device = device
         
-        max_train_steps = math.ceil(TrainAndromeda.CFG.MAX_STEPS / TrainAndromeda.CFG.GRADIENT_ACCUMULATE_EVERY)
+        if self.device is None:
+            self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         
-        # max_train_steps = math.ceil(len(train_loader) / TrainAndromeda.CFG.GRADIENT_ACCUMULATE_EVERY)
-        accelerator.print(f'Max train steps: {max_train_steps}')
+        set_seed(self.seed)
 
-        NUM_WARMUP_STEPS = int(max_train_steps * 0.01)
-        accelerator.print(f'Num warmup steps: {NUM_WARMUP_STEPS}')
+        # Tokenizer
 
-        if False: # TrainAndromeda.CFG.USE_DEEPSPEED:
-            lr_scheduler = DummyScheduler(
-                optim, 
-                total_num_steps=max_train_steps * accelerator.num_processes, 
-                warmup_num_steps=NUM_WARMUP_STEPS
-            )
-        else:
-            lr_scheduler = TrainAndromeda.get_lr_scheduler_with_warmup(
-                optimizer=optim,
-                scheduler_type='cosine',
-                num_warmup_steps=NUM_WARMUP_STEPS,
-                max_train_steps=max_train_steps,
-                grad_accumulate_every=TrainAndromeda.CFG.GRADIENT_ACCUMULATE_EVERY,
-            )
-
-        optim, lr_scheduler = accelerator.prepare(
-            optim, lr_scheduler
-        )
-
-        accelerator.register_for_checkpointing(lr_scheduler)
-
-        batches_num = np.floor(TrainAndromeda.CFG.MAX_STEPS / TrainAndromeda.CFG.BATCH_SIZE)
+        self.tokenizer = AndromedaTokenizer()
         
-        max_train_steps = math.ceil(batches_num / TrainAndromeda.CFG.GRADIENT_ACCUMULATE_EVERY)
-        accelerator.print(f'Max train steps recalculated: {max_train_steps}')
-
-        total_batch_size = (
-            TrainAndromeda.CFG.BATCH_SIZE * accelerator.num_processes * TrainAndromeda.CFG.GRADIENT_ACCUMULATE_EVERY
-        )
-        accelerator.print(f'Total batch size: {total_batch_size}')
-
-        progress_bar = tqdm(
-            range(max_train_steps), disable=not accelerator.is_local_main_process
-        )
-        completed_steps = 0
-
-        tokenizer_checkpoint = 'EleutherAI/gpt-neox-20b'
-        tokenizer            = AutoTokenizer.from_pretrained(tokenizer_checkpoint)
+        # Model
         
-        tokenizer.pad_token = tokenizer.eos_token
+        self.model = andromeda_model
         
-        dataset = DatasetElement(tokenizer, sequence_length=TrainAndromeda.CFG.SEQ_LEN, batch_size=TrainAndromeda.CFG.BATCH_SIZE)
+        # Checkpoint
+
+        self.model.load_state_dict(torch.load(self.path))
+        self.model.eval()
         
-        if TrainAndromeda.CFG.RESUME_FROM_CHECKPOINT:
-            path = os.path.join(
-                TrainAndromeda.CFG.OUTPUT_PATH,
-                TrainAndromeda.CFG.CHECKPOINT_NAME
-            )
+        # Device
+        
+        self.model = self.model.to(self.device)
+        
+        # Metrics
+        
+        self.metrics = {}
+        self.reset_metrics()
+        
+    def reset_metrics(self):
+        self.metrics = {
+            'generation_steps': None,
 
-            accelerator.print(f'Resuming from checkpoint {path}')
-            accelerator.load_state(path)
-
-            loaded_parameters = list(map(lambda x: x.strip(), TrainAndromeda.CFG.CHECKPOINT_NAME.split('_')))
-
-            resume_dataset_step = int(loaded_parameters[1])
-            resume_step         = int(loaded_parameters[2])
+            'times_forward': [],
+            'time_forward_average': None,
             
-            dataset.dataset_skip_num = resume_dataset_step
-            training_step = resume_step # It's important to set this before the ACCUMULATE_EVERY
-
-            resume_step = resume_step * TrainAndromeda.CFG.GRADIENT_ACCUMULATE_EVERY
+            'memory_usages': [],
+            'memory_usage_average': None,
             
-        if TrainAndromeda.CFG.RESUME_FROM_CHECKPOINT and resume_step is not None:
-            # train_loader = accelerator.skip_first_batches(train_loader, resume_step)
-            completed_steps += resume_step
-            progress_bar.update(resume_step)
-
-        model.eval()
-
-        prompt = 'if __name__ == \'__main\':'
-        tokens = tokenizer.encode(prompt)
-
-        generation_steps = 32
+            'time_end_to_end': None,
+            'throughput': None
+        }
         
-        for _ in tqdm(range(generation_steps)):
-            tokens_tensor = torch.tensor([tokens], device=accelerator.device)
+    def get_num_params(self):
+        num_params = sum(param.numel() for param in self.model.parameters() if param.requires_grad)
 
-            logits = model(tokens_tensor, return_loss=False)[:, -1]
+        return num_params
+
+    def generate(self, prompt, generation_steps=32):
+        # Make sure all of the metrics are reset at every generation
+        
+        self.reset_metrics()
+
+        self.metrics['generation_steps'] = generation_steps
+        
+        tokens     = self.tokenizer.encode(prompt)
+        tokens_new = []
+        
+        time_end_to_end_0 = time.time()
+        
+        # Generation loop
+        
+        for _ in range(generation_steps):
+            tokens_tensor = torch.tensor([tokens], device=self.device)
+
+            print(tokens_tensor.shape)
+            
+            # Forward pass
+            
+            tracemalloc.start()
+
+            time_forward_0 = time.time()
+
+            logits = self.model(tokens_tensor, return_loss=False)[:, -1] # No loss, take the output for the last token
+
+            time_forward_1 = time.time()
+            
+            _, memory_usage = tracemalloc.get_traced_memory()
+            tracemalloc.stop()
+
+            self.metrics['memory_usages'].append(memory_usage)
+            
+            time_forward = time_forward_1 - time_forward_0
+            self.metrics['times_forward'].append(time_forward)
+
             next_token = torch.argmax(logits).item()
 
+            # Save the newly generated token
+            
             tokens.append(next_token)
+            tokens_new.append(next_token)
+
+        time_end_to_end_1 = time.time()
         
-        decoded = tokenizer.decode(tokens)
-        print(decoded) 
+        time_end_to_end                 = time_end_to_end_1 - time_end_to_end_0
+        self.metrics['time_end_to_end'] = time_end_to_end
+ 
+        decoded = self.tokenizer.decode(tokens)
+
+        self.metrics['time_forward_average'] = np.mean(self.metrics['times_forward'])
+        self.metrics['memory_usage_average'] = np.mean(self.metrics['memory_usages'])
+        
+        self.metrics['throughput'] = generation_steps / np.sum(self.metrics['times_forward'])
+        
+        return tokens_new, decoded
 
 def main():
-    os.environ['MASTER_ADDR'] = 'localhost'
-    os.environ['MASTER_PORT'] = '9994'
-    
-    # [CRITICAL] Pay attention to this when scaling to multiple GPUs and clusters
-    
-    # Pay attention to this, use "accelerate config"
+    prompt = 'My name is'
 
-    os.environ['RANK']       = str(0) # Number of nodes (servers)
-    os.environ['WORLD_SIZE'] = str(torch.cuda.device_count())
-
-    torch.distributed.init_process_group()
+    andromeda = EvalAndromeda(path='checkpoints/step_1676_640/pytorch_model.bin')
     
-    TrainAndromeda.train()
-
+    num_params = andromeda.get_num_params()
+    print(f'The model has {num_params} parameters')
+    
+    _, output = andromeda.generate(prompt)
+    
+    for metric, value in andromeda.metrics.items():
+        print(f'{metric}: {value}\n')
+    
+    print('\n')
+    
+    print(output)
+    
 if __name__ == '__main__':
     main()

@@ -3,3 +3,4 @@
 - Torch must be updated to the last version.
 - The checkpoints files names are step_{dataset_step}_{training_step}, the "dataset_step" + 1 should be used to inizialize the streaming dataset.
 - Because of ALiBi, we might need a longer input tokens sequence.
+- BitsAndBytes should be uninstalled
