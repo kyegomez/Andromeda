@@ -76,7 +76,7 @@ class AndromedaClass(Module):
         self.decoder = AutoregressiveWrapper(self.andromeda)
 
     def forward(self, text_tokens, **kwargs):
-        model_input = self.decoder.forward_embedding(text_tokens)[0]
+        model_input = self.decoder.forward(text_tokens)[0]
         return self.decoder(model_input, padded_x=model_input[0])
     
 
