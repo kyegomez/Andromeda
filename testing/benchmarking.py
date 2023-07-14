@@ -10,6 +10,7 @@ import tracemalloc
 from Andromeda.model import AndromedaClass
 
 
+
 class SpeedMetrics:
     def __init__(self, model):
         self.model = model
@@ -83,10 +84,10 @@ class MemoryMetrics:
         current, peak = tracemalloc.get_traced_memory()
         tracemalloc.stop()
         return current, peak
-    
+
 
 class SequenceMetrics:
-    def __init__(self, models):
+    def __init__(self, model):
         self.model = model
 
     def sequence_length_impact(self):
@@ -98,6 +99,61 @@ class SequenceMetrics:
             end_time = time.time()
             seq_impact_times.append(end_time - start_time)
         return seq_lengths, seq_impact_times
-    
 
 
+
+#mock test dataset
+test_dataset = datasets.FakeData(size=1000, transform=transforms.ToTensor())
+
+#model
+model = AndromedaClass()
+
+#speed test metrics test 
+speed_metrics = SpeedMetrics(model)
+forward_pass_time = speed_metrics.forward_pass_time()
+backward_pass_time = speed_metrics.backward_pass_time()
+end_to_end_latency = speed_metrics.end_to_end_latency()
+
+
+#scalability metrics test
+scalability_metrics = ScalabilityMetrics(model, test_dataset)
+throughput = scalability_metrics.throughput()
+
+
+#consistency metrucs test
+consistency_metrics = ConsistencyMetrics(model)
+consistency_times, consistency_score = consistency_metrics.consistency_over_time()
+
+
+#memory metrics test
+memory_metrics = MemoryMetrics(model)
+current, peak = memory_metrics.memory_footprint()
+
+#sequence metrics test
+sequence_metrics = SequenceMetrics(model)
+seq_lengths, seq_impact_times = sequence_metrics.sequence_length_impact()
+
+
+# Graphical Interface
+fig, axs = plt.subplots(3)
+
+axs[0].bar(["Forward Pass Time", "Backward Pass Time", "End-to-End Latency"], [forward_pass_time, backward_pass_time, end_to_end_latency])
+axs[0].set_title('Speed Metrics')
+axs[0].set_xlabel('Metrics')
+axs[0].set_ylabel('Time (seconds)')
+
+axs[1].bar(seq_lengths, seq_impact_times)
+axs[1].set_title('Sequence Length Impact')
+axs[1].set_xlabel('Sequence Length')
+axs[1].set_ylabel('Time (seconds)')
+
+axs[2].plot(list(range(1, 11)), consistency_times)
+axs[2].set_title('Consistency Over Time')
+axs[2].set_xlabel('Run Number')
+axs[2].set_ylabel('Time (seconds)')
+
+plt.tight_layout()
+plt.show()
+
+print(f"Throughput: {throughput} instances/second")
+print(f"Memory used: {current / 10**6}MB; Peak: {peak / 10**6}MB")
