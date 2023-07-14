@@ -1,4 +1,49 @@
-Sure! Here's the rewritten documentation for the Andromeda module:
+# Documentation
+
+## `DatasetBuilder`
+
+### DatasetBuilder
+
+DatasetBuilder provides a convenient way to build datasets for training the Andromeda model.
+
+#### Constructor
+
+```python
+def __init__(
+    self,
+    dataset_name,
+    seq_len=8192,
+    num_cpu=None,
+    hf_account_repo=None,
+    tokenizer="EleutherAI/gpt-neox-20b",
+)
+```
+
+Initialize the DatasetBuilder.
+
+**Args:**
+
+- `dataset_name` (str): Name of the dataset to process.
+- `seq_len` (int): Maximum sequence length.
+- `num_cpu` (int, optional): Number of CPU cores to use for multiprocessing. Defaults to None.
+- `hf_account_repo` (str, optional): Hugging Face account name and repository to push the processed dataset. Defaults to None.
+- `tokenizer` (str, optional): Tokenizer model to use. Defaults to "EleutherAI/gpt-neox-20b".
+
+#### Methods
+
+##### build_dataset
+
+```python
+def build_dataset(self) -> torch.utils.data.Dataset
+```
+
+Build and process the dataset.
+
+**Returns:**
+
+- `torch.utils.data.Dataset`: The processed dataset ready for training.
+
+
 
 ## AndromedaTokenizer
 

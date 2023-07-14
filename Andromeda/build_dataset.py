@@ -1,71 +1,76 @@
-import multiprocessing 
-import argparse
+import multiprocessing
 from itertools import chain
 from datasets import load_dataset
 from transformers import AutoTokenizer
 
-class CFG:
-    SEED: int = 42
-    SEQ_LEN: int = 8192
-    NUM_CPU: int = multiprocessing.cpu_count()
-    HF_ACCOUNT_REPO: str = "YOUR HUGGINGFACE API KEY"
-    TOKENIZER: str = "EleutherAI/gpt-neox-20b"
-    DATASET_NAME: str = "tiiuae/falcon-refinedweb"
 
+class DatasetBuilder:
+    def __init__(
+        self,
+        dataset_name,
+        seq_len=8192,
+        num_cpu=None,
+        hf_account_repo=None,
+        tokenizer="EleutherAI/gpt-neox-20b",
+    ):
+        self.dataset_name = dataset_name
+        self.seq_len = seq_len
+        self.num_cpu = num_cpu or multiprocessing.cpu_count()
+        self.hf_account_repo = hf_account_repo
+        self.tokenizer = tokenizer
 
-#perhaps will need finetuning
-def built_dataset(args):
-    tokenizer = AutoTokenizer.from_pretrained(CFG.TOKENIZER)
-    train_dataset = load_dataset(CFG.DATASET_NAME, split="train", streaming=True)
+    def build_dataset(self):
+        tokenizer = AutoTokenizer.from_pretrained(self.tokenizer)
+        train_dataset = load_dataset(self.dataset_name, split="train", streaming=True)
 
+        def tokenize_function(example):
+            return tokenizer([t + tokenizer.eos_token for t in example["text"]])
 
-    def tokenize_function(example):
-        return tokenizer([t + tokenizer.eos_token for t in example["text"]])
-    
-    tokenized_dataset = train_dataset.map(
-        tokenize_function,
-        batched=True,
-        num_proc=CFG.NUM_CPU,
-        remove_columns=["text"],
-    )
+        tokenized_dataset = train_dataset.map(
+            tokenize_function,
+            batched=True,
+            num_proc=self.num_cpu,
+            remove_columns=["text"],
+        )
 
-    block_size = CFG.SEQ_LEN
+        block_size = self.seq_len
 
+        def group_texts(examples):
+            concatenated_examples = {
+                k: list(chain(*examples[k])) for k in examples.keys()
+            }
+            total_length = len(concatenated_examples[list(examples.keys())[0]])
 
-    #main data processing functin that will concatenate all texts from our dataset
-    def group_texts(examples):
-        #concatenate all texts
-        concatenated_examples = {k: list(chain(*examples[k])) for k in examples.keys()}
-        total_length = len(concatenated_examples[list(examples.keys())[0]])
+            if total_length >= block_size:
+                total_length = (total_length // block_size) * block_size
 
-        #drop the small remainder we could add padding if the model supported it instead of this drop customize
-        if total_length >= block_size:
-            total_length = (total_length // block_size) * block_size
-        
-        #split by chunks of max length
-        result = {
-            k: [t[i : i + block_size] for i in range(0, total_length, block_size)]
-            for k, t in concatenated_examples.items()
-        }
+            result = {
+                k: [
+                    t[i : i + block_size]
+                    for i in range(0, total_length, block_size)
+                ]
+                for k, t in concatenated_examples.items()
+            }
 
-        return result
-    
+            return result
 
-    train_tokenized_dataset = tokenized_dataset.map(
-        group_texts,
-        batched=True,
-        num_proc=CFG.NUM_CPU,
-    )
+        train_tokenized_dataset = tokenized_dataset.map(
+            group_texts, batched=True, num_proc=self.num_cpu
+        )
 
-    train_tokenized_dataset.push_to_hub(CFG.HF_ACCOUNT_REPO)
+        if self.hf_account_repo:
+            train_tokenized_dataset.push_to_hub(self.hf_account_repo)
 
+        return train_tokenized_dataset
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Process and push dataset to Hugging Face Hub")
-    parser.add_argument("--seed", type=int, default=CFG.SEED, help="Random seed")
-    parser.add_argument("--seq_len", type=int, default=CFG.SEQ_LEN, help="Sequence length for processing")
-    parser.add_argument("--hf_account", type=str, default=CFG.HF_ACCOUNT_REPO, help="Hugging Face account name and repo")
-    parser.add_argument("--tokenizer", type=str, default=CFG.TOKENIZER, help="Tokenizer model to use")
-    parser.add_argument("--dataset_name", type=str, default=CFG.DATASET_NAME, help="Name of the dataset to process")
-    args = parser.parse_args()
-    built_dataset(args)
+            
+
+# builder = AndromedaDatasetBuilder(
+#     dataset_name="tiiuae/falcon-refinedweb",
+#     seq_len=8192,
+#     num_cpu=4,
+#     hf_account_repo="YOUR_HF_ACCOUNT/REPO_NAME",
+#     tokenizer="EleutherAI/gpt-neox-20b",
+# )
+
+# dataset = builder.build_dataset()
