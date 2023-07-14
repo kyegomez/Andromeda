@@ -5,108 +5,99 @@ from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 import numpy as np
 from memory_profiler import profile
+import tracemalloc
 
 from Andromeda.model import AndromedaClass
 
-# Mock test dataset
-test_dataset = datasets.FakeData(
-    size=1000,
-    transform=transforms.ToTensor(),
-)
 
-test_dataloader = DataLoader(test_dataset, batch_size=32)
+class SpeedMetrics:
+    def __init__(self, model):
+        self.model = model
 
-# Model
-model = AndromedaClass()
-
-# Speed Metrics Tests
-
-## Forward Pass Time
-start_time = time.time()
-model_input = model.decoder.forward_embedding(torch.randint(0, 64006, (1, 8192)))[0]
-end_time = time.time()
-forward_pass_time = end_time - start_time
-
-## Backward Pass Time
-start_time = time.time()
-loss = torch.nn.CrossEntropyLoss()(model_input, torch.randint(0, 64006, (1, 8192)))
-loss.backward()
-end_time = time.time()
-backward_pass_time = end_time - start_time
-
-## End-to-End Latency
-start_time = time.time()
-outputs = model.forward(torch.randint(0, 64006, (1, 8192)))
-end_time = time.time()
-end_to_end_latency = end_time - start_time
-
-# Scalability Metrics Tests
-
-## Throughput
-start_time = time.time()
-for i, data in enumerate(test_dataloader, 0):
-    outputs = model.forward(data)
-end_time = time.time()
-throughput = len(test_dataset)/(end_time - start_time)
-
-# Graphical Interface
-fig, ax = plt.subplots()
-
-ax.bar(["Forward Pass Time", "Backward Pass Time", "End-to-End Latency"], [forward_pass_time, backward_pass_time, end_to_end_latency])
-ax.set_title('Speed Metrics')
-ax.set_xlabel('Metrics')
-ax.set_ylabel('Time (seconds)')
-
-plt.show()
-
-print(f"Throughput: {throughput} instances/second")
+    def forward_pass_time(self):
+        start_time = time.time()
+        model_input = self.model.decoder.forward_embedding(torch.randint(0, 640006, (1, 8192)))[0]
+        end_time = time.time()
+        return end_time - start_time
+    
+    def backward_pass_time(self):
+        model_input = self.model.decoder.forward_embedding(torch.randint(0, 64006, (1, 8192)))[0]
+        start_time = time.time()
+        loss = torch.nn.CrossEntropyLoss()(model_input, torch.randint(0, 64006, (1, 8192)))
+        loss.backward()
+        end_time = time.time()
+        return end_time - start_time
+    
+    def end_to_end_latency(self):
+        start_time = time.time()
+        self.model.forward(torch.randint(0, 64006, (1, 8192)))
+        end_time = time.time()
+        return end_time - start_time
 
 
-import tracemalloc
+class ScalabilityMetrics:
+    def __init__(self, model, dataset):
+        self.model = model
+        self.dataset = dataset
+        self.dataloader = DataLoader(dataset, batch_size=32)
 
-# Memory Footprint
-tracemalloc.start()
-model.forward(torch.randint(0, 64006, (1, 8192)))
-current, peak = tracemalloc.get_traced_memory()
-tracemalloc.stop()
+    def throughput(self):
+        start_time = time.time()
+        for i, data in enumerate(self.dataloader, 0):
+            self.model.forward(data)
+        end_time = time.time()
+        return len(self.dataset) / (end_time - start_time)
 
-# Sequence Length Impact
-seq_lengths = [1024, 2048, 4096, 8192]
-seq_impact_times = []
-for length in seq_lengths:
-    start_time = time.time()
-    model.forward(torch.randint(0, 64006, (1, length)))
-    end_time = time.time()
-    seq_impact_times.append(end_time - start_time)
 
-# Consistency Over Time
-consistency_times = []
-for _ in range(10):
-    start_time = time.time()
-    model.forward(torch.randint(0, 64006, (1, 8192)))
-    end_time = time.time()
-    consistency_times.append(end_time - start_time)
+class ConsistencyMetrics:
+    def __init__(self, model):
+        self.model = model
 
-# Graphical Interface
-fig, axs = plt.subplots(3)
+    def consistency_over_time(self):
+        consistency_times = []
+        outputs_list = []
+        for _ in range(10):
+            start_time = time.time()
+            outputs = self.model.forward(torch.randint(0, 64006, (1, 8192)))
+            end_time = time.time()
+            consistency_times.append(end_time - start_time)
+            outputs_list.append(outputs.detach().numpy())
 
-axs[0].bar(["Forward Pass Time", "Backward Pass Time", "End-to-End Latency"], [forward_pass_time, backward_pass_time, end_to_end_latency])
-axs[0].set_title('Speed Metrics')
-axs[0].set_xlabel('Metrics')
-axs[0].set_ylabel('Time (seconds)')
+        initial_output = outputs_list[0]
+        consistency_score = 0
+        for output in outputs_list[1:]:
+            if np.array_equal(initial_output, output):
+                consistency_score += 1
+        consistency_score = consistency_score / len(outputs_list) * 100
 
-axs[1].bar(seq_lengths, seq_impact_times)
-axs[1].set_title('Sequence Length Impact')
-axs[1].set_xlabel('Sequence Length')
-axs[1].set_ylabel('Time (seconds)')
+        return consistency_times, consistency_score
 
-axs[2].plot(list(range(1, 11)), consistency_times)
-axs[2].set_title('Consistency Over Time')
-axs[2].set_xlabel('Run Number')
-axs[2].set_ylabel('Time (seconds)')
 
-plt.tight_layout()
-plt.show()
+class MemoryMetrics:
+    def __init__(self, model):
+        self.model = model
 
-print(f"Throughput: {throughput} instances/second")
-print(f"Memory used: {current / 10**6}MB; Peak: {peak / 10**6}MB")
+    def memory_footprint(self):
+        tracemalloc.start()
+        self.model.forward(torch.randint(0, 64006, (1, 8192)))
+        current, peak = tracemalloc.get_traced_memory()
+        tracemalloc.stop()
+        return current, peak
+    
+
+class SequenceMetrics:
+    def __init__(self, models):
+        self.model = model
+
+    def sequence_length_impact(self):
+        seq_lengths = [1024, 2048, 4096, 8192]
+        seq_impact_times = []
+        for length in seq_lengths:
+            start_time = time.time()
+            self.model.forward(torch.randint(0, 64006, (1, length)))
+            end_time = time.time()
+            seq_impact_times.append(end_time - start_time)
+        return seq_lengths, seq_impact_times
+    
+
+
