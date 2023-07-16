@@ -17,8 +17,7 @@ import numpy as np
 
 from transformers import set_seed
 
-from tokenizer import AndromedaTokenizer
-from model import andromeda_model
+from model import andromeda_tokenizer, andromeda_model
 
 from data_streaming import DatasetElement
 
@@ -36,7 +35,7 @@ class EvalAndromeda:
 
         # Tokenizer
 
-        self.tokenizer = AndromedaTokenizer()
+        self.tokenizer = andromeda_tokenizer
         
         # Model
         

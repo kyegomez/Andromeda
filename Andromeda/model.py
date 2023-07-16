@@ -1,7 +1,11 @@
 from optimus_prime import TransformerWrapper, AndromedaEmbedding, Decoder, AutoregressiveWrapper
 
+from tokenizer import AndromedaTokenizer
+
+andromeda_tokenizer = AndromedaTokenizer()
+
 andromeda_model = TransformerWrapper(
-    num_tokens=64007,
+    num_tokens=len(andromeda_tokenizer),
     max_seq_len=8192,
     use_abs_pos_emb=False,
 

@@ -16,3 +16,8 @@ class AndromedaTokenizer:
         text = self.tokenizer.decode(idxs)
         
         return text
+
+    def __len__(self):
+        num_tokens = len(self.tokenizer)
+
+        return num_tokens

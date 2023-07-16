@@ -63,8 +63,7 @@ import wandb
 
 from utils.stable_adamw import StableAdamWUnfused
 
-from tokenizer import AndromedaTokenizer
-from model import andromeda_model
+from model import andromeda_tokenizer, andromeda_model
 
 from data_streaming import DatasetElement
 
@@ -81,7 +80,7 @@ class TrainAndromeda:
         USE_FSDP: bool = True
         USE_PRETOKENIZED: bool = True
         USE_ACTIVATION_CHECKPOINTING: bool = True
-        RESUME_FROM_CHECKPOINT: str = True
+        RESUME_FROM_CHECKPOINT: str = False
         CHECKPOINTING_STEPS: int = 512 # !
         OUTPUT_PATH: str = 'checkpoints/' # Folder
         CHECKPOINT_NAME: str = 'step_38967_5632'
@@ -455,7 +454,7 @@ class TrainAndromeda:
         )
         completed_steps = 0
 
-        tokenizer = AndromedaTokenizer()
+        tokenizer = andromeda_tokenizer
         
         dataset = DatasetElement(TrainAndromeda.CFG.DATASET_NAME, TrainAndromeda.CFG.DATASET_DATA_COLUMN, tokenizer, sequence_length=TrainAndromeda.CFG.SEQ_LEN, batch_size=TrainAndromeda.CFG.BATCH_SIZE)
         
