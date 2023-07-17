@@ -9,34 +9,39 @@ import tracemalloc
 
 from Andromeda.model import Andromeda
 
-# from ..Andromeda.model import Andromeda
 
+torch.manual_seed(0)
+if torch.cuda.is_available():
+    torch.cuda.manual_seed(0)
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 
 class SpeedMetrics:
     def __init__(self, model):
-        self.model = model
+        self.model = model.to(device)
 
     def forward_pass_time(self):
         start_time = time.time()
-        model_input = self.model.decoder.forward(torch.randint(0, 50304, (1, 8192)))[0]
+        model_input = self.model.decoder.forward(torch.randint(0, 50304, (1, 8192), device=device, dtype=torch.long))[0]
         end_time = time.time()
         return end_time - start_time
     
     def backward_pass_time(self):
-        model_input = self.model.decoder.forward(torch.randint(0, 50304, (1, 8192)))[0]
+        model_input = self.model.decoder.forward(torch.randint(0, 50304, (1, 8192), device=device, dtype=torch.long))[0]
         start_time = time.time()
-        loss = torch.nn.CrossEntropyLoss()(model_input, torch.randint(0, 50304, (1, 8192)))
+        loss = torch.nn.CrossEntropyLoss()(model_input, torch.randint(0, 50304, (1, 8192), device=device, dtype=torch.long))
         loss.backward()
         end_time = time.time()
         return end_time - start_time
     
     def end_to_end_latency(self):
         start_time = time.time()
-        self.model.forward(torch.randint(0, 50304, (1, 8192)))
+        self.model.forward(torch.randint(0, 50304, (1, 8192), device=device, dtype=torch.long))
         end_time = time.time()
         return end_time - start_time
+    
 
 
 class ScalabilityMetrics:
@@ -130,7 +135,7 @@ class FlopsBenchmark:
             elapsed = time.time() - start
 
             time_taken.append(elapsed)
-            total_flops = 4 * seq_len**2 * (self.d_model // self.num_heads) * self.num_heads
+            total_flops = 4 * seq_len **2 * (self.d_model // self.num_heads) * self.num_heads
             tflops_per_s.append(total_flops / elapsed / 1e12)  # Convert to TFLOPs
 
         for seq_len, elapsed, tflops in zip(self.sequence_lengths, time_taken, tflops_per_s):
@@ -152,7 +157,9 @@ model = Andromeda(
     alibi_num_heads=4
 )
 
+
 #speed test metrics test 
+# speed test metrics test 
 speed_metrics = SpeedMetrics(model)
 forward_pass_time = speed_metrics.forward_pass_time()
 backward_pass_time = speed_metrics.backward_pass_time()
