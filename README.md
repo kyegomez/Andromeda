@@ -33,9 +33,7 @@ Andromeda is a state-of-the-art language model that pushes the boundaries of nat
 
 </div>
 
----
-
-
+----
 
 
 # Usage
