@@ -16,6 +16,14 @@ class AndromedaTokenizer:
 
     def tokenize_texts(self, texts):
         return self.tokenizer(texts, return_tensors='pt', padding=True, truncation=True).input_ids
+    
+    def decode(self, texts):
+        return self.tokenizer.decode(texts)
+    
+    def __len__(self):
+        num_tokens = len(self.tokenizer)
+        return num_tokens
+
 
 
 class Andromeda(Module):
