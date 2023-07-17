@@ -8,13 +8,52 @@ from memory_profiler import profile
 import tracemalloc
 
 from Andromeda.model import Andromeda
-
+from Andromeda.utils.stable_adamw import StableAdamWUnfused
 
 torch.manual_seed(0)
 if torch.cuda.is_available():
     torch.cuda.manual_seed(0)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+
+
+
+
+class AndromedaModelTest:
+    def __init__(self):
+        self.model = Andromeda
+        self.optimizer = StableAdamWUnfused()
+        self.loss_function = torch.nn.CrossEntropyLoss()
+        self.test_input = torch.randint(0, 256, (1, 1024)).cuda()
+
+    def test_forward_pass(self):
+        output = self.model(self.test_input)
+        assert output.shape == (1, 1024, 64007), "Forward pass output shape mismatch"
+
+    def test_backward_pass(self):
+        self.optimizer.zero_grad()
+        output = self.model(self.test_input)
+        loss = self.loss_function(output, self.test_input)
+
+        loss.backward()
+        for name, parameter in self.model.named_parameters():
+            assert not torch.isnan(parameter.grad().any()), f"Gradient for {name} contains NaNs"
+            assert not torch.isinf(parameter.grad().any()), f"Gradient for {name} contains Infs"
+
+
+    def test_optimizer_step(self):
+        initial_params = [param.clone() for param in self.model_parameters()]
+        output = self.model(self.test_input)
+        loss = self.loss_function(output, self.test_input)
+
+        self.optimizer.zero_grad()
+        loss.backward()
+        self.optimizer.step()
+        for initial_param, param in zip(initial_params, self.model.parameters()):
+            assert not torch.equal(initial_param, param), "Model Parameters did not change after an optimizer step"
+
+
 
 
 
@@ -213,3 +252,12 @@ plt.show()
 
 print(f"Throughput: {throughput} instances/second")
 print(f"Memory used: {current / 10**6}MB; Peak: {peak / 10**6}MB")
+
+
+
+# Add at the bottom of your file
+if __name__ == "__main__":
+    model_test = AndromedaModelTest()
+    model_test.test_forward_pass()
+    model_test.test_backward_pass()
+    model_test.test_optimizer_step()
