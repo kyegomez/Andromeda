@@ -16,4 +16,4 @@ bitsandbytes
 memory-profiler
 rouge
 nltk
-sklearn
+scikit-learn
