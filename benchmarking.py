@@ -105,6 +105,40 @@ class SequenceMetrics:
 
 
 
+
+class FlopsBenchmark:
+    def __init__(self, model, bsz=32, d_model=1024, num_heads=8, sequence_lengths=list(range(500, 32001, 500))):
+        self.bsz = bsz
+        self.d_model = d_model
+        self.num_heads = num_heads
+        self.sequence_lengths = sequence_lengths
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.dtype=torch.float32
+        self.model = model.to(self.device)
+
+    def benchmark(self):
+        time_taken = []
+        tflops_per_s = []
+
+        for seq_len in self.sequence_lengths:
+            x = torch.randn(self.bsz, seq_len, self.d_model).to(self.device).type(self.dtype)
+            torch.cuda.synchronize()
+
+            start = time.time()
+            output = self.model(x)
+            torch.cuda.synchronize()
+            elapsed = time.time() - start
+
+            time_taken.append(elapsed)
+            total_flops = 4 * seq_len**2 * (self.d_model // self.num_heads) * self.num_heads
+            tflops_per_s.append(total_flops / elapsed / 1e12)  # Convert to TFLOPs
+
+        for seq_len, elapsed, tflops in zip(self.sequence_lengths, time_taken, tflops_per_s):
+            print(f"Sequence length: {seq_len}, Time elapsed: {elapsed} s, TFLOPs/s: {tflops}")
+
+
+
+
 #mock test dataset
 test_dataset = datasets.FakeData(size=1000, transform=transforms.ToTensor())
 
@@ -143,6 +177,11 @@ current, peak = memory_metrics.memory_footprint()
 sequence_metrics = SequenceMetrics(model)
 seq_lengths, seq_impact_times = sequence_metrics.sequence_length_impact()
 
+
+#flops
+
+flops_benchmark = FlopsBenchmark(model)
+flops_benchmark.benchmark()
 
 # Graphical Interface
 fig, axs = plt.subplots(3)
