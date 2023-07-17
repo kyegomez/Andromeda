@@ -14,3 +14,6 @@ triton
 deepspeed
 bitsandbytes
 memory-profiler
+rouge
+nltk
+sklearn
