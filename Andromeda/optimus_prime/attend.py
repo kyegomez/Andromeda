@@ -51,6 +51,7 @@ class Attend(nn.Module):
     def __init__(
         self,
         *,
+        dim,
         dropout = 0.,
         causal = False,
         heads = None,
@@ -60,6 +61,7 @@ class Attend(nn.Module):
         flash = False,
     ):
         super().__init__()
+        self.dim = dim
         self.scale = scale
         self.qk_norm = qk_norm
         self.causal = causal
