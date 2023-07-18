@@ -207,18 +207,20 @@ class Attend(nn.Module):
         scale = default(self.scale, q.shape[-1] ** -0.5)
 
         if self.flash:
-            # assert not exists(prev_attn), 'residual attention not compatible with flash attention'
-            # return self.flash_attn(q, k, v, mask = mask, attn_bias = attn_bias)
-
-            #move flashattention to the right device
             self.flash_attention.to(device)
 
-            #rearrange the inputs for FlashAttention
+            if q.ndim < 4: # Add a dimension if it's missing
+                q = q.unsqueeze(-1)
+            if k.ndim < 4: # Add a dimension if it's missing
+                k = k.unsqueeze(-1)
+            if v.ndim < 4: # Add a dimension if it's missing
+                v = v.unsqueeze(-1)
+
+            # Now it's safe to rearrange the tensors
             q = rearrange(q, 'b h n d -> b n (h d)')
             k = rearrange(k, 'b h n d -> b n (h d)')
             v = rearrange(v, 'b h n d -> b n (h d)')
 
-            #apply FlashAttention
             out = self.flash_attention(q, context=k, mask=mask)
             out = rearrange(out, 'b n (h d) -> b h n d')
 
