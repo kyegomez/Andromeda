@@ -225,6 +225,7 @@ class FlashAttention(nn.Module):
         context = default(context, x)
 
         q = self.to_q(x)
+        print(f"q {q}")
         k, v = self.to_kv(context).chunk(2, dim = -1)
 
         q, k, v = map(lambda t: rearrange(t, 'b n (h d) -> b h n d', h = h), (q, k, v))
