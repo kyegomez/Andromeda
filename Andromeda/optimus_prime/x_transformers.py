@@ -717,6 +717,7 @@ class Attention(nn.Module):
         # attend class - includes core attention algorithm + talking heads
 
         self.attend = Attend(
+            dim = dim,
             heads = heads,
             causal = causal,
             talking_heads = talking_heads,
