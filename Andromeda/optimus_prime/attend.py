@@ -69,6 +69,7 @@ class Attend(nn.Module):
 
         self.dropout = dropout
         self.attn_dropout = nn.Dropout(dropout)
+        self.flash_attention = None
 
         # talking heads
 
@@ -83,6 +84,13 @@ class Attend(nn.Module):
 
         self.flash = flash
         assert not (flash and version.parse(torch.__version__) < version.parse('2.0.0')), 'in order to use flash attention, you must be using pytorch 2.0 or above'
+
+        if flash:
+            self.flash_attention = FlashAttention(
+                dim=self.dim,
+                heads=heads,
+                causal=self.causal
+            )
 
         # determine efficient attention configs for cuda and cpu
 
@@ -202,11 +210,8 @@ class Attend(nn.Module):
             # assert not exists(prev_attn), 'residual attention not compatible with flash attention'
             # return self.flash_attn(q, k, v, mask = mask, attn_bias = attn_bias)
 
-            flash_attention = FlashAttention(
-                dim=self.dim,
-                heads = self.heads,
-                causal=self.causal
-            ).to(device)
+            #move flashattention to the right device
+            self.flash_attention.to(device)
 
             #rearrange the inputs for FlashAttention
             q = rearrange(q, 'b h n d -> b n (h d)')
@@ -214,7 +219,7 @@ class Attend(nn.Module):
             v = rearrange(v, 'b h n d -> b n (h d)')
 
             #apply FlashAttention
-            out = flash_attention(q, context=k, mask=mask)
+            out = self.flash_attention(q, context=k, mask=mask)
             out = rearrange(out, 'b n (h d) -> b h n d')
 
             return out, None
