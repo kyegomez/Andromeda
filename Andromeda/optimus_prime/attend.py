@@ -11,6 +11,9 @@ from dataclasses import dataclass
 
 from einops import rearrange
 
+from Andromeda.optimus_prime.flash_attn import FlashAttention
+
+
 # constants
 
 EfficientAttentionConfig = namedtuple('EfficientAttentionConfig', ['enable_flash', 'enable_math', 'enable_mem_efficient'])
@@ -194,8 +197,25 @@ class Attend(nn.Module):
         scale = default(self.scale, q.shape[-1] ** -0.5)
 
         if self.flash:
-            assert not exists(prev_attn), 'residual attention not compatible with flash attention'
-            return self.flash_attn(q, k, v, mask = mask, attn_bias = attn_bias)
+            # assert not exists(prev_attn), 'residual attention not compatible with flash attention'
+            # return self.flash_attn(q, k, v, mask = mask, attn_bias = attn_bias)
+
+            flash_attention = FlashAttention(
+                dim=q.shape[-1],
+                heads = self.heads,
+                causal=self.causal
+            ).to(device)
+
+            #rearrange the inputs for FlashAttention
+            q = rearrange(q, 'b h n d -> b n (h d)')
+            k = rearrange(k, 'b h n d -> b n (h d)')
+            v = rearrange(v, 'b h n d -> b n (h d)')
+
+            #apply FlashAttention
+            out = flash_attention(q, context=k, mask=mask)
+            out = rearrange(out, 'b n (h d) -> b h n d')
+
+            return out, None
 
         kv_einsum_eq = 'b j d' if k.ndim == 3 else 'b h j d'
 
