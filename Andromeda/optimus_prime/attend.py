@@ -201,7 +201,7 @@ class Attend(nn.Module):
             # return self.flash_attn(q, k, v, mask = mask, attn_bias = attn_bias)
 
             flash_attention = FlashAttention(
-                dim=q.shape[-1],
+                dim=self.dim,
                 heads = self.heads,
                 causal=self.causal
             ).to(device)
