@@ -20,7 +20,7 @@ from lion_pytorch import Lion
 # from palm_rlhf_pytorch import PaLM
 # from palm_rlhf_pytorch.palm import LayerNorm, TransformerWrapper
 from torch.nn import LayerNorm
-from Andromeda.optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
+from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 from torch.distributed.algorithms._checkpoint.checkpoint_wrapper import (
     CheckpointImpl, apply_activation_checkpointing, checkpoint_wrapper)
 
@@ -37,7 +37,7 @@ from transformers import (AutoTokenizer, default_data_collator,
                           get_cosine_schedule_with_warmup,
                           get_linear_schedule_with_warmup, set_seed)
 
-from Andromeda.utils.stable_adamw import StableAdamWUnfused
+from utils.stable_adamw import StableAdamWUnfused
 
 
 # constants
