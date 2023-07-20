@@ -1039,7 +1039,7 @@ class TrainAndromeda:
         accelerator.print(f'Total GPUs: {accelerator.num_processes}')
         set_seed(TrainAndromeda.CFG.SEED)
 
-        model = andromeda_model
+        model = Andromeda.to(accelerator.device)
 
         TrainAndromeda.print_num_params(model, accelerator)
 
