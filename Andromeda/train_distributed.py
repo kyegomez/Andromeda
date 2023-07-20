@@ -66,7 +66,7 @@ class CFG:
     RESUME_FROM_CHECKPOINT: str = True
     CHECKPOINTING_STEPS: int = 1000
     OUTPUT_DIR: str = "AndromedaWeights"
-    ENTITY_NAME: str = "Andromeda"
+    ENTITY_NAME: str = "Andromeda[Mines]"
 
 
 # helpers
