@@ -648,8 +648,8 @@ def Train():
 
 
 def main():
-    # os.environ['MASTER_ADDR'] = 'localhost'
-    # os.environ['MASTER_PORT'] = '9994'
+    os.environ['MASTER_ADDR'] = 'localhost'
+    os.environ['MASTER_PORT'] = '9994'
     
     # # [CRITICAL] Pay attention to this when scaling to multiple GPUs and clusters
     
