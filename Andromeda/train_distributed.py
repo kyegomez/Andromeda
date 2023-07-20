@@ -661,4 +661,4 @@ def Train():
 #     Train()
 
 if __name__ == '__main__':
-    main()
+    Train()
