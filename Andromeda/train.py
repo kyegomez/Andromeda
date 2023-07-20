@@ -656,7 +656,7 @@ def main():
     # # Pay attention to this, use "accelerate config"
 
     os.environ['RANK']       #= str(0) # Number of nodes (servers)
-    os.environ['WORLD_SIZE'] = str(torch.cuda.device_count())
+    os.environ['WORLD_SIZE'] # = str(torch.cuda.device_count())
 
     dist.init_process_group(backend='nccl') #init_method="env://")
     
