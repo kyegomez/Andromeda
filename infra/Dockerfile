@@ -34,4 +34,4 @@ COPY . .
 RUN accelerate config
 
 # Command to run when starting the container
-CMD ["accelerate", "launch", "train_distributed.py"]
+CMD ["accelerate", "launch", "train.py"]
