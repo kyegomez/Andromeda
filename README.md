@@ -136,7 +136,7 @@ This means you're not just contributing to an open source project; you're becomi
 
 ## Becoming a Paid API
 
-As part of our growth strategy, we will be deploying Andromeda as a Paid API. The revenue generated from this API will not only sustain and further the project, but also fund the rewards program.
+As part of our growth strategy, we will be deploying Andromeda as a Paid API. The revenue generated from this API will not only sustain and further the project, but also fund the rewards program. If you contribute anything to make Andromeda you will receive recurring revenue from paid API requests!
 
 ## How to Start Contributing
 
