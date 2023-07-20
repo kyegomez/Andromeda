@@ -17,8 +17,8 @@ from accelerate.utils import (DummyOptim, DummyScheduler,
                               InitProcessGroupKwargs)
 from datasets import concatenate_datasets, load_dataset
 from lion_pytorch import Lion
-# from palm_rlhf_pytorch import PaLM
-# from palm_rlhf_pytorch.palm import LayerNorm, TransformerWrapper
+
+
 from torch.nn import LayerNorm
 from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 from torch.distributed.algorithms._checkpoint.checkpoint_wrapper import (
@@ -39,6 +39,12 @@ from transformers import (AutoTokenizer, default_data_collator,
 
 from utils.stable_adamw import StableAdamWUnfused
 
+############ SETUP CONFIG
+import torch.distributed as dist
+
+dist.init_process_group(backend='nccl', init_method="env://")
+
+################
 
 # constants
 class CFG:
