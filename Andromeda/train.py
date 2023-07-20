@@ -44,12 +44,12 @@ from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEm
 from model import Andromeda
 
 
-############ SETUP CONFIG
-# import torch.distributed as dist
+########### SETUP CONFIG
+import torch.distributed as dist
 
-# dist.init_process_group(backend='nccl', init_method="env://")
+dist.init_process_group(backend='nccl') #init_method="env://")
 
-################
+###############
 
 class CFG:
     BATCH_SIZE = 3
