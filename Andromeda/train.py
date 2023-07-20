@@ -500,7 +500,7 @@ def Train():
     if CFG.USE_ACTIVATION_CHECKPOINTING:
         activation_checkpointing(model, accelerator)
 
-    model = accelerator.prepare(model)
+    # model = accelerator.prepare(model, train_dataloader)
 
     # dataloaders
 
@@ -513,8 +513,9 @@ def Train():
         train_dataset, batch_size=CFG.BATCH_SIZE, collate_fn=default_data_collator,
     )
 
-    # optimizer
+    model = accelerator.prepare(model, train_loader)
 
+    # optimizer
     optim = decoupled_optimizer(
         model=model,
         learning_rate=CFG.LEARNING_RATE, 
