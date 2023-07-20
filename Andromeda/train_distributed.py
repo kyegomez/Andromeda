@@ -19,8 +19,6 @@ from datasets import concatenate_datasets, load_dataset
 from lion_pytorch import Lion
 
 from torch.nn import LayerNorm
-from torch.nn import LayerNorm
-from Andromeda.optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 
 from torch.distributed.algorithms._checkpoint.checkpoint_wrapper import (
     CheckpointImpl, apply_activation_checkpointing, checkpoint_wrapper)
