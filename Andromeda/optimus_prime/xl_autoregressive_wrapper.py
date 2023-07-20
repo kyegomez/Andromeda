@@ -5,7 +5,7 @@ from torch import nn
 import torch.nn.functional as F
 
 from einops import rearrange, pack, unpack
-from Andromeda.optimus_prime.autoregressive_wrapper import top_p, top_k, eval_decorator
+from optimus_prime.autoregressive_wrapper import top_p, top_k, eval_decorator
 
 # helper functions
 
