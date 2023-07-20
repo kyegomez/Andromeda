@@ -1,3 +1,5 @@
+<div align="center">
+
 # [READY FOR TRAINING, help us with the strategy!](https://www.figma.com/file/pfaU8Nhyw0EdXuT6z4Hutw/Andromeda-Strategy?type=whiteboard&node-id=0%3A1&t=Tub1wIzaPAXt2i86-1)
 
 # Agora
@@ -8,6 +10,10 @@ Since Andromeda is ready to train Agora is actively seeking cloud providers or g
 ![Agora banner](agora-banner.png)
 
 [Join our Agora discord and contribute to this project or 40+ others!](https://discord.gg/qUtxnK2NMf)
+
+</div>
+
+---
 
 # Andromeda: Ultra-Fast and Ultra-Intelligent SOTA Language Model 🚀🌌
 
