@@ -485,7 +485,7 @@ def Train():
 
     set_seed(CFG.SEED)
 
-    model = Andromeda.to(accelerator.device)
+    model = Andromeda
 
     print_num_params(model, accelerator)
 
