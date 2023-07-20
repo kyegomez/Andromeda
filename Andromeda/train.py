@@ -39,7 +39,7 @@ from utils.stable_adamw import StableAdamWUnfused
 from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 
 
-import bitsandbytes as bnb
+# import bitsandbytes as bnb
 
 from model import Andromeda
 
@@ -378,10 +378,10 @@ def decoupled_optimizer(
         optimizer = StableAdamWUnfused(
             grouped_params, lr=learning_rate, betas=(beta_1, beta_2),
         )
-    elif optimizer_type=="Adam8bit":
-        optimizer = bnb.optim.Adam8bit(grouped_params, lr=learning_rate, betas=(beta_1, beta_2))
-    elif optimizer_type=="Lion8Bit":
-        optimizer = bnb.optim.Lion8bit(grouped_params, lr=learning_rate, betas=(beta_1, beta_2))
+    # elif optimizer_type=="Adam8bit":
+    #     optimizer = bnb.optim.Adam8bit(grouped_params, lr=learning_rate, betas=(beta_1, beta_2))
+    # elif optimizer_type=="Lion8Bit":
+    #     optimizer = bnb.optim.Lion8bit(grouped_params, lr=learning_rate, betas=(beta_1, beta_2))
     else:
         raise ValueError(
             "Invalid optimizer_type. Expected 'lion', 'adamw', 'deepspeed' or 'stable_adamw', got: {}".format(
@@ -521,7 +521,7 @@ def Train():
         weight_decay=CFG.WEIGHT_DECAY, 
         beta_1=0.90, 
         beta_2=0.95, 
-        optimizer_type='Adam8bit',  
+        optimizer_type='stable_adamw',  
         use_fsdp=True,
         accelerator=accelerator
     )
