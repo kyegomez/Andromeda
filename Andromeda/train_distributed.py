@@ -65,8 +65,8 @@ class CFG:
     USE_ACTIVATION_CHECKPOINTING: bool = True
     RESUME_FROM_CHECKPOINT: str = True
     CHECKPOINTING_STEPS: int = 1000
-    OUTPUT_DIR: str = "YOUR_OUTPUT_DIR"
-    ENTITY_NAME: str = "YOUR_ENTITY_NAME"
+    OUTPUT_DIR: str = "AndromedaWeights"
+    ENTITY_NAME: str = "Andromeda"
 
 
 # helpers
