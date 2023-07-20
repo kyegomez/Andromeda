@@ -15,7 +15,7 @@ Since Andromeda is ready to train Agora is actively seeking cloud providers or g
 
 Andromeda is a state-of-the-art language model that pushes the boundaries of natural language understanding and generation. Designed for high performance and efficiency, Andromeda is built upon advanced techniques that make it a strong contender against the likes of OpenAI's GPT-4 and PALM with features like:
 
-* Process Ultra Long Sequences of 32,000-200,000+ context lengths lightning :fire: :closed_book: 
+* Process Ultra Long Sequences of 32,000-200,000+ context lengths eas :fire: :closed_book: 
 
 * Process those Ultra Long Sequences Ultra Fast with 32,000+ tokens in under 100ms ⚡️ ⚡️ 
 
