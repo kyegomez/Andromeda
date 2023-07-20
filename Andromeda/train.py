@@ -377,9 +377,10 @@ def decoupled_optimizer(
         optimizer = StableAdamWUnfused(
             grouped_params, lr=learning_rate, betas=(beta_1, beta_2),
         )
-    #preferably use this or integrate other optimizers from bnb
     elif optimizer_type=="Adam8bit":
         optimizer = bnb.optim.Adam8bit(grouped_params, lr=learning_rate, betas=(beta_1, beta_2))
+    elif optimizer_type=="Lion8Bit":
+        optimizer = bnb.optim.Lion8bit(grouped_params, lr=learning_rate, betas=(beta_1, beta_2))
     else:
         raise ValueError(
             "Invalid optimizer_type. Expected 'lion', 'adamw', 'deepspeed' or 'stable_adamw', got: {}".format(
