@@ -40,18 +40,35 @@ Andromeda is a state-of-the-art language model that pushes the boundaries of nat
 ---
 
 
-# Usage
-There are 2 methods to use Andromeda, 1 by `pip install Andromeda-llm` and the other by `git clone`. [Head over to the Training SOP for more](DOCs/TRAINING.md) and Head over to the Documentation for more!
 
-# Documentation
-* [Click here for the documentation.](https://github.com/kyegomez/Andromeda/blob/master/DOCs/DOCUMENTATION.md)
 
-## Method 1
+## Table of Contents
 
-Get started:
+- [Usage](#usage)
+- [Documentation](#documentation)
+- [Contributing to Andromeda](#contributing-to-andromeda)
+- [Roadmap](#roadmap)
 
-1. Clone the repository and install the required packages.
+---
 
+## Usage
+
+There are two methods to use Andromeda:
+
+1. Install Andromeda via `pip install Andromeda-llm`.
+2. Clone the repository.
+
+For detailed instructions, refer to the [Training SOP](DOCs/TRAINING.md) and [Documentation](https://github.com/kyegomez/Andromeda/blob/master/DOCs/DOCUMENTATION.md).
+
+## Documentation
+
+For detailed documentation, click [here](https://github.com/kyegomez/Andromeda/blob/master/DOCs/DOCUMENTATION.md).
+
+### Method 1
+
+To get started:
+
+1. Clone the repository and install the required packages:
 
 ```
 git clone https://github.com/kyegomez/Andromeda
@@ -61,88 +78,59 @@ cd Andromeda
 python3 train.py
 ```
 
-# Training
+For further instructions, refer to the [Training SOP](DOCs/TRAINING.md).
 
-First:
+## Training
 
-`Accelerate Config`
+1. Set the environment variables:
+   - `ENTITY_NAME`: Your wandb project name
+   - `OUTPUT_DIR`: Directory to save the weights (e.g., `./weights`)
 
-Enable Deepspeed 3: 
+2. Configure the training:
+   - Accelerate Config
+   - Enable Deepspeed 3
+   - Accelerate launch train_distributed_accelerate.py
 
-`Accelerate launch train_distributed_accelerate.py`
+For more information, refer to the [Training SOP](DOCs/TRAINING.md).
 
-# Environment variables
+## Dataset Building
 
-* `ENTITY_NAME` ==> Your wandb project name
+To preprocess a different dataset similar to the C4 dataset used during training, use the `build_dataset.py` script. This script pre-tokenizes the data, chunks it into blocks of a specified sequence length, and uploads it to the Huggingface hub.
 
-* `OUTPUT_DIR` ==> Where you want the weights to go when it's finished training for example inside the root directory you can do something like: `./weights` and it'll create a folder called weights INSIDE of the Andromeda folder
-
-## Dataset building building
-
-Data
-You can preprocess a different dataset in a way similar to the C4 dataset used during training by running the build_dataset.py script. This will pre-tokenize, chunk the data in blocks of a specified sequence length, and upload to the Huggingface hub. For example:
-
-```python3 Andromeda/build_dataset.py --seed 42 --seq_len 8192 --hf_account "HUGGINGFACE APIKEY" --tokenizer "EleutherAI/gpt-neox-20b" --dataset_name "EleutherAI/the_pile_deduplicated"```
-
-
-
-# Inference
-
-```python3 inference.py "My dog is very cute" --seq_len 256 --temperature 0.8 --filter_thres 0.9 --model "andromeda"``` 
-
-Not yet we need to submit model to pytorch hub
-
-
-
-
-## Why Andromeda? 🌠💡
-
-Andromeda can potentially be finetuned with 100k+ token sequence length.
-Andromeda is a state-of-the-art language model that leverages advanced techniques to optimize its performance and efficiency. Some of these techniques include alibi positional bias, rotary position encodings (xpos), flash attention, and deep normalization (deepnorm). Let's explore the benefits of these techniques and provide some usage examples.
-
-[Model Architecture methods](DOCs/MODEL_ARCHITECTURE)
-
-### Model Architecture 🧠🔧
+Example command:
 
 ```python
-Andromeda = TransformerWrapper(
-    num_tokens=64007,
-    max_seq_len=8192,
-    use_abs_pos_emb=False,
-    # tokenizer=tokenizer,
-    embedding_provider=AndromedaEmbedding(),
-    attn_layers = Decoder(
-        dim=2560, # 2048
-        depth=32, # 16
-        dim_head=128,
-        heads=24,
-        alibi_pos_bias=True,
-        alibi_num_heads=12,
-        rotary_xpos=True,
-        attn_flash = True,
-        deepnorm=True,
-        shift_tokens=1,
-        attn_one_kv_head = True,
-        qk_norm=True,
-        attn_qk_norm=True,
-        attn_qk_norm_dim_scale=True # set this to True, in addition to `attn_qk_norm = True`
-    )
-)
-
-Andromeda = AutoregressiveWrapper(Andromeda)
+python3 Andromeda/build_dataset.py --seed 42 --seq_len 8192 --hf_account "HUGGINGFACE APIKEY" --tokenizer "EleutherAI/gpt-neox-20b" --dataset_name "EleutherAI/the_pile_deduplicated"
 ```
 
+## Inference
 
-# Andromeda Principles
-- **Efficiency**: Andromeda incorporates cutting-edge optimization techniques, such as attention flashing, rotary position encodings, and deep normalization, resulting in efficient training and inference.
+```python
+python3 inference.py "My dog is very cute" --seq_len 256 --temperature 0.8 --filter_thres 0.9 --model "andromeda"
+```
 
-- **Flexibility**: The modular design of Andromeda allows for easy adaptation to various tasks and domains, making it a versatile choice for a wide range of applications.
+(Note: Model submission to PyTorch Hub is still pending.)
 
-- **Scalability**: Andromeda's architecture is designed to scale with the ever-growing computational resources and data sizes, ensuring its continuous relevance in the NLP landscape.
+## Why Andromeda?
 
-- **Community-driven**: As an open-source project, Andromeda thrives on contributions from the community, fostering an environment of collaboration, innovation, and continuous improvement.
+Andromeda offers several advantages:
+
+- And romeda can potentially be fine-tuned with a 100k+ token sequence length.
+- It incorporates advanced techniques, including alibi positional bias, rotary position encodings (xpos), flash attention, and deep normalization (deepnorm), to optimize performance and efficiency.
+
+For detailed information about the model architecture and methods, refer to the [Model Architecture](DOCs/MODEL_ARCHITECTURE.md) documentation.
+
+## Andromeda Principles
+
+Andromeda is built on key principles:
+
+- **Efficiency**: Andromeda leverages optimization techniques, such as attention flashing, rotary position encodings, and deep normalization, to achieve efficient training and inference.
+- **Flexibility**: The modular design of Andromeda allows easy adaptation to various tasks and domains, making it versatile for a wide range of applications.
+- **Scalability**: Andromeda's architecture is designed to scale with increasing computational resources and data sizes, ensuring its relevance in the NLP landscape.
+- **Community-driven**: As an open-source project, Andromeda thrives on contributions from the community, fostering collaboration, innovation, and continuous improvement.
 
 Join us on this exciting journey to create a powerful, efficient, and intelligent language model that will revolutionize the NLP landscape! 🚀🌟
+
 
 ## Get Involved
 
@@ -213,6 +201,14 @@ Thank you for considering contributing to Andromeda. Your expertise and commitme
 
 
 * Establish Reinforcement Scripts to train on rewards from Human and Agent feedback
+
+
+
+
+
+
+
+
 
 
 
