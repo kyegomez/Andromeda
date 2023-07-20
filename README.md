@@ -44,26 +44,7 @@ There are 2 methods to use Andromeda, 1 by `pip install Andromeda-llm` and the o
 # Documentation
 * [Click here for the documentation.](https://github.com/kyegomez/Andromeda/blob/master/DOCs/DOCUMENTATION.md)
 
-# Method1
-First `pip install Andromeda-llm` then
-
-```python
-import torch
-from Andromeda import Andromeda, Train
-
-
-x = torch.randint(0, 20000, (1, 1024))
-
-Andromea(x)
-
-# or train
-
-Train()
-
-```
-
-
-## Method 2
+## Method 1
 
 Get started:
 
@@ -75,7 +56,7 @@ git clone https://github.com/kyegomez/Andromeda
 cd Andromeda
 pip3 install -r requirements.txt
 cd Andromeda
-python3 training_distributed.py
+python3 train.py
 ```
 
 # Training
@@ -152,8 +133,14 @@ If you're ready to become a part of Andromeda and contribute to the future of mu
 
 Thank you for considering contributing to Andromeda. Your expertise and commitment to this project are what make it thrive. Let's build the future of multimodal embeddings together.
 
+## Why Andromeda? 🌠💡
 
-## Model Architecture 🧠🔧
+Andromeda can potentially be finetuned with 100k+ token sequence length.
+Andromeda is a state-of-the-art language model that leverages advanced techniques to optimize its performance and efficiency. Some of these techniques include alibi positional bias, rotary position encodings (xpos), flash attention, and deep normalization (deepnorm). Let's explore the benefits of these techniques and provide some usage examples.
+
+[Model Architecture methods](DOCs/MODEL_ARCHITECTURE)
+
+### Model Architecture 🧠🔧
 
 ```python
 Andromeda = TransformerWrapper(
@@ -183,6 +170,19 @@ Andromeda = TransformerWrapper(
 Andromeda = AutoregressiveWrapper(Andromeda)
 ```
 
+
+# Andromeda Principles
+- **Efficiency**: Andromeda incorporates cutting-edge optimization techniques, such as attention flashing, rotary position encodings, and deep normalization, resulting in efficient training and inference.
+
+- **Flexibility**: The modular design of Andromeda allows for easy adaptation to various tasks and domains, making it a versatile choice for a wide range of applications.
+
+- **Scalability**: Andromeda's architecture is designed to scale with the ever-growing computational resources and data sizes, ensuring its continuous relevance in the NLP landscape.
+
+- **Community-driven**: As an open-source project, Andromeda thrives on contributions from the community, fostering an environment of collaboration, innovation, and continuous improvement.
+
+Join us on this exciting journey to create a powerful, efficient, and intelligent language model that will revolutionize the NLP landscape! 🚀🌟
+
+
 ## Roadmap 🗺️📍
 
 1. **Training phase**: Train Andromeda on a large-scale dataset to achieve SOTA performance in various natural language processing tasks.
@@ -197,90 +197,17 @@ Andromeda = AutoregressiveWrapper(Andromeda)
 
 4. **Community-driven development**: Encourage open-source contributions, including pre-processing improvements, advanced training techniques, and novel use cases.
 
-## Why Andromeda? 🌠💡
-
-Andromeda can potentially be finetuned with 100k+ token sequence length.
-Andromeda is a state-of-the-art language model that leverages advanced techniques to optimize its performance and efficiency. Some of these techniques include alibi positional bias, rotary position encodings (xpos), flash attention, and deep normalization (deepnorm). Let's explore the benefits of these techniques and provide some usage examples.
-
-### Alibi Positional Bias
-
-Alibi positional bias allows the model to learn relative positions between tokens, enabling it to better capture the relationships and dependencies between tokens in a sequence.
-
-Usage example:
-
-```python
-attn_layers = Decoder(
-    ...
-    alibi_pos_bias=True,
-    alibi_num_heads=4,
-    ...
-)
-```
-
-### Rotary Position Encodings (xpos)
-
-Rotary position encodings introduce a more efficient way to encode positions in the input sequence. They avoid the need for absolute positional embeddings, reducing the model's memory footprint and improving training speed.
-
-Usage example:
-
-```python
-attn_layers = Decoder(
-    ...
-    rotary_xpos=True,
-    ...
-)
-```
-
-### Flash Attention
-
-Flash attention speeds up the self-attention mechanism by reducing the number of attention computations. It accelerates training and inference while maintaining a high level of performance.
-
-Usage example:
-
-```python
-attn_layers = Decoder(
-    ...
-    attn_flash=True,
-    ...
-)
-```
-
-Usage example:
-
-```python
-attn_layers = Decoder(
-    ...
-    deepnorm=True,
-    ...
-)
-```
-
-### Deep Normalization (deepnorm)
-
-Deep normalization is a technique that normalizes the activations within a layer, helping with training stability and convergence. It allows the model to better learn complex patterns and generalize to unseen data.
-
-# Andromeda Principles
-- **Efficiency**: Andromeda incorporates cutting-edge optimization techniques, such as attention flashing, rotary position encodings, and deep normalization, resulting in efficient training and inference.
-
-- **Flexibility**: The modular design of Andromeda allows for easy adaptation to various tasks and domains, making it a versatile choice for a wide range of applications.
-
-- **Scalability**: Andromeda's architecture is designed to scale with the ever-growing computational resources and data sizes, ensuring its continuous relevance in the NLP landscape.
-
-- **Community-driven**: As an open-source project, Andromeda thrives on contributions from the community, fostering an environment of collaboration, innovation, and continuous improvement.
-
-Join us on this exciting journey to create a powerful, efficient, and intelligent language model that will revolutionize the NLP landscape! 🚀🌟
 
 ## Todo:
 
 * [Create the best and most validated, reliable training => finetuning strategy](https://www.figma.com/file/pfaU8Nhyw0EdXuT6z4Hutw/Andromeda-Strategy?type=whiteboard&node-id=0%3A1&t=Tub1wIzaPAXt2i86-1)
 
-* [Integrate Token Monster ](https://github.com/alasdairforsythe/tokenmonster)
+* Establish FineTuning scripts using quantization + 4bit precision, + other tactics like LoRA
 
 * Establish 200k instruction sample long for Tool API Calls
 
 * [Train on Gorilla Dataset](https://github.com/ShishirPatil/gorilla)
 
-* Establish FineTuning scripts using quantization + 4bit precision, + other tactics like LoRA
 
 * Establish Reinforcement Scripts to train on rewards from Human and Agent feedback
 
