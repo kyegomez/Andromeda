@@ -17,3 +17,4 @@ memory-profiler
 rouge
 nltk
 scikit-learn
+wandb

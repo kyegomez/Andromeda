@@ -41,6 +41,8 @@ from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEm
 
 import bitsandbytes as bnb
 
+from model import Andromeda
+
 
 ############ SETUP CONFIG
 # import torch.distributed as dist
@@ -482,34 +484,8 @@ def Train():
 
     set_seed(CFG.SEED)
 
-    # tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neox-20b")
+    model = Andromeda.to(accelerator.device)
 
-    model = TransformerWrapper(
-        num_tokens=64007,
-        max_seq_len=8192,
-        use_abs_pos_emb=False,
-        # tokenizer=tokenizer,
-        embedding_provider=AndromedaEmbedding(),
-        #config from concept of minds PALM
-        attn_layers = Decoder(
-            dim=2560, # 2048
-            depth=32, # 16
-            dim_head=128,
-            heads=24,
-            alibi_pos_bias=True,
-            alibi_num_heads=12,
-            rotary_xpos=True,
-            attn_flash = True,
-            deepnorm=True,
-            shift_tokens=1,
-            attn_one_kv_head = True,
-            qk_norm=True,
-            attn_qk_norm=True,
-            attn_qk_norm_dim_scale=True # set this to True, in addition to `attn_qk_norm = True`
-        )
-    ).to(accelerator.device)
-
-    model = AutoregressiveWrapper(model).to(accelerator.device)
     print_num_params(model, accelerator)
 
     if CFG.USE_FSDP:
@@ -675,6 +651,8 @@ def main():
     
     # [CRITICAL] Pay attention to this when scaling to multiple GPUs and clusters
     
+    # Pay attention to this, use "accelerate config"
+
     os.environ['RANK']       = str(0) # Number of nodes (servers)
     os.environ['WORLD_SIZE'] = str(torch.cuda.device_count())
 
@@ -682,5 +660,5 @@ def main():
     
     Train()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

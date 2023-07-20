@@ -731,9 +731,8 @@ import wandb
 
 from utils.stable_adamw import StableAdamWUnfused
 
-from model import andromeda_tokenizer, andromeda_model
+from model import AndromedaTokenizer, Andromeda
 
-from data_streaming import DatasetElement
 
 class TrainAndromeda:
     class CFG:
@@ -1122,7 +1121,7 @@ class TrainAndromeda:
         )
         completed_steps = 0
 
-        tokenizer = andromeda_tokenizer
+        tokenizer = AndromedaTokenizer
         
         dataset = DatasetElement(TrainAndromeda.CFG.DATASET_NAME, TrainAndromeda.CFG.DATASET_DATA_COLUMN, tokenizer, sequence_length=TrainAndromeda.CFG.SEQ_LEN, batch_size=TrainAndromeda.CFG.BATCH_SIZE)
         
