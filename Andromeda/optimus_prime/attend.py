@@ -11,7 +11,7 @@ from dataclasses import dataclass
 
 from einops import rearrange
 
-from flash import FlashAttention
+# from flash import FlashAttention
 
 # constants
 
