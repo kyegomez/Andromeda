@@ -1,4 +1,3 @@
-<div align="center">
 
 # [READY FOR TRAINING, help us with the strategy!](https://www.figma.com/file/pfaU8Nhyw0EdXuT6z4Hutw/Andromeda-Strategy?type=whiteboard&node-id=0%3A1&t=Tub1wIzaPAXt2i86-1)
 
@@ -11,7 +10,7 @@ Since Andromeda is ready to train Agora is actively seeking cloud providers or g
 
 [Join our Agora discord and contribute to this project or 40+ others!](https://discord.gg/qUtxnK2NMf)
 
-</div>
+
 
 ---
 
@@ -59,10 +58,9 @@ Andromeda is a state-of-the-art language model that pushes the boundaries of nat
 
 ## Usage
 
-There are two methods to use Andromeda:
+There are two methods to use Andromeda but pip does not work now.
 
-1. Install Andromeda via `pip install Andromeda-llm`.
-2. Clone the repository.
+1. Clone the repository.
 
 For detailed instructions, refer to the [Training SOP](DOCs/TRAINING.md) and [Documentation](https://github.com/kyegomez/Andromeda/blob/master/DOCs/DOCUMENTATION.md).
 
