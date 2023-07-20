@@ -73,6 +73,7 @@ class CFG:
 
 
 def print_num_params(model, accelerator: Accelerator):
+    # n_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     n_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     accelerator.print(f"Number of parameters in model: {n_params}")
 
@@ -485,7 +486,7 @@ def Train():
 
     set_seed(CFG.SEED)
 
-    model = Andromeda
+    model = Andromeda()
 
     print_num_params(model, accelerator)
 
