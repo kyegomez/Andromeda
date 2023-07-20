@@ -47,7 +47,7 @@ from model import Andromeda
 ########### SETUP CONFIG
 import torch.distributed as dist
 
-dist.init_process_group(backend='nccl') #init_method="env://")
+# dist.init_process_group(backend='nccl') #init_method="env://")
 
 ###############
 
@@ -658,7 +658,7 @@ def main():
     os.environ['RANK']       = str(0) # Number of nodes (servers)
     os.environ['WORLD_SIZE'] = str(torch.cuda.device_count())
 
-    torch.distributed.init_process_group()
+    dist.init_process_group(backend='nccl') #init_method="env://")
     
     Train()
 
