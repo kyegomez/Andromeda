@@ -31,7 +31,7 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Execute the accelerate config command
-RUN accelerate config
+# RUN accelerate config
 
 # Command to run when starting the container
-CMD ["accelerate", "launch", "train.py"]
+CMD ["python3", "train.py"]
