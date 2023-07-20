@@ -519,7 +519,7 @@ def Train():
         weight_decay=CFG.WEIGHT_DECAY, 
         beta_1=0.90, 
         beta_2=0.95, 
-        optimizer_type='deepspeed',  
+        optimizer_type='Adam8bit',  
         use_fsdp=True,
         accelerator=accelerator
     )
