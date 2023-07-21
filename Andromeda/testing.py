@@ -7,17 +7,24 @@ import unittest
 
 import torch
 
+import torch.nn.functional as F
+
+from nltk.translate.bleu_score import corpus_bleu
+
+from sklearn.metrics import f1_score
+
 from utils.stable_adamw import StableAdamWUnfused
 
 from inference import EvalAndromeda
 
+model_path = 'checkpoints/step_3450_512/pytorch_model.bin'
+
 class AndromedaTest(unittest.TestCase):
     def setUp(self):
-        self.model_path = 'checkpoints/step_2802_512/pytorch_model.bin'
-
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         
-        self.eval  = EvalAndromeda(path=self.model_path, device=self.device)
+        self.model_path = model_path
+        self.eval       = EvalAndromeda(path=self.model_path, device=self.device)
 
         self.tokenizer = self.eval.tokenizer
         self.model     = self.eval.model
@@ -57,8 +64,101 @@ class AndromedaTest(unittest.TestCase):
         for initial_param, param in zip(initial_params, self.model.parameters()):
             self.assertFalse(torch.equal(initial_param, param), 'Model parameters did not change after an optimizer step')
 
+class FlopsBenchmark:
+    def __init__(self, batch_size=4, num_heads=8, sequence_lengths=[128, 32, 64, 128, 256]):
+        self.batch_size       = batch_size
+        self.sequence_lengths = sequence_lengths # The first sequence length should just be there to let torch deal with the model and not fake further results
+
+        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        
+        self.model_path = model_path
+        self.eval       = EvalAndromeda(path=self.model_path, device=self.device)
+
+        self.tokenizer = self.eval.tokenizer
+        self.model     = self.eval.model
+
+        self.model_hidden_dim = self.model.net.emb_dim
+        self.model_heads_num  = self.model.net.attn_layers.heads_num
+
+    def benchmark(self):
+        times_forward = []
+        tflops_per_s  = []
+
+        for seq_len in self.sequence_lengths:
+            input_tensor = torch.randint(0, 256, (self.batch_size, seq_len), device=self.device).long()
+
+            torch.cuda.synchronize()
+
+            time_forward_0 = time.time()
+            
+            output = self.model(input_tensor)
+            
+            torch.cuda.synchronize()
+            
+            time_forward_1 = time.time()
+
+            time_forward = time_forward_1 - time_forward_0
+            times_forward.append(time_forward)
+            
+            total_flops = 4 * (seq_len ** 2) * (self.model_hidden_dim // self.model_heads_num) * self.model_heads_num
+            tflops_per_s.append((total_flops / time_forward) / 1e12) # Convert to TFLOPs
+
+        for seq_len, elapsed, tflops in zip(self.sequence_lengths, times_forward, tflops_per_s):
+            print(f'Sequence length: {seq_len}, Time elapsed: {elapsed} (s), TFLOPs/s: {tflops}')
+
+class AccuracyBenchmark:
+    def __init__(self):
+        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        
+        self.model_path = model_path
+        self.eval       = EvalAndromeda(path=self.model_path, device=self.device)
+
+        self.tokenizer = self.eval.tokenizer
+        self.model     = self.eval.model
+
+    def compute_perplexity(self, data): # We cannot compare this against models with different tokenizers
+        total_loss = 0
+
+        with torch.no_grad():
+            for text in data:
+                tokens = torch.tensor(self.tokenizer.encode(text))
+                tokens = torch.unsqueeze(tokens, dim=0)
+
+                tokens = tokens.long()
+                tokens = tokens.to(self.device)
+
+                _, loss = self.model(tokens, return_loss=True)
+                
+                total_loss += loss.item()
+        
+            perplexity = torch.exp(torch.tensor(total_loss / len(data)))
+
+        return perplexity
+    
+    def compute_bleu(self, references, hypotheses):
+        bleu = corpus_bleu(references, hypotheses)
+    
+        return bleu
+    
+    def compute_f1(self, true_labels, pred_labels):
+        return f1_score(true_labels, pred_labels, average='weighted')
+
 def main():
-    unittest.main()
+    mode = 'benchmark' # 'test'
+
+    if mode == 'test':
+        unittest.main()
+    elif mode == 'benchmark':
+        flops_benchmark = FlopsBenchmark()
+
+        flops_benchmark.benchmark()
+        
+        accuracy_benchmark = AccuracyBenchmark()
+
+        perplexity = accuracy_benchmark.compute_perplexity(['This is Andromeda!'])
+        print(f'Perplexity: {perplexity}')
+    else:
+        raise Exception(f'Unknown mode {mode}')
 
 if __name__ == '__main__':
     main()

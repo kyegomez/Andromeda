@@ -497,8 +497,8 @@ class TrainAndromeda:
 
                 batch = None
                 
-                tokens, embeddings, positions_idxs, embeddings_positions_idxs = dataset.get_batch()
-                tokens                                                        = torch.tensor(tokens).long().to(accelerator.device)
+                tokens = dataset.get_batch()
+                tokens = torch.tensor(tokens).long().to(accelerator.device)
 
                 _, loss = model(tokens, return_loss=True)
                 

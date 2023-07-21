@@ -59,14 +59,16 @@ class AutoregressiveWrapper(nn.Module):
         mask_prob = 0.
     ):
         super().__init__()
+
         self.pad_value = pad_value
         self.ignore_index = ignore_index
 
         self.net = net
         self.max_seq_len = net.max_seq_len
 
-        # paper shows masking (MLM) in conjunction with autoregressive decoder-only training leads to big improvements https://arxiv.org/abs/2210.13432
+        # Paper shows masking (MLM) in conjunction with autoregressive decoder-only training leads to big improvements https://arxiv.org/abs/2210.13432
         assert mask_prob < 1.
+        
         self.mask_prob = mask_prob
 
     @torch.no_grad()

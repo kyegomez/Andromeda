@@ -1,16 +1,16 @@
 lion-pytorch
 numpy
-# colt5_attention
 einops
-# local_attention
 accelerate
 transformers
-# triton
+triton
 SentencePiece
-bitsandbytes
 datasets
 triton
 deepspeed
 wandb
-# bitsandbytes
+memory-profiler
+rouge
+nltk
+scikit-learn
 torch==2.0.1

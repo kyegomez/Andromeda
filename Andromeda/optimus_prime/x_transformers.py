@@ -365,6 +365,7 @@ class DynamicPositionBias(nn.Module):
 class AlibiPositionalBias(nn.Module):
     def __init__(self, heads, total_heads, **kwargs):
         super().__init__()
+
         self.heads = heads
         self.total_heads = total_heads
 
@@ -943,6 +944,9 @@ class AttentionLayers(nn.Module):
         **kwargs
     ):
         super().__init__()
+        
+        self.heads_num = heads
+
         rotary_pos_emb = rotary_pos_emb or rotary_xpos
 
         ff_kwargs, kwargs = groupby_prefix_and_trim('ff_', kwargs)
