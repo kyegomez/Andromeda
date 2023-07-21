@@ -65,7 +65,7 @@ from utils.stable_adamw import StableAdamWUnfused
 
 from model import andromeda_tokenizer, andromeda_model
 
-from data_streaming import DatasetElement
+from data_handling import DatasetElement
 
 class TrainAndromeda:
     class CFG:

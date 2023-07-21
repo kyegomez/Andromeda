@@ -19,7 +19,7 @@ from transformers import set_seed
 
 from model import andromeda_tokenizer, andromeda_model
 
-from data_streaming import DatasetElement
+from data_handling import DatasetElement
 
 class EvalAndromeda:
     def __init__(self, path, seed=42, device=None):

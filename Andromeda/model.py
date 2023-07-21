@@ -12,10 +12,10 @@ andromeda_model = TransformerWrapper(
     embedding_provider=AndromedaEmbedding(),
 
     attn_layers = Decoder(
-        dim=32, # 2560
-        depth=2, # 32
-        dim_head=8, # 128
-        heads=4, # 24
+        dim=768, # 2560
+        depth=12, # 32
+        dim_head=128, # 128
+        heads=8, # 24
         alibi_pos_bias=True,
         alibi_num_heads=4, # 12
         rotary_xpos=False, # Why?!

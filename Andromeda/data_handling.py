@@ -35,7 +35,7 @@ class DatasetElement: # This class contains information about a single dataset, 
 
         self.dataset_skip_num = 0 # We would like to start from a specific dataset index when resuming the training run
 
-        self.dataset_buffer_size = 100 # 100_000 # Avoiding spike losses when streaming=True, might create RAM-related issues
+        self.dataset_buffer_size = 100_000 # Avoiding spike losses when streaming=True, might create RAM-related issues
         
         self.dataset_pretokenized = False
 
