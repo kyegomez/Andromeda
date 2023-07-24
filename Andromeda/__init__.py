@@ -1,3 +1,3 @@
-from Andromeda.model import AndromedaTokenizer, Andromeda
-from Andromeda.build_dataset import DatasetBuilder
-from Andromeda.train import Train
+from andromeda.model import andromedaTokenizer, Andromeda
+from andromeda.build_dataset import DatasetBuilder
+from andromeda.train import Train

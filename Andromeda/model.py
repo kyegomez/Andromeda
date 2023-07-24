@@ -1,6 +1,6 @@
 import torch 
 from torch.nn import Module
-from optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
+from andromeda.optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 from transformers import AutoTokenizer
 
 class AndromedaTokenizer:
