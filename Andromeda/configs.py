@@ -1,5 +1,6 @@
 from andromeda.model import AndromedaEmbedding, Andromeda
 
+
 Andromeda1Billion = Andromeda(
     num_tokens=50432,
     max_seq_len=8192,
@@ -123,3 +124,5 @@ Andromeda20Billion = Andromeda(
     attn_qk_norm_dim_scale=True, 
     embedding_provider=AndromedaEmbedding()
 )
+
+#to GPT like 176Billion Parameters 122888 dimension, 96 depth, 96 heads, attn dim head 128

@@ -17,6 +17,8 @@ from torch.distributed.fsdp import (
 from accelerate import Accelerator
 from accelerate.utils import (DummyOptim, DummyScheduler,
                               InitProcessGroupKwargs)
+from accelerate.logging import get_logger
+
 
 from datasets import concatenate_datasets, load_dataset
 from lion_pytorch import Lion
@@ -46,6 +48,8 @@ from andromeda.model import Andromeda
 import torch.distributed as dist
 
 
+logger = get_logger(__name__, log_level="INFO")
+
 class CFG:
     BATCH_SIZE = 3
     GRADIENT_ACCUMULATE_EVERY: int = 1
@@ -62,6 +66,7 @@ class CFG:
     CHECKPOINTING_STEPS: int = 1000
     OUTPUT_DIR: str = 'checkpoints/' # Folder
     ENTITY_NAME: str = "Andromeda"
+    LOGGING_STEPS: int = 100
 
 
 # helpers
@@ -625,6 +630,12 @@ def Train():
 
         if completed_steps >= max_train_steps:
             break
+
+        #logging every CFG.LOGGING STEPS
+        if CFG.LOGGING_STEPS > 0 and step % CFG.LOGGING_STEPS == 0:
+            logger.info(
+                f"Step: {completed_steps}/{max_train_steps}, Loss: {loss.item():.5f}"
+            )
 
     # end training
 
