@@ -28,7 +28,6 @@ setup(
     # "Triton",
     "matplotlib",
     "deepspeed",
-    'bitsandbytes'
   ],
   classifiers=[
     'Development Status :: 4 - Beta',
