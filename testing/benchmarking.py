@@ -7,8 +7,9 @@ import numpy as np
 from memory_profiler import profile
 import tracemalloc
 
+# from andromeda.model import Andromeda
 from andromeda.model import Andromeda
-from andromed.utils.stable_adamw import StableAdamWUnfused
+from andromeda.utils.stable_adamw import StableAdamWUnfused
 
 torch.manual_seed(0)
 if torch.cuda.is_available():
@@ -182,36 +183,36 @@ class FlopsBenchmark:
 
 
 
-import torch.nn.functional as F
-from nltk.translate.bleu_score import corpus_bleu
-from rouge import Rouge
-from sklearn.metrics import f1_score
+# import torch.nn.functional as F
+# from nltk.translate.bleu_score import corpus_bleu
+# from rouge import Rouge
+# from sklearn.metrics import f1_score
 
 
-class AccuracyMetrics:
-    def __init__(self):
-        self.rouge = Rouge()
+# class AccuracyMetrics:
+#     def __init__(self):
+#         self.rouge = Rouge()
     
-    def calculate_perplexity(self, model, data_loader):
-        model.eval()
-        total_loss = 0
-        with torch.no_grad():
-            for batch in data_loader:
-                input_ids, labels = batch
-                output = model(input_ids)
-                loss = F.cross_entropy(output.view(-1, output.size(-1)), labels.view(-1))
-                total_loss += loss.item()
-        return torch.exp(torch.tensor(total_loss / len(data_loader)))
+#     def calculate_perplexity(self, model, data_loader):
+#         model.eval()
+#         total_loss = 0
+#         with torch.no_grad():
+#             for batch in data_loader:
+#                 input_ids, labels = batch
+#                 output = model(input_ids)
+#                 loss = F.cross_entropy(output.view(-1, output.size(-1)), labels.view(-1))
+#                 total_loss += loss.item()
+#         return torch.exp(torch.tensor(total_loss / len(data_loader)))
     
-    def calculate_bleu(self, references, hypotheses):
-        return corpus_bleu(references, hypotheses)
+#     def calculate_bleu(self, references, hypotheses):
+#         return corpus_bleu(references, hypotheses)
     
-    def calculate_rouge(self, references, hypotheses):
-        scores = self.rouge.get_scores(hypotheses, references, avg=True)
-        return scores
+#     def calculate_rouge(self, references, hypotheses):
+#         scores = self.rouge.get_scores(hypotheses, references, avg=True)
+#         return scores
     
-    def calculate_f1(self, true_labels, pred_labels):
-        return f1_score(true_labels, pred_labels, average="weighted")
+#     def calculate_f1(self, true_labels, pred_labels):
+#         return f1_score(true_labels, pred_labels, average="weighted")
 
 
 
