@@ -6,6 +6,8 @@ from functools import partial
 from itertools import chain
 
 import torch
+# import bitsandbytes as bnb
+
 from torch.distributed.fsdp import (
     FullyShardedDataParallel,
     MixedPrecision,
@@ -15,14 +17,14 @@ from torch.distributed.fsdp import (
 from accelerate import Accelerator
 from accelerate.utils import (DummyOptim, DummyScheduler,
                               InitProcessGroupKwargs)
+
 from datasets import concatenate_datasets, load_dataset
 from lion_pytorch import Lion
-
 from torch.nn import LayerNorm
+
 
 from torch.distributed.algorithms._checkpoint.checkpoint_wrapper import (
     CheckpointImpl, apply_activation_checkpointing, checkpoint_wrapper)
-
 from torch.distributed.fsdp.wrap import (
     transformer_auto_wrap_policy
 )
@@ -35,21 +37,13 @@ from transformers import (AutoTokenizer, default_data_collator,
                           get_cosine_schedule_with_warmup,
                           get_linear_schedule_with_warmup, set_seed)
 
+
 from andromeda.utils.stable_adamw import StableAdamWUnfused
 from andromeda.optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
-
-
-# import bitsandbytes as bnb
-
 from andromeda.model import Andromeda
-
 
 ########### SETUP CONFIG
 import torch.distributed as dist
-
-# dist.init_process_group(backend='nccl') #init_method="env://")
-
-###############
 
 
 class CFG:
