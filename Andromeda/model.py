@@ -30,7 +30,7 @@ class Andromeda(Module):
     Andromeda is a transformer-based model architecture. It initializes with 
     a TransformerWrapper and AutoregressiveWrapper with default or user-specified parameters.
     """
-    def __init__(self, num_tokens=50304, 
+    def __init__(self, num_tokens=50432, 
                  max_seq_len=8192, 
                  dim=2560, depth=32, 
                  dim_head=128, 
@@ -86,7 +86,7 @@ class Andromeda(Module):
                     alibi_num_heads=alibi_num_heads,
                     rotary_xpos=rotary_xpos,
                     attn_flash=attn_flash,
-                    deepnorm=deepnorm,
+                    # deepnorm=deepnorm,
                     shift_tokens=shift_tokens,
                     attn_one_kv_head=attn_one_kv_head,
                     qk_norm=qk_norm,
