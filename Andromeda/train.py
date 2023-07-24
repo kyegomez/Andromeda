@@ -40,9 +40,9 @@ from transformers import (AutoTokenizer, default_data_collator,
                           get_linear_schedule_with_warmup, set_seed)
 
 
-from andromeda.utils.stable_adamw import StableAdamWUnfused
-from andromeda.optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
-from andromeda.model import Andromeda
+from Andromeda.utils.stable_adamw import StableAdamWUnfused
+from Andromeda.optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
+from Andromeda.model import Andromeda
 
 ########### SETUP CONFIG
 import torch.distributed as dist
@@ -133,14 +133,14 @@ def fsdp(
         torch.nn.Module: The input model wrapped with FSDP.
     """
     if auto_wrap:
-        andromeda_auto_wrap_policy = partial(
+        Andromeda_auto_wrap_policy = partial(
             transformer_auto_wrap_policy,
             transformer_layer_cls={
                 TransformerWrapper,
             },
         )
     else:
-        andromeda_auto_wrap_policy = None
+        Andromeda_auto_wrap_policy = None
 
     if mp == "bf16":
         mp_fsdp = MixedPrecision(
@@ -188,7 +188,7 @@ def fsdp(
 
     model = FullyShardedDataParallel(
         model,
-        auto_wrap_policy=andromeda_auto_wrap_policy,
+        auto_wrap_policy=Andromeda_auto_wrap_policy,
         mixed_precision=mp_fsdp,
         backward_prefetch=BackwardPrefetch.BACKWARD_PRE,
         sharding_strategy=sharding_strat_fsdp,

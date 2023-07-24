@@ -1,6 +1,6 @@
 import torch 
 from torch.nn import Module
-from andromeda.optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
+from Andromeda.optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 from transformers import AutoTokenizer
 
 class AndromedaTokenizer:
@@ -72,7 +72,7 @@ class Andromeda(Module):
         super().__init__()
 
         try:
-            self.andromeda = TransformerWrapper(
+            self.Andromeda = TransformerWrapper(
                 num_tokens=num_tokens,
                 max_seq_len=max_seq_len,
                 use_abs_pos_emb=use_abs_pos_emb,
@@ -95,7 +95,7 @@ class Andromeda(Module):
                 )
             )
 
-            self.decoder = AutoregressiveWrapper(self.andromeda)
+            self.decoder = AutoregressiveWrapper(self.Andromeda)
 
         except Exception as e:
             print("Failed to initialize Andromeda: ", e)

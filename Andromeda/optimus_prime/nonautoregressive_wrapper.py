@@ -10,7 +10,7 @@ from torch import nn
 from einops import rearrange, repeat, pack, unpack
 
 
-from andromeda.optimus_prime.x_transformers import TransformerWrapper
+from Andromeda.optimus_prime.x_transformers import TransformerWrapper
 from typing import Optional
 
 # constants
