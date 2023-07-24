@@ -23,7 +23,6 @@ setup(
     "accelerate",
     "transformers",
     "SentencePiece",
-    "bitsandbytes",
     "datasets",
     "matplotlib",
     "deepspeed",

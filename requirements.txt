@@ -1,18 +1,16 @@
 torch --index-url https://download.pytorch.org/whl/nightly/cu118
 lion-pytorch
 numpy
-# colt5_attention
 einops
-# local_attention
 accelerate
 transformers
-# triton
+
 SentencePiece
 bitsandbytes
 datasets
 triton
 deepspeed
-bitsandbytes
+# bitsandbytes
 memory-profiler
 rouge
 nltk
