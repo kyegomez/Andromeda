@@ -25,7 +25,6 @@ setup(
     "SentencePiece",
     "bitsandbytes",
     "datasets",
-    # "Triton",
     "matplotlib",
     "deepspeed",
   ],
