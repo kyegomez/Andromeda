@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-  name = 'Andromeda-llm',
+  name = 'TheBestLLMEver',
   packages = find_packages(exclude=['examples']),
   version = '0.0.3',
   license='MIT',
@@ -19,16 +19,14 @@ setup(
     "torch"
     "lion-pytorch",
     "numpy",
-    # colt5_attention
     "einops",
-    # local_attention
     "accelerate",
     "transformers",
-    # triton
     "SentencePiece",
     "bitsandbytes",
     "datasets",
-    "Triton",
+    # "Triton",
+    "matplotlib",
     "deepspeed",
     'bitsandbytes'
   ],
