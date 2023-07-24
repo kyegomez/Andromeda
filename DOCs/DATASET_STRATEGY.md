@@ -61,3 +61,40 @@ If necessary, revisit the data prioritization and preprocessing steps to refine 
 
 [Chain of thought hub](https://github.com/FranxYao/chain-of-thought-hub)
 SFT stands for Style Fine-tuning and RLHF stands for Reinforcement Learning and Human Feedback. These are techniques used in natural language processing to improve the quality and accuracy of generated text. The statement suggests that if these techniques are applied correctly to the 65B LLaMA dataset, it is possible to recreate ChatGPT.
+
+
+# Analysis of Existing Models
+
+### MPT-7B
+
+```python
+Data Source	Number of Tokens in Source	Proportion	Effective Number of Tokens	Epochs
+mC4 3.1.0 - English	417.99 B	0.33	330 B	0.14
+C4 - English - SemDedup 80%	100.42 B	0.299	299 B	2.98
+RedPajama - CommonCrawl	878.45 B	0.1	100 B	0.11
+The Stack - Selected Languages	463.78 B	0.1	100 B	0.22
+RedPajama - Wikipedia - En	4.87 B	0.04	40 B	8.21
+The Stack - Markdown	107.07 B	0.035	35 B	0.33
+S2ORC	48.85 B	0.033	33 B	0.68
+RedPajama - Books	26.02 B	0.03	30B	1.15
+RedPajama - arXiv	28.10 B	0.019	19 B	0.68
+RedPajama - StackExchange	20.54 B	0.014	14 B	0.68
+``` 
+
+# MPT-1B
+
+```
+Training Data
+The model was trained for 200B tokens (batch size 2200, sequence length 2048). It was trained on the following data mix:
+
+67% RedPajama Common Crawl
+15% C4
+4.5% RedPajama GitHub
+4.5% RedPajama Wikipedia
+4.5% RedPajama Books
+2.5% RedPajama Arxiv
+2% RedPajama StackExchange
+
+Each sample was chosen from one of the datasets, with the dataset selected with the probability specified above. The examples were shuffled within each dataset. Each example was constructed from as many sequences from that dataset as were necessary to fill the 2048 sequence length.
+
+```
