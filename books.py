@@ -1,5 +1,5 @@
 # from Andromeda.dataset_builder import DatasetBuilder
-from andromeda import DatasetBuilder
+from andromeda.dataset_builder import DatasetBuilder
 
 builder = DatasetBuilder(
     dataset_name="the_pile_books3",
