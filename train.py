@@ -513,7 +513,7 @@ def Train():
         train_dataset, batch_size=CFG.BATCH_SIZE, collate_fn=default_data_collator,
     )
 
-    model = accelerator.prepare(model) #train_loader)
+    model, train_loader = accelerator.prepare(model, train_loader) #train_loader)
 
     # optimizer
     optim = decoupled_optimizer(
