@@ -44,6 +44,7 @@ class Andromeda(Module):
                 #  deepnorm=True, 
                  shift_tokens=1, 
                  attn_one_kv_head=True, 
+                #  attn_sparse_topk=8,
                  qk_norm=True, 
                  attn_qk_norm=True, 
                  attn_qk_norm_dim_scale=True, 
