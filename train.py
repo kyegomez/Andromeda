@@ -361,8 +361,12 @@ def decoupled_optimizer(
 
     # Iterate over the no_decay list, which contains the names of the parameters without weight decay.
     for param in no_decay:
-        # Append the corresponding parameter from param_dict to the no_decay_param list.
-        no_decay_param.append(param_dict[param])
+        try:
+                
+            # Append the corresponding parameter from param_dict to the no_decay_param list.
+            no_decay_param.append(param_dict[param])
+        except KeyError:
+            print(f"Parameter {param_name} does not exist in the model")
 
     # Create a list called grouped_params that contains two dictionaries.
     # The first dictionary has the decay_param list and the corresponding weight_decay value.
@@ -528,7 +532,7 @@ def Train():
         weight_decay=CFG.WEIGHT_DECAY, 
         beta_1=0.90, 
         beta_2=0.95, 
-        optimizer_type='lion',  
+        optimizer_type='adamw',  
         use_fsdp=True,
         accelerator=accelerator
     )
