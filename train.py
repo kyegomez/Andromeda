@@ -490,7 +490,7 @@ def Train():
             "learning_rate": CFG.LEARNING_RATE,
             "seq_len": CFG.SEQ_LEN,
         },
-        init_kwargs={"wandb": {"entity": CFG.ENTITY_NAME}},
+        # init_kwargs={"wandb": {"entity": CFG.ENTITY_NAME}},
     )
 
     accelerator.print(f"Total GPUS: {accelerator.num_processes}")
