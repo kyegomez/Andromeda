@@ -43,7 +43,7 @@ from transformers import (AutoTokenizer, default_data_collator,
 from Andromeda.utils.stable_adamw import StableAdamWUnfused
 from Andromeda.optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 # from Andromeda.model import Andromeda
-from Andromeda.models import Andromeda
+from Andromeda.model import Andromeda
 
 ########### SETUP CONFIG
 import torch.distributed as dist
