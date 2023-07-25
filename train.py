@@ -367,7 +367,8 @@ def decoupled_optimizer(
             # Append the corresponding parameter from param_dict to the no_decay_param list.
             no_decay_param.append(param_dict[param])
         except KeyError:
-            print(f"Parameter {param_name} does not exist in the model")
+            # print(f"Parameter {param_name} does not exist in the model")
+            pass
 
     # Create a list called grouped_params that contains two dictionaries.
     # The first dictionary has the decay_param list and the corresponding weight_decay value.
