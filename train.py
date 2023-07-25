@@ -547,7 +547,7 @@ def Train():
     NUM_WARMUP_STEPS = int(max_train_steps * 0.01)
     accelerator.print(f"Num warmup steps: {NUM_WARMUP_STEPS}")
 
-    if CFG.USE_DEEPSPEED:
+    if False: # if CFG.USE_DEEPSPEED:
         lr_scheduler = DummyScheduler(
             optim, 
             total_num_steps=max_train_steps * accelerator.num_processes, 
