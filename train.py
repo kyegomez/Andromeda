@@ -50,7 +50,7 @@ import torch.distributed as dist
 
 from accelerate.state import AcceleratorState
 
-state = AcceleratorState()
+# state = AcceleratorState()
 
 
 logger = get_logger(__name__, log_level="INFO")
@@ -471,6 +471,8 @@ def Train():
         log_with="wandb",
         kwargs_handlers=[timeout],
     )
+
+    state = AcceleratorState()
     
     state.deepspeed_plugin.deepspeed_config['train_micro_batch_size_per_gpu'] = CFG.BATCH_SIZE #??????
 
