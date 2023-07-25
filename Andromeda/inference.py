@@ -112,12 +112,12 @@ def main():
 
     andromeda = EvalAndromeda(path='checkpoints/step_44927_6656/pytorch_model.bin')
     
-    num_params = andromeda.get_num_params()
+    num_params = Andromeda.get_num_params()
     print(f'The model has {num_params} parameters')
     
-    _, output = andromeda.generate(prompt)
+    _, output = Andromeda.generate(prompt)
     
-    for metric, value in andromeda.metrics.items():
+    for metric, value in Andromeda.metrics.items():
         print(f'{metric}: {value}\n')
     
     print('\n')

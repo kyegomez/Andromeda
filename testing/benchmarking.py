@@ -7,9 +7,9 @@ import numpy as np
 from memory_profiler import profile
 import tracemalloc
 
-# from andromeda.model import Andromeda
-from andromeda.model import Andromeda
-from andromeda.utils.stable_adamw import StableAdamWUnfused
+# from Andromeda.model import Andromeda
+from Andromeda.model import Andromeda
+from Andromeda.utils.stable_adamw import StableAdamWUnfused
 
 torch.manual_seed(0)
 if torch.cuda.is_available():
