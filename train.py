@@ -516,7 +516,7 @@ def Train():
 
     # optimizer
     optim = decoupled_optimizer(
-        model=model),
+        model=model,
         learning_rate=CFG.LEARNING_RATE, 
         weight_decay=CFG.WEIGHT_DECAY, 
         beta_1=0.90, 
