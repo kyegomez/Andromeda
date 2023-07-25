@@ -74,11 +74,11 @@ class TrainAndromeda:
         SEED: int = 42
         LEARNING_RATE: float = 3e-4
         WEIGHT_DECAY: float = 0.1
-        SEQ_LEN: int = 128 # 8192
+        SEQ_LEN: int = 8 # 128 # 8192
         NUM_CPU: int = multiprocessing.cpu_count()
         USE_DEEPSPEED: bool = True
         USE_FSDP: bool = True
-        USE_PRETOKENIZED: bool = True
+        USE_PRETOKENIZED: bool = False
         USE_ACTIVATION_CHECKPOINTING: bool = True
         RESUME_FROM_CHECKPOINT: str = False
         CHECKPOINTING_STEPS: int = 512 # !
@@ -388,15 +388,6 @@ class TrainAndromeda:
 
         model = accelerator.prepare(model)
 
-        # if TrainAndromeda.CFG.USE_PRETOKENIZED:
-        #     train_dataset = TrainAndromeda.build_pre_tokenized()
-        # else:
-        #     train_dataset = TrainAndromeda.build_dataloaders()
-
-        # train_loader = DataLoader(
-        #     train_dataset, batch_size=TrainAndromeda.CFG.BATCH_SIZE, collate_fn=default_data_collator,
-        # )
-
         optim = TrainAndromeda.decoupled_optimizer(
             model=model,
             learning_rate=TrainAndromeda.CFG.LEARNING_RATE, 
@@ -456,8 +447,18 @@ class TrainAndromeda:
 
         tokenizer = andromeda_tokenizer
         
-        dataset = DatasetElement(TrainAndromeda.CFG.DATASET_NAME, TrainAndromeda.CFG.DATASET_DATA_COLUMN, tokenizer, sequence_length=TrainAndromeda.CFG.SEQ_LEN, batch_size=TrainAndromeda.CFG.BATCH_SIZE)
-        
+        dataset = DatasetElement(
+            TrainAndromeda.CFG.DATASET_NAME,
+            TrainAndromeda.CFG.DATASET_DATA_COLUMN,
+
+            tokenizer,
+
+            sequence_length=TrainAndromeda.CFG.SEQ_LEN,
+            batch_size=TrainAndromeda.CFG.BATCH_SIZE,
+
+            dataset_pretokenized=TrainAndromeda.CFG.USE_PRETOKENIZED
+        )
+
         if TrainAndromeda.CFG.RESUME_FROM_CHECKPOINT:
             path = os.path.join(
                 TrainAndromeda.CFG.OUTPUT_PATH,

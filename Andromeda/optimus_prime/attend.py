@@ -197,6 +197,8 @@ class Attend(nn.Module):
 
         if self.flash:
             assert not exists(prev_attn), 'residual attention not compatible with flash attention'
+
+            # _flash_attn_forward(q, k, v, bias = attn_bias, causal = True)
             return self.flash_attn(q, k, v, mask = mask, attn_bias = attn_bias)
 
         kv_einsum_eq = 'b j d' if k.ndim == 3 else 'b h j d'

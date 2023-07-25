@@ -20,7 +20,7 @@ def sequence_slice(sequence, step_size): # This function slices the string into 
         yield sequence[idx:idx + step_size]
 
 class DatasetElement: # This class contains information about a single dataset, multiple "DatasetElement" (s) could be combined and weighted to create a data mixture
-    def __init__(self, dataset_name, dataset_data_column, tokenizer, dataset_split='train', sequence_length=32, batch_size=8):
+    def __init__(self, dataset_name, dataset_data_column, tokenizer, dataset_split='train', sequence_length=32, batch_size=8, dataset_pretokenized=False):
         self.dataset_name        = dataset_name
         self.dataset_data_column = dataset_data_column
 
@@ -32,12 +32,12 @@ class DatasetElement: # This class contains information about a single dataset, 
         self.tokenizer = tokenizer
         
         self.seed = 42
+        
+        self.dataset_pretokenized = dataset_pretokenized
 
         self.dataset_skip_num = 0 # We would like to start from a specific dataset index when resuming the training run
 
         self.dataset_buffer_size = 100_000 # Avoiding loss spikes when streaming=True, might create RAM-related issues
-        
-        self.dataset_pretokenized = False
 
         self.dataset     = iter(load_dataset(self.dataset_name, split=self.dataset_split, streaming=True).shuffle(buffer_size=self.dataset_buffer_size, seed=self.seed).skip(self.dataset_skip_num + 1))
         self.dataset_idx = 0
