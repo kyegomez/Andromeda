@@ -43,7 +43,7 @@ from transformers import (AutoTokenizer, default_data_collator,
 from Andromeda.utils.stable_adamw import StableAdamWUnfused
 from Andromeda.optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 # from Andromeda.model import Andromeda
-from Andromeda.configs import Andromeda3Billion
+from Andromeda.models import Andromeda
 
 ########### SETUP CONFIG
 import torch.distributed as dist
@@ -498,7 +498,7 @@ def Train():
 
     set_seed(CFG.SEED)
 
-    model = Andromeda3Billion()
+    model = Andromeda()
 
     print_num_params(model, accelerator)
 
