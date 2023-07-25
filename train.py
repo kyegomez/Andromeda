@@ -48,7 +48,7 @@ from Andromeda.model import Andromeda
 import torch.distributed as dist
 
 
-from accelerator.state import AcceleratorState
+from accelerate.state import AcceleratorState
 
 state = AcceleratorState()
 
