@@ -42,7 +42,8 @@ from transformers import (AutoTokenizer, default_data_collator,
 
 from Andromeda.utils.stable_adamw import StableAdamWUnfused
 from Andromeda.optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
-from Andromeda.model import Andromeda
+# from Andromeda.model import Andromeda
+from Andromeda.configs import Andromeda3Billion
 
 ########### SETUP CONFIG
 import torch.distributed as dist
@@ -497,7 +498,7 @@ def Train():
 
     set_seed(CFG.SEED)
 
-    model = Andromeda()
+    model = Andromeda3Billion()
 
     print_num_params(model, accelerator)
 
@@ -547,20 +548,20 @@ def Train():
     NUM_WARMUP_STEPS = int(max_train_steps * 0.01)
     accelerator.print(f"Num warmup steps: {NUM_WARMUP_STEPS}")
 
-    if False: # if CFG.USE_DEEPSPEED:
-        lr_scheduler = DummyScheduler(
-            optim, 
-            total_num_steps=max_train_steps * accelerator.num_processes, 
-            warmup_num_steps=NUM_WARMUP_STEPS
-        )
-    else:
-        lr_scheduler = get_lr_scheduler_with_warmup(
-            optimizer=optim,
-            scheduler_type="cosine",
-            num_warmup_steps=NUM_WARMUP_STEPS,
-            max_train_steps=max_train_steps,
-            grad_accumulate_every=CFG.GRADIENT_ACCUMULATE_EVERY,
-        )
+    # if False: # if CFG.USE_DEEPSPEED:
+    #     lr_scheduler = DummyScheduler(
+    #         optim, 
+    #         total_num_steps=max_train_steps * accelerator.num_processes, 
+    #         warmup_num_steps=NUM_WARMUP_STEPS
+    #     )
+    # else:
+    lr_scheduler = get_lr_scheduler_with_warmup(
+        optimizer=optim,
+        scheduler_type="cosine",
+        num_warmup_steps=NUM_WARMUP_STEPS,
+        max_train_steps=max_train_steps,
+        grad_accumulate_every=CFG.GRADIENT_ACCUMULATE_EVERY,
+    )
 
     # prepare
 
