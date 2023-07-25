@@ -48,6 +48,11 @@ from Andromeda.model import Andromeda
 import torch.distributed as dist
 
 
+from accelerator.state import AcceleratorState
+
+state = AcceleratorState()
+
+
 logger = get_logger(__name__, log_level="INFO")
 
 class CFG:
@@ -466,8 +471,8 @@ def Train():
         log_with="wandb",
         kwargs_handlers=[timeout],
     )
-    # AcceleratorState().deepspeed_plugin.deepspeed_config['train_micro_batch_size_per_gpu'] = 4 #??????
-
+    
+    state.deepspeed_plugin.deepspeed_config['train_micro_batch_size_per_gpu'] = CFG.BATCH_SIZE #??????
 
     accelerator.init_trackers(
         project_name="Andromeda",
