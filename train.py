@@ -57,7 +57,7 @@ from accelerate.state import AcceleratorState
 logger = get_logger(__name__, log_level="INFO")
 
 class CFG:
-    BATCH_SIZE = 3
+    BATCH_SIZE = 1
     GRADIENT_ACCUMULATE_EVERY: int = 1
     SEED: int = 42
     LEARNING_RATE: float = 3e-4 # 1e-4 for lion
