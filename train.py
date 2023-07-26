@@ -60,7 +60,7 @@ class CFG:
     BATCH_SIZE = 1
     GRADIENT_ACCUMULATE_EVERY: int = 1
     SEED: int = 42
-    LEARNING_RATE: float = 3e-4 # 1e-4 for lion
+    LEARNING_RATE: float = 1e-4 #3e-4 # 1e-4 for lion
     WEIGHT_DECAY: float = 0.1
     SEQ_LEN: int = 8192
     NUM_CPU: int = multiprocessing.cpu_count()
@@ -552,7 +552,7 @@ def Train():
         weight_decay=CFG.WEIGHT_DECAY, 
         beta_1=0.90, 
         beta_2=0.95, 
-        optimizer_type='adamw',  
+        optimizer_type='lion',  
         use_fsdp=True,
         accelerator=accelerator
     )
