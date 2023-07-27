@@ -8,8 +8,9 @@ from collections import namedtuple
 from functools import wraps
 from packaging import version
 from dataclasses import dataclass
-
 from einops import rearrange
+
+from Andromeda.optimus_prime.flash import attention
 
 # from flash import FlashAttention
 
@@ -57,6 +58,7 @@ class Attend(nn.Module):
         scale = None,
         qk_norm = False,
         flash = False,
+        triton = False,
     ):
         super().__init__()
         self.scale = scale
@@ -77,12 +79,10 @@ class Attend(nn.Module):
             self.post_softmax_talking_heads = nn.Conv2d(heads, heads, 1, bias = False)
 
         # flash attention
-
         self.flash = flash
         assert not (flash and version.parse(torch.__version__) < version.parse('2.0.0')), 'in order to use flash attention, you must be using pytorch 2.0 or above'
 
         # determine efficient attention configs for cuda and cpu
-
         self.cpu_config = EfficientAttentionConfig(True, True, True)
         self.cuda_config = None
 
@@ -199,6 +199,9 @@ class Attend(nn.Module):
             assert not exists(prev_attn), 'residual attention not compatible with flash attention'
             return self.flash_attn(q, k, v, mask = mask, attn_bias = attn_bias)
             # return FlashAttention(q, k, v, mask=mask, attn_bias=attn_bias )
+
+        if self.triton:
+            return attention(q, k, v, self.casual, scale)
 
         kv_einsum_eq = 'b j d' if k.ndim == 3 else 'b h j d'
 
