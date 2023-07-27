@@ -1,4 +1,3 @@
-import torch 
 from torch.nn import Module
 from Andromeda.optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 from transformers import AutoTokenizer

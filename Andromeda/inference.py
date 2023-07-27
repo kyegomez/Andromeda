@@ -3,7 +3,6 @@ from transformers import AutoTokenizer
 from einops._torch_specific import allow_ops_in_compiled_graph
 
 import argparse
-from Andromeda.model import AndromedaTokenizer, Andromeda
 
 # class AndromedaEval:
 #     def __init__(self, path, seed=42, device=None):

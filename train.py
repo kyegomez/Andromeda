@@ -15,12 +15,11 @@ from torch.distributed.fsdp import (
     ShardingStrategy,
 )
 from accelerate import Accelerator
-from accelerate.utils import (DummyOptim, DummyScheduler,
-                              InitProcessGroupKwargs)
+from accelerate.utils import (DummyOptim, InitProcessGroupKwargs)
 from accelerate.logging import get_logger
 
 
-from datasets import concatenate_datasets, load_dataset
+from datasets import load_dataset
 from lion_pytorch import Lion
 from torch.nn import LayerNorm
 
@@ -41,7 +40,7 @@ from transformers import (AutoTokenizer, default_data_collator,
 
 
 from Andromeda.utils.stable_adamw import StableAdamWUnfused
-from Andromeda.optimus_prime import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
+from Andromeda.optimus_prime import TransformerWrapper, AndromedaEmbedding
 # from Andromeda.model import Andromeda
 from Andromeda.model import AndromedaEmbedding, Andromeda
 
@@ -101,8 +100,9 @@ def activation_checkpointing(
         accelerator (Accelerator, optional): The Accelerate library accelerator. Defaults to None.
     """
     if accelerator is not None:
-        accelerator.print(f"Using activation checkpointing")
-    check_fn = lambda submodule: isinstance(submodule, TransformerWrapper)
+        accelerator.print("Using activation checkpointing")
+    def check_fn(submodule):
+        return isinstance(submodule, TransformerWrapper)
     non_reentrant_wrapper = partial(
         checkpoint_wrapper,
         offload_to_cpu=offload_to_cpu,

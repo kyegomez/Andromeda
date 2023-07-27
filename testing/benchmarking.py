@@ -4,7 +4,6 @@ import torch
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 import numpy as np
-from memory_profiler import profile
 import tracemalloc
 
 # from Andromeda.model import Andromeda
@@ -64,7 +63,7 @@ class SpeedMetrics:
 
     def forward_pass_time(self):
         start_time = time.time()
-        model_input = self.model.decoder.forward(torch.randint(0, 50304, (1, 8192), device=device, dtype=torch.long))[0]
+        self.model.decoder.forward(torch.randint(0, 50304, (1, 8192), device=device, dtype=torch.long))[0]
         end_time = time.time()
         return end_time - start_time
     
@@ -170,7 +169,7 @@ class FlopsBenchmark:
             torch.cuda.synchronize()
 
             start = time.time()
-            output = self.model(x)
+            self.model(x)
             torch.cuda.synchronize()
             elapsed = time.time() - start
 
