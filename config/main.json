@@ -15,7 +15,7 @@
         }, 
         "stage3_gather_16bit_weights_on_model_save": true
     }, 
-    "steps_per_print": inf, 
+    "steps_per_print": 2, 
     "fp16": {
         "enabled": true, 
         "auto_cast": true
