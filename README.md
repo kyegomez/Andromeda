@@ -3,12 +3,13 @@
 
 [And, here is the WANDB link to watch Andromeda train live!](https://wandb.ai/apacai/Andromeda/overview?)
 
+
 # Agora
 Agora is an new open source Multi-Modality AI Research Organization devoted to advancing Humanity to a post-scarcity state!
 
 Since Andromeda is ready to train Agora is actively seeking cloud providers or grant providers to train this all-new revolutionary model and release it open source, if you would like to learn more please email me at `kye@apac.ai`
 
-![Agora banner](agora-banner.png)
+![Agora banner](images/agora-banner.png)
 
 ![Join the Agora discord](https://img.shields.io/discord/1110910277110743103?label=Discord&logo=discord&logoColor=white&style=plastic&color=d7b023)
 
@@ -210,18 +211,8 @@ Thank you for considering contributing to Andromeda. Your expertise and commitme
 
 * [Train on Gorilla Dataset](https://github.com/ShishirPatil/gorilla)
 
-
 * Establish Reinforcement Scripts to train on rewards from Human and Agent feedback
 
-
-
-
-
-
-
-
-
-
-
-
-
+# Benchmarks
+Andromeda utilizes one of the most reliable Attentions ever, flash attention 2.0 triton it consumes 50x less memory than GPT-3 and 10x less than LLAMA
+![AndromedaBanner](images/andromeda_performance.png)
