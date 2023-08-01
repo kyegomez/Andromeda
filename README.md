@@ -85,21 +85,13 @@ For more information, refer to the [Training SOP](DOCs/TRAINING.md).
 
 ## Dataset Building
 
-To preprocess a different dataset similar to the C4 dataset used during training, use the `build_dataset.py` script. This script pre-tokenizes the data, chunks it into blocks of a specified sequence length, and uploads it to the Huggingface hub.
+To preprocess a different dataset similar to the C4 or Falcon dataset used during training, use the `build_dataset.py` script. This script pre-tokenizes the data, chunks it into blocks of a specified sequence length, and uploads it to the Huggingface hub.
 
 Example command:
 
 ```python
 python3 Andromeda/build_dataset.py --seed 42 --seq_len 8192 --hf_account "HUGGINGFACE APIKEY" --tokenizer "EleutherAI/gpt-neox-20b" --dataset_name "EleutherAI/the_pile_deduplicated"
 ```
-
-## Inference
-
-```python
-python3 inference.py "My dog is very cute" --seq_len 256 --temperature 0.8 --filter_thres 0.9 --model "andromeda"
-```
-
-(Note: Model submission to PyTorch Hub is still pending.)
 
 ## Why Andromeda?
 
