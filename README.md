@@ -24,13 +24,11 @@
 
 ![Andromeda Next Generation Open Source Language Model](images/andromeda-banner.png)
 
-Andromeda is a state-of-the-art language model that pushes the boundaries of natural language understanding and generation. Designed for high performance and efficiency, Andromeda is built upon advanced techniques that make it a strong contender against the likes of OpenAI's GPT-4 and PALM with features like:
+Welcome to Andromeda, a high-performance language model that offers exciting possibilities in the realm of natural language understanding and generation. Built for efficiency and speed, Andromeda rivals leading models like OpenAI's GPT-4 and PALM. Features include:
 
-* Process Ultra Long Sequences of 32,000-200,000+ context lengths effortlessly :fire: :closed_book: 
-
-* Process those Ultra Long Sequences Ultra Fast with 32,000+ tokens in under 100ms ⚡️ ⚡️ 
-
-* Reliable and actually useful with superior reasoning capabilities :brain: :brain: 
+- 💼 Handle Ultra Long Sequences (32,000-200,000+ context lengths)
+- ⚡ Ultra Fast Processing (32,000+ tokens in under 100ms)
+- 🎓 Superior Reasoning Capabilities
 
 ---
 
@@ -75,6 +73,11 @@ For further instructions, refer to the [Training SOP](DOCs/TRAINING.md).
 1. Set the environment variables:
    - `ENTITY_NAME`: Your wandb project name
    - `OUTPUT_DIR`: Directory to save the weights (e.g., `./weights`)
+   - `MASTER_ADDR`: For distributed training
+   - `MASTER_PORT` For master port distributed training
+   - `RANK`- Number of nodes services
+   - `WORLD_SIZE` Number of gpus
+
 
 2. Configure the training:
    - Accelerate Config
@@ -102,17 +105,12 @@ Andromeda offers several advantages:
 
 For detailed information about the model architecture and methods, refer to the [Model Architecture](DOCs/MODEL_ARCHITECTURE.md) documentation.
 
-## Andromeda Principles
+# 🎯 Andromeda Principles
 
-Andromeda is built on key principles:
-
-- **Efficiency**: Andromeda leverages optimization techniques, such as attention flashing, rotary position encodings, and deep normalization, to achieve efficient training and inference.
-- **Flexibility**: The modular design of Andromeda allows easy adaptation to various tasks and domains, making it versatile for a wide range of applications.
-- **Scalability**: Andromeda's architecture is designed to scale with increasing computational resources and data sizes, ensuring its relevance in the NLP landscape.
-- **Community-driven**: As an open-source project, Andromeda thrives on contributions from the community, fostering collaboration, innovation, and continuous improvement.
-
-Join us on this exciting journey to create a powerful, efficient, and intelligent language model that will revolutionize the NLP landscape! 🚀🌟
-
+- **Efficiency**: Optimize with techniques like attention flashing, rotary position encodings, and deep normalization.
+- **Flexibility**: Adapt to various tasks and domains for wide applications.
+- **Scalability**: Designed to scale with resources and data sizes.
+- **Community-Driven**: Thrives on contributions from the open-source community.
 
 ## Get Involved
 
@@ -187,7 +185,7 @@ Thank you for considering contributing to Andromeda. Your expertise and commitme
 
 * 
 
-# Benchmarks
+# 📈 Benchmarks
 
 ## Speed
 * Andromeda utilizes one of the most reliable Attentions ever, flash attention 2.0 triton it consumes 50x less memory than GPT-3 and 10x less than LLAMA
@@ -197,4 +195,12 @@ Thank you for considering contributing to Andromeda. Your expertise and commitme
 * We can speed this up even more with dynamic sparse flash attention 2.0
 -----
 
-## Reliability
+<!-- ## Reliability -->
+
+# 🔮 Join the Journey
+
+We're just getting started, and we invite you to join the journey. Let's revolutionize the NLP landscape together! 🚀🌟
+
+* Join Agora and work with 2,000+ AI Engineers to implement all new features
+* Provide compute and help train Andromeda
+* Share the message on how we're liberating this superintelligent and seizing the power from the corrupt and providing it back to you
