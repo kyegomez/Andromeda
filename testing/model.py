@@ -1,3 +1,4 @@
+import torch
 import unittest
 from Andromeda.model import Andromeda
 
@@ -101,9 +102,7 @@ class TestAndromedaExtended(unittest.TestCase):
     def test_model_attn_flash(self):
         for attn_flash in [True, False]:
             model = Andromeda(attn_flash=attn_flash)
-            self.assertEqual(model.Andromeda.attn_layers.attn_flash, attn_flash, f"Attention flash flag is not correctly set for attn_flash={attn_flash
+            self.assertEqual(model.Andromeda.attn_layers.attn_flash, attn_flash, f"Attention flash flag is not correctly set for attn_flash={attn_flash}")
 
-            
 if __name__ == '__main__':
     unittest.main()
-
