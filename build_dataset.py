@@ -3,6 +3,8 @@ from itertools import chain
 from datasets import load_dataset
 from transformers import AutoTokenizer
 
+from huggingface_hub import HfApi
+
 
 class DatasetBuilder:
     def __init__(
@@ -61,7 +63,13 @@ class DatasetBuilder:
         )
 
         if self.hf_account_repo:
-            train_tokenized_dataset.push_to_hub(self.hf_account_repo, private=True)
+            # train_tokenized_dataset.push_to_hub(self.hf_account_repo, private=True)
+            hf_api = HfApi()
+            hf_api.upload(
+                path_or_fileobj=train_tokenized_dataset,
+                repo_id=self.hf_account_repo,
+                repo_type="dataset"
+            )
 
         return train_tokenized_dataset
 
