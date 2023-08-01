@@ -4,16 +4,6 @@
 [And, here is the WANDB link to watch Andromeda train live!](https://wandb.ai/apacai/Andromeda/overview?)
 
 
-# Agora
-Agora is an new open source Multi-Modality AI Research Organization devoted to advancing Humanity to a post-scarcity state!
-
-Since Andromeda is ready to train Agora is actively seeking cloud providers or grant providers to train this all-new revolutionary model and release it open source, if you would like to learn more please email me at `kye@apac.ai`
-
-![Agora banner](images/agora-banner.png)
-
-![Join the Agora discord](https://img.shields.io/discord/1110910277110743103?label=Discord&logo=discord&logoColor=white&style=plastic&color=d7b023)
-
-
 ---
 
 # Andromeda: Ultra-Fast and Ultra-Intelligent SOTA Language Model 🚀🌌
@@ -213,7 +203,7 @@ Thank you for considering contributing to Andromeda. Your expertise and commitme
 
 * Integrate Lora, for efficient finetuning
 
-* Integrate RLHF, ppo from [PALM](https://github.com/lucidrains/PaLM-rlhf-pytorch)
+* Integrate RLHF, reward model, ppo from [PALM](https://github.com/lucidrains/PaLM-rlhf-pytorch)
 
 * 
 
