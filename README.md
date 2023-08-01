@@ -1,11 +1,4 @@
 
-#### [READY FOR TRAINING, help us with the strategy!](https://www.figma.com/file/pfaU8Nhyw0EdXuT6z4Hutw/Andromeda-Strategy?type=whiteboard&node-id=0%3A1&t=Tub1wIzaPAXt2i86-1)
-
-[And, here is the WANDB link to watch Andromeda train live!](https://wandb.ai/apacai/Andromeda/overview?)
-
-
----
-
 # Andromeda: Ultra-Fast and Ultra-Intelligent SOTA Language Model 🚀🌌
 
 ![Andromeda Next Generation Open Source Language Model](images/andromeda-banner.png)
@@ -42,6 +35,12 @@ Andromeda is a state-of-the-art language model that pushes the boundaries of nat
 
 ---
 
+# Updates
+* [READY FOR TRAINING, help us with the strategy!](https://www.figma.com/file/pfaU8Nhyw0EdXuT6z4Hutw/Andromeda-Strategy?type=whiteboard&node-id=0%3A1&t=Tub1wIzaPAXt2i86-1)
+
+* [And, here is the WANDB link to watch Andromeda train live!](https://wandb.ai/apacai/Andromeda/overview?)
+
+---
 
 ## Usage
 
