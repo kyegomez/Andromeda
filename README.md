@@ -207,6 +207,16 @@ Thank you for considering contributing to Andromeda. Your expertise and commitme
 
 * Train to 1B, 3B, 5B, 7B, 10B = Books => Falcon => Math => Code
 
+* Flash Attention2.0 in triton
+
+* Reward Finetune on Human preferences
+
+* Integrate Lora, for efficient finetuning
+
+* Integrate RLHF, ppo from [PALM](https://github.com/lucidrains/PaLM-rlhf-pytorch)
+
+* 
+
 # Benchmarks
 
 ## Speed
