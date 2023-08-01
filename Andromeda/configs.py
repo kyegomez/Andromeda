@@ -2,8 +2,8 @@ from Andromeda.model import AndromedaEmbedding, Andromeda
 
 
 Andromeda1Billion = Andromeda(
-    num_tokens=50432,
-    max_seq_len=8192,
+    num_tokens=25000,
+    max_seq_len=4192,
     dim=2048,
     depth=16,
     dim_head=128,
@@ -13,7 +13,7 @@ Andromeda1Billion = Andromeda(
     alibi_num_heads=4, 
     rotary_xpos=True,
     attn_flash=True, 
-    shift_tokens=1, 
+    # shift_tokens=1, 
     attn_one_kv_head=True, 
     qk_norm=True, 
     attn_qk_norm=True, 
