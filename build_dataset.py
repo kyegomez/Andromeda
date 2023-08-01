@@ -22,11 +22,12 @@ class DatasetBuilder:
     def build_dataset(self):
         tokenizer = AutoTokenizer.from_pretrained(self.tokenizer)
         train_dataset = load_dataset(self.dataset_name, split="train", streaming=True)
+        dataset = train_dataset.shuffle()
 
         def tokenize_function(example):
             return tokenizer([t + tokenizer.eos_token for t in example["text"]])
 
-        tokenized_dataset = train_dataset.map(
+        tokenized_dataset = dataset.map(
             tokenize_function,
             batched=True,
             # num_proc=self.num_cpu,
@@ -59,7 +60,7 @@ class DatasetBuilder:
         )
 
         if self.hf_account_repo:
-            train_tokenized_dataset.push_to_hub(self.hf_account_repo)
+            train_tokenized_dataset.push_to_hub(self.hf_account_repo, private=True)
 
         return train_tokenized_dataset
 
@@ -69,7 +70,7 @@ builder = DatasetBuilder(
     dataset_name="the_pile_books3",
     seq_len=8192,
     # num_cpu=4,
-    hf_account_repo="kye/instruct-math-gptneox-8k",
+    hf_account_repo="kye/thepilebooks3-gptneox-8k",
     tokenizer="EleutherAI/gpt-neox-20b",
 )
 
