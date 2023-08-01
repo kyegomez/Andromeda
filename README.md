@@ -126,9 +126,9 @@ python3 inference.py "My dog is very cute" --seq_len 256 --temperature 0.8 --fil
 ## Why Andromeda?
 
 Andromeda offers several advantages:
-
-- And romeda can potentially be fine-tuned with a 100k+ token sequence length.
-- It incorporates advanced techniques, including alibi positional bias, rotary position encodings (xpos), flash attention, and deep normalization (deepnorm), to optimize performance and efficiency.
+- Andromeda offers reliable processing of 100,000+ sequence lengths extremely fast under 300ms
+- Andromeda's dataset strategy was crafted with atomic precision and attention to detail for creativity and quantitative reasoning.
+- Andromeda is extremely intelligent with the ability to think like a poet or make API Calls to your favorite apps.
 
 For detailed information about the model architecture and methods, refer to the [Model Architecture](DOCs/MODEL_ARCHITECTURE.md) documentation.
 
@@ -205,13 +205,7 @@ Thank you for considering contributing to Andromeda. Your expertise and commitme
 
 * [Create the best and most validated, reliable training => finetuning strategy](https://www.figma.com/file/pfaU8Nhyw0EdXuT6z4Hutw/Andromeda-Strategy?type=whiteboard&node-id=0%3A1&t=Tub1wIzaPAXt2i86-1)
 
-* Establish FineTuning scripts using quantization + 4bit precision, + other tactics like LoRA
-
-* Establish 200k instruction sample long for Tool API Calls
-
-* [Train on Gorilla Dataset](https://github.com/ShishirPatil/gorilla)
-
-* Establish Reinforcement Scripts to train on rewards from Human and Agent feedback
+* Train on strategy, Books => Falcon => Math => Code
 
 # Benchmarks
 
