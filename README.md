@@ -205,7 +205,7 @@ Thank you for considering contributing to Andromeda. Your expertise and commitme
 
 * [Create the best and most validated, reliable training => finetuning strategy](https://www.figma.com/file/pfaU8Nhyw0EdXuT6z4Hutw/Andromeda-Strategy?type=whiteboard&node-id=0%3A1&t=Tub1wIzaPAXt2i86-1)
 
-* Train on strategy, Books => Falcon => Math => Code
+* Train to 1B, 3B, 5B, 7B, 10B => strategy, Books => Falcon => Math => Code
 
 # Benchmarks
 
