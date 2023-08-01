@@ -1,18 +1,6 @@
 
 # Andromeda: Ultra-Fast and Ultra-Intelligent SOTA Language Model 🚀🌌
 
-![Andromeda Next Generation Open Source Language Model](images/andromeda-banner.png)
-
-Andromeda is a state-of-the-art language model that pushes the boundaries of natural language understanding and generation. Designed for high performance and efficiency, Andromeda is built upon advanced techniques that make it a strong contender against the likes of OpenAI's GPT-4 and PALM with features like:
-
-* Process Ultra Long Sequences of 32,000-200,000+ context lengths effortlessly :fire: :closed_book: 
-
-* Process those Ultra Long Sequences Ultra Fast with 32,000+ tokens in under 100ms ⚡️ ⚡️ 
-
-* Reliable and actually useful with superior reasoning capabilities :brain: :brain: 
-
----
-
 <div align="center">
 
 [![Open Bounties](https://img.shields.io/endpoint?url=https%3A%2F%2Fconsole.algora.io%2Fapi%2Fshields%2Fkyegomez%2Fbounties%3Fstatus%3Dopen)](https://console.algora.io/org/kyegomez/bounties?status=open)
@@ -33,6 +21,19 @@ Andromeda is a state-of-the-art language model that pushes the boundaries of nat
 </div>
 
 ---
+
+![Andromeda Next Generation Open Source Language Model](images/andromeda-banner.png)
+
+Andromeda is a state-of-the-art language model that pushes the boundaries of natural language understanding and generation. Designed for high performance and efficiency, Andromeda is built upon advanced techniques that make it a strong contender against the likes of OpenAI's GPT-4 and PALM with features like:
+
+* Process Ultra Long Sequences of 32,000-200,000+ context lengths effortlessly :fire: :closed_book: 
+
+* Process those Ultra Long Sequences Ultra Fast with 32,000+ tokens in under 100ms ⚡️ ⚡️ 
+
+* Reliable and actually useful with superior reasoning capabilities :brain: :brain: 
+
+---
+
 
 # Updates
 * [READY FOR TRAINING, help us with the strategy!](https://www.figma.com/file/pfaU8Nhyw0EdXuT6z4Hutw/Andromeda-Strategy?type=whiteboard&node-id=0%3A1&t=Tub1wIzaPAXt2i86-1)
