@@ -29,7 +29,7 @@ class DatasetBuilder:
         tokenized_dataset = train_dataset.map(
             tokenize_function,
             batched=True,
-            num_proc=self.num_cpu,
+            # num_proc=self.num_cpu,
             remove_columns=["text"],
         )
 
