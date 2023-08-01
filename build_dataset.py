@@ -66,9 +66,9 @@ class DatasetBuilder:
             
 
 builder = DatasetBuilder(
-    dataset_name="tiiuae/falcon-refinedweb",
+    dataset_name="the_pile_books3",
     seq_len=8192,
-    num_cpu=4,
+    # num_cpu=4,
     hf_account_repo="kye/instruct-math-gptneox-8k",
     tokenizer="EleutherAI/gpt-neox-20b",
 )
