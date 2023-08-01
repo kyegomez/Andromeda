@@ -67,6 +67,7 @@ class DatasetBuilder:
             hf_api = HfApi()
             hf_api.upload_file(
                 path_or_fileobj=train_tokenized_dataset,
+                path_in_repo="README.md",
                 repo_id=self.hf_account_repo,
                 repo_type="dataset"
             )
