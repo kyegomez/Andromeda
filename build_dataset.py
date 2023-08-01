@@ -62,11 +62,12 @@ class DatasetBuilder:
             group_texts, batched=True, #num_proc=32#num_proc=self.num_cpu
         )
 
+        #TODO: ValueError: path_or_fileobj must be either an instance of str, bytes or io.BufferedIOBase. If you passed a file-like object, make sure it is in binary mode.
         if self.hf_account_repo:
             # train_tokenized_dataset.push_to_hub(self.hf_account_repo, private=True)
             hf_api = HfApi()
             hf_api.upload_file(
-                path_or_fileobj=train_tokenized_dataset,
+                path_or_fileobj= "TOKENIZED_DATASET",#train_tokenized_dataset, #path to local space
                 path_in_repo="README.md",
                 repo_id=self.hf_account_repo,
                 repo_type="dataset"
