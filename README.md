@@ -216,9 +216,11 @@ Thank you for considering contributing to Andromeda. Your expertise and commitme
 # Benchmarks
 
 ## Speed
-Andromeda utilizes one of the most reliable Attentions ever, flash attention 2.0 triton it consumes 50x less memory than GPT-3 and 10x less than LLAMA
+* Andromeda utilizes one of the most reliable Attentions ever, flash attention 2.0 triton it consumes 50x less memory than GPT-3 and 10x less than LLAMA
+
 ![AndromedaBanner](images/andromeda_performance.png)
 
 * We can speed this up even more with dynamic sparse flash attention 2.0
+-----
 
 ## Reliability
