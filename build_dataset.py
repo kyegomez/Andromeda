@@ -65,7 +65,7 @@ class DatasetBuilder:
         if self.hf_account_repo:
             # train_tokenized_dataset.push_to_hub(self.hf_account_repo, private=True)
             hf_api = HfApi()
-            hf_api.upload(
+            hf_api.upload_file(
                 path_or_fileobj=train_tokenized_dataset,
                 repo_id=self.hf_account_repo,
                 repo_type="dataset"
