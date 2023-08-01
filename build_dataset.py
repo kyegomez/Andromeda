@@ -65,12 +65,12 @@ class DatasetBuilder:
 
             
 
-# builder = AndromedaDatasetBuilder(
-#     dataset_name="tiiuae/falcon-refinedweb",
-#     seq_len=8192,
-#     num_cpu=4,
-#     hf_account_repo="YOUR_HF_ACCOUNT/REPO_NAME",
-#     tokenizer="EleutherAI/gpt-neox-20b",
-# )
+builder = DatasetBuilder(
+    dataset_name="tiiuae/falcon-refinedweb",
+    seq_len=8192,
+    num_cpu=4,
+    hf_account_repo="kye/instruct-math-gptneox-8k",
+    tokenizer="EleutherAI/gpt-neox-20b",
+)
 
-# dataset = builder.build_dataset()
+dataset = builder.build_dataset()
