@@ -40,7 +40,7 @@ from transformers import (AutoTokenizer, default_data_collator,
 
 
 from Andromeda.utils.stable_adamw import StableAdamWUnfused
-from Andromeda.optimus_prime import TransformerWrapper, AndromedaEmbedding
+from Andromeda.optimus_prime.x_transformers import TransformerWrapper, AndromedaEmbedding
 # from Andromeda.model import Andromeda
 from Andromeda.model import AndromedaEmbedding #, Andromeda
 from Andromeda.configs import Andromeda1Billion
