@@ -43,17 +43,6 @@ Andromeda is a state-of-the-art language model that pushes the boundaries of nat
 ---
 
 
-
-
-## Table of Contents
-
-- [Usage](#usage)
-- [Documentation](#documentation)
-- [Contributing to Andromeda](#contributing-to-andromeda)
-- [Roadmap](#roadmap)
-
----
-
 ## Usage
 
 There are two methods to use Andromeda but pip does not work now.
