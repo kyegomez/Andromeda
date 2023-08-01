@@ -32,6 +32,7 @@ class DatasetBuilder:
             batched=True,
             # num_proc=self.num_cpu,
             remove_columns=["text"],
+            num_proc=32
         )
 
         block_size = self.seq_len
@@ -56,7 +57,7 @@ class DatasetBuilder:
             return result
 
         train_tokenized_dataset = tokenized_dataset.map(
-            group_texts, batched=True, #num_proc=self.num_cpu
+            group_texts, batched=True, num_proc=32#num_proc=self.num_cpu
         )
 
         if self.hf_account_repo:
