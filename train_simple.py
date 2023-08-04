@@ -86,6 +86,9 @@ for i in tqdm.tqdm(range(NUM_BATCHES), mininterval=10., desc='training'):
         with torch.no_grad():
             loss = model(next(val_loader))
             print(f'validation loss: {loss.item()}')
+    
+        #save the model weights
+        torch.save(model.state_dict(), f"./model_{i}.pth")
 
     if i % GENERATE_EVERY == 0:
         model.eval()
