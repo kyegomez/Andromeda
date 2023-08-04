@@ -1,5 +1,5 @@
 from torch.nn import Module
-from Andromeda.optimus_prime.transformer import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
+from Andromeda.core.transformer import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 from transformers import AutoTokenizer
 
 class AndromedaTokenizer:
