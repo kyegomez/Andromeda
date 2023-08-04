@@ -10,7 +10,7 @@ from packaging import version
 from dataclasses import dataclass
 from einops import rearrange
 
-from Andromeda.optimus_prime.flash import attention
+from Andromeda.core.flash import attention
 
 # from flash import FlashAttention
 

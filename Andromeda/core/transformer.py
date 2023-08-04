@@ -12,8 +12,8 @@ from typing import List
 
 from einops import rearrange, repeat
 
-from Andromeda.optimus_prime.attend import Attend, Intermediates
-from Andromeda.optimus_prime.autoregressive_wrapper import AutoregressiveWrapper
+from Andromeda.core.attend import Attend, Intermediates
+from Andromeda.core.autoregressive_wrapper import AutoregressiveWrapper
 
 from abc import ABC, abstractmethod
 # import bitsandbytes as bnb
