@@ -39,6 +39,18 @@ Welcome to Andromeda, a high-performance language model that offers exciting pos
 
 ---
 
+-----
+## Hiring
+We're hiring:
+* Engineers, 
+* Researchers, 
+* Interns, 
+* And, salespeople 
+
+to work on democratizing swarms, email me at with your story `kye@apac.ai`
+
+----------
+
 ## 💻 Usage
 
 There are two methods to use Andromeda but pip does not work now.
