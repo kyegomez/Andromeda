@@ -1226,15 +1226,8 @@ class TransformerWrapper(nn.Module):
         dim = attn_layers.dim
         emb_dim = default(emb_dim, dim)
 
-        # your own tokenizer
-        # self.tokenizer = tokenizer
-
-        #your own embedding function
-        self.token_emb = TokenEmbedding(emb_dim, num_tokens, embedding_provider, l2norm_embed=l2norm_embed)
-
         self.emb_dim = emb_dim
         self.num_tokens = num_tokens
-
         self.max_seq_len = max_seq_len
         self.max_mem_len = max_mem_len
         self.shift_mem_down = shift_mem_down
