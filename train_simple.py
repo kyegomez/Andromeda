@@ -15,7 +15,7 @@ from Andromeda.core.autoregressive_wrapper import AutoregressiveWrapper
 
 NUM_BATCHES = int(1e5)
 BATCH_SIZE = 4
-GRADIENT_ACCUMULATE_EVERY = 4
+GRADIENT_ACCUMULATE_EVERY = 1
 LEARNING_RATE = 1e-4
 VALIDATE_EVERY  = 100
 GENERATE_EVERY  = 500
@@ -101,7 +101,6 @@ for i in tqdm.tqdm(range(NUM_BATCHES), mininterval=10., desc='training'):
 
     for __ in range(GRADIENT_ACCUMULATE_EVERY):
         loss = model(next(train_loader))
-        loss = int(loss)
         (loss / GRADIENT_ACCUMULATE_EVERY).backward()
 
     print(f'training loss: {loss.item()}')
