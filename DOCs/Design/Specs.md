@@ -14,10 +14,10 @@ Elegantly marrying craftsmanship and technology, Andromeda is not just another s
 | **Reasoning Abilities**                      | Creativity, Quantitative                                      |
 | **Attention Mechanism**                      | Flash Attention 2.0 Triton                    |
 | **Memory Consumption** (compared to GPT-3)   | 100x Less                                      |
-| **Memory Consumption** (compared to LLAMA)   | 10x Less                                      |
+| **Memory Consumption** (compared to LLAMA)   | 30x Less                                      |
 | **Max Sequence Processing Speed**            | 100,000+ sequences in < 300ms                 |
-| **Dataset Strategy**                         | Atomic Precision                              |
-| **Functionality**                            | Poetry Composition, API Calls, and more       |
+| **Dataset Strategy**                         | Books, Falcon, Redpajama, Math, Code                              |
+| **Functionality**                            | FSDP, HF Accelerate,  Poetry Composition, API Calls, and more       |
 
 ---
 
