@@ -49,7 +49,7 @@ We're hiring: Engineers, Researchers, Interns, And, Customer Success Professiona
 
 There are two methods to use Andromeda 
 
-1. `pip install `TheBestLLMEver`
+1. `pip install TheBestLLMEver`
 
 2. `git clone https://github.com/kyegomez/Andromeda.git` 
 
