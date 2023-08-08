@@ -100,7 +100,7 @@ for i in tqdm.tqdm(range(NUM_BATCHES), mininterval=10., desc='training'):
     model.train()
 
     for __ in range(GRADIENT_ACCUMULATE_EVERY):
-        loss = model(next(train_loader))
+        loss = model(next(train_loader)).loss
         loss.backward()
 
     print(f'training loss: {loss.item()}')
