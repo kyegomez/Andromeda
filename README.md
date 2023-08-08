@@ -47,7 +47,7 @@ We're hiring:
 * Interns, 
 * And, salespeople 
 
-to work on democratizing swarms, email me at with your story `kye@apac.ai`
+to work on democratizing Andromeda, email me at with your story `kye@apac.ai`
 
 ----------
 
