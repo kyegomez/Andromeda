@@ -34,7 +34,7 @@ def decode_tokens(tokens):
 
 # instantiate GPT-like decoder model
 
-model = Andromeda()
+model = Andromeda(embedding_provider=None)
 model.cuda()
 
 # prepare enwik8 data
