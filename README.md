@@ -47,9 +47,11 @@ We're hiring: Engineers, Researchers, Interns, And, Customer Success Professiona
 
 ## 💻 Usage
 
-There are two methods to use Andromeda but pip does not work now.
+There are two methods to use Andromeda 
 
-1. Clone the repository.
+1. `pip install TheBestLLMEver``
+
+2. `git clone https://github.com/kyegomez/Andromeda.git` 
 
 For detailed instructions, refer to the [Training SOP](DOCs/TRAINING.md) and [Documentation](https://github.com/kyegomez/Andromeda/blob/master/DOCs/DOCUMENTATION.md).
 
