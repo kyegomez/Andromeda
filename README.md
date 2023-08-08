@@ -41,13 +41,7 @@ Welcome to Andromeda, a high-performance language model that offers exciting pos
 
 -----
 ## Hiring
-We're hiring:
-* Engineers, 
-* Researchers, 
-* Interns, 
-* And, salespeople 
-
-to work on democratizing Andromeda, email me at with your story `kye@apac.ai`
+We're hiring: Engineers, Researchers, Interns, And, Customer Success Professionals to work on democratizing Andromeda, email me at with your story `kye@apac.ai`
 
 ----------
 
