@@ -11,7 +11,7 @@ Elegantly marrying craftsmanship and technology, Andromeda is not just another s
 |----------------------------------------------|-----------------------------------------------|
 | **Sequence Handling**                        | Ultra Long (32,000 - 200,000+ context lengths)|
 | **Processing Speed**                         | Ultra Fast (32,000+ tokens in < 100ms)        |
-| **Reasoning Abilities**                      | Superior                                      |
+| **Reasoning Abilities**                      | Creativity, Quantitative                                      |
 | **Attention Mechanism**                      | Flash Attention 2.0 Triton                    |
 | **Memory Consumption** (compared to GPT-3)   | 50x Less                                      |
 | **Memory Consumption** (compared to LLAMA)   | 10x Less                                      |
@@ -142,3 +142,60 @@ This is the linchpin of Andromeda's speed prowess, minimizing attention computat
 ### **Deep Normalization (deepnorm)**
 By normalizing activations, deep normalization shores up training stability, allowing Andromeda to identify intricate patterns with finesse.
 
+## **Feature Insights (Contd.)**
+
+### **Attn One KV Head (Multiquery Attention)**
+A breakthrough in attention mechanism design, this feature allows for simultaneous computation of multiple queries against the same set of key-values, fostering speed and efficiency.
+
+### **QK Norm & Attention QK Norm**
+These two features introduce a normalization step in the query and key matrices. This step facilitates stabilization in the attention mechanism, rendering it more robust and enabling it to scale with larger input sizes.
+
+### **Attention QK Norm Dimension Scale**
+A sophisticated adjustment to the attention mechanism, it modulates the normalization scale in accordance to the dimensions of the model. The result is a more adaptive and responsive attention framework.
+
+### **Embedding Provider**
+At the foundation of Andromeda, this module facilitates the embedding process, converting token sequences into dense vectors. Tailored for Andromeda, it ensures rapid and efficient embedding processes.
+
+---
+
+## **Deeper Dive: Model Parameters**
+
+Unpacking Andromeda means diving deep into the parameters that shape its capabilities. Here's a granular view:
+
+| **Parameter**                           | **Description**                                                                                                                                                                           | **Default Value** |
+|-----------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
+| **num_tokens**                          | Total number of tokens in the vocabulary.                                                                                                                                                | 50432             |
+| **max_seq_len**                         | Maximum sequence length the model can process.                                                                                                                                           | 8192              |
+| **dim**                                 | Dimension size of the model. It represents the size of embeddings and general depth in neural layers.                                                                                    | 2560              |
+| **depth**                               | Represents the number of transformer layers in the architecture.                                                                                                                         | 32                |
+| **dim_head**                            | Dimension size of each head in multi-head attention mechanism.                                                                                                                           | 128               |
+| **heads**                               | Total number of heads in multi-head attention.                                                                                                                                           | 24                |
+| **use_abs_pos_emb**                     | Boolean flag to determine if absolute positional embeddings are used.                                                                                                                     | False             |
+| **alibi_pos_bias**                      | Enables the alibi positional bias in attention mechanisms.                                                                                                                               | True              |
+| **alibi_num_heads**                     | Specifies the number of heads for the alibi positional bias.                                                                                                                             | 12                |
+| **rotary_xpos**                         | Determines if rotary positional encodings are utilized.                                                                                                                                  | True              |
+| **attn_flash**                          | Flag to activate the Flash Attention mechanism, minimizing computations in the attention phase.                                                                                          | True              |
+| **shift_tokens**                        | The number of tokens by which input sequences are shifted. Essential for certain sequence-to-sequence tasks.                                                                             | 1                 |
+| **attn_one_kv_head**                    | Activates multiquery attention by computing multiple queries against a singular key-value pair.                                                                                          | True              |
+| **qk_norm**                             | Enables the query-key normalization mechanism in the attention phase.                                                                                                                    | True              |
+| **attn_qk_norm**                        | A more advanced version of query-key normalization that scales according to the model's dimensions.                                                                                      | True              |
+| **attn_qk_norm_dim_scale**              | Modulates the scale of the aforementioned attention normalization based on the model's dimensionality.                                                                                  | True              |
+| **embedding_provider**                  | The module responsible for providing embeddings. Custom providers can be passed for tailored embedding processes.                                                                       | AndromedaEmbedding|
+
+---
+
+## **A Word on Optimization and Future Iterations**
+
+As with any state-of-the-art model, Andromeda's design is an ever-evolving tapestry. This means iterative refinement. As feedback streams in and technology progresses, expect advancements in:
+
+- **Model Pruning**: Trimming redundancies, bolstering efficiency.
+- **Knowledge Distillation**: Harnessing the wisdom of larger models in smaller, more agile architectures.
+- **Zero-Shot and Few-Shot Learning**: Broadening adaptability horizons.
+- **Enhanced Data Augmentation**: Fortifying the model's grasp on varied, nuanced contexts.
+- **Decentralized Training**: Tapping into the global hive-mind, harnessing the collaborative power of the community.
+
+As we voyage further into the AI frontier, Andromeda stands as a beacon, illuminating the path forward, promising marvels yet to come. It's not just about machine intelligence; it's about the dance between human curiosity and machine capability.
+
+---
+
+Join us on this journey. Dive deeper, ask questions, innovate, and let's redefine what's possible, together.
