@@ -13,7 +13,7 @@ Elegantly marrying craftsmanship and technology, Andromeda is not just another s
 | **Processing Speed**                         | Ultra Fast (32,000+ tokens in < 100ms)        |
 | **Reasoning Abilities**                      | Creativity, Quantitative                                      |
 | **Attention Mechanism**                      | Flash Attention 2.0 Triton                    |
-| **Memory Consumption** (compared to GPT-3)   | 50x Less                                      |
+| **Memory Consumption** (compared to GPT-3)   | 100x Less                                      |
 | **Memory Consumption** (compared to LLAMA)   | 10x Less                                      |
 | **Max Sequence Processing Speed**            | 100,000+ sequences in < 300ms                 |
 | **Dataset Strategy**                         | Atomic Precision                              |
@@ -44,89 +44,14 @@ Elegantly marrying craftsmanship and technology, Andromeda is not just another s
   
 - **Community-Driven**: Behind Andromeda's machine brain is the human heart of the community. It doesn't just utilize open source; it thrives on it, constantly evolving, learning, and improving with contributions from around the world.
 
----
 
 For enthusiasts, developers, and thinkers looking to dive deeper, the Model Architecture documentation offers an exhaustive, detailed view into the intricate marvel that is Andromeda. Dive in, and witness engineering and artistry in harmony.
 
-
-
+---
 
 ### **Andromeda: A Detailed Technical Overview**
 
 At the intersection of technological ingenuity and groundbreaking design principles, Andromeda emerges. Representing the zenith of years of research and development, it promises a transformative leap in AI performance, efficiency, and versatility. In this technical specifications document, we deconstruct the intricacies of Andromeda, presenting a meticulous overview of its structure, performance metrics, and underlying methodologies.
-
----
-
-## **Insights and Techniques**
-
-#### **1. Floating-Point Operations (FLOPs)**
-Considering the number of FLOPs is paramount. It provides a metric to gauge the computational intensity and, by extension, the potential speed of the model.
-
-#### **2. Flash Attention 2.0 Triton**
-Enhanced with CUDA, this method offers a significant surge in the number of FLOPs the model can handle, amplifying its overall efficiency.
-
-#### **3. Mixed Precision Training**
-By embracing mixed precision, Andromeda realizes a noteworthy uptick in training speed while achieving commendable memory efficiency.
-
-#### **4. Deepspeed 3 with NVMe Integration**
-This powerful combination paves the way for superlative optimization during the training phase.
-
-#### **5. 8-bit Optimizer**
-Further pushing the boundaries of speed, the 8-bit optimizer boosts processing times without compromising the integrity of results.
-
-#### **6. Gradient Clipping**
-This technique has been integrated into the training regimen, achieving a massive speedup and preventing undesirable spikes during the process.
-
-#### **7. Advanced Techniques: XPOS, ALIBI, QK Layernorm**
-These sophisticated techniques are harnessed for superior extrapolation, interpolation, and stabilization during training.
-
-#### **8. Multi Query Attention**
-This approach has been adopted to supercharge decoding speeds.
-
-#### **9. Parallelized Transformer Blocks**
-Ensuring that the model's performance is consistently high, these blocks run in tandem to provide a smooth and efficient operational experience.
-
-#### **10. Shifted Tokens**
-In a strategic move, Andromeda sidesteps traditional positional embeddings, relying instead on shifted tokens for sequence length progression.
-
-#### **11. Positional Interpolation**
-This innovative technique augments the model's ability to manage sequences more effectively.
-
-#### **12. Optimized CUDA Embedding Function**
-This function is tailored for peak performance, ensuring rapid and accurate computations.
-
-#### **13. Nebula Loss Function**
-Integrated into Andromeda, this polymorphic loss function is adept at handling multi-task training scenarios.
-
----
-
-## **Potential Future Trajectories**
-
-#### **1. Clearer Metrics**
-There's always room to elevate the benchmarking rigor, especially concerning reasoning abilities.
-
-#### **2. Robust Validation and Testing Environment**
-Further fine-tuning of the testing environment can offer even more reliable validations of Andromeda's capabilities.
-
-#### **3. Comprehensive Documentation**
-To bolster transparency and replicability, detailed documentation covering every facet of Andromeda is on the horizon.
-
-#### **4. Benchmarking Against Peers**
-By juxtaposing Andromeda against its counterparts, its distinctive advantages can be spotlighted more effectively.
-
-#### **5. Spotlight on Real-World Applications**
-By highlighting tangible use-cases, the versatility and prowess of Andromeda can be showcased in palpable contexts.
-
-#### **6. Model Interpretability**
-Future iterations might delve deeper into model interpretability, especially for critical applications.
-
-#### **7. Niche Customizations**
-By tailoring Andromeda to meet specific niche needs, its adaptability and value proposition can be further enhanced.
-
-#### **8. Collaborative Endeavors**
-Engaging more intimately with the global research community could spawn collaborative projects, bringing diverse insights to the fore.
-
----
 
 ## **Feature Insights**
 
@@ -184,6 +109,48 @@ Unpacking Andromeda means diving deep into the parameters that shape its capabil
 
 ---
 
+
+## **Insights and Techniques**
+
+#### **1. Floating-Point Operations (FLOPs)**
+Considering the number of FLOPs is paramount. It provides a metric to gauge the computational intensity and, by extension, the potential speed of the model.
+
+#### **2. Flash Attention 2.0 Triton**
+Enhanced with CUDA, this method offers a significant surge in the number of FLOPs the model can handle, amplifying its overall efficiency.
+
+#### **3. Mixed Precision Training**
+By embracing mixed precision, Andromeda realizes a noteworthy uptick in training speed while achieving commendable memory efficiency.
+
+#### **4. Deepspeed 3 with NVMe Integration**
+This powerful combination paves the way for superlative optimization during the training phase.
+
+#### **5. 8-bit Optimizer**
+Further pushing the boundaries of speed, the 8-bit optimizer boosts processing times without compromising the integrity of results.
+
+#### **6. Gradient Clipping**
+This technique has been integrated into the training regimen, achieving a massive speedup and preventing undesirable spikes during the process.
+
+#### **7. Advanced Techniques: XPOS, ALIBI, QK Layernorm**
+These sophisticated techniques are harnessed for superior extrapolation, interpolation, and stabilization during training.
+
+#### **8. Multi Query Attention**
+This approach has been adopted to supercharge decoding speeds.
+
+#### **9. Parallelized Transformer Blocks**
+Ensuring that the model's performance is consistently high, these blocks run in tandem to provide a smooth and efficient operational experience.
+
+#### **10. Shifted Tokens**
+In a strategic move, Andromeda sidesteps traditional positional embeddings, relying instead on shifted tokens for sequence length progression.
+
+#### **11. Positional Interpolation**
+This innovative technique augments the model's ability to manage sequences more effectively.
+
+#### **12. Optimized CUDA Embedding Function**
+This function is tailored for peak performance, ensuring rapid and accurate computations.
+
+#### **13. Nebula Loss Function**
+Integrated into Andromeda, this polymorphic loss function is adept at handling multi-task training scenarios.
+
 ## **A Word on Optimization and Future Iterations**
 
 As with any state-of-the-art model, Andromeda's design is an ever-evolving tapestry. This means iterative refinement. As feedback streams in and technology progresses, expect advancements in:
@@ -193,6 +160,34 @@ As with any state-of-the-art model, Andromeda's design is an ever-evolving tapes
 - **Zero-Shot and Few-Shot Learning**: Broadening adaptability horizons.
 - **Enhanced Data Augmentation**: Fortifying the model's grasp on varied, nuanced contexts.
 - **Decentralized Training**: Tapping into the global hive-mind, harnessing the collaborative power of the community.
+
+
+## **Potential Other Future Trajectories**
+
+#### **1. Clearer Metrics**
+There's always room to elevate the benchmarking rigor, especially concerning reasoning abilities.
+
+#### **2. Robust Validation and Testing Environment**
+Further fine-tuning of the testing environment can offer even more reliable validations of Andromeda's capabilities.
+
+#### **3. Comprehensive Documentation**
+To bolster transparency and replicability, detailed documentation covering every facet of Andromeda is on the horizon.
+
+#### **4. Benchmarking Against Peers**
+By juxtaposing Andromeda against its counterparts, its distinctive advantages can be spotlighted more effectively.
+
+#### **5. Spotlight on Real-World Applications**
+By highlighting tangible use-cases, the versatility and prowess of Andromeda can be showcased in palpable contexts.
+
+#### **6. Model Interpretability**
+Future iterations might delve deeper into model interpretability, especially for critical applications.
+
+#### **7. Niche Customizations**
+By tailoring Andromeda to meet specific niche needs, its adaptability and value proposition can be further enhanced.
+
+#### **8. Collaborative Endeavors**
+Engaging more intimately with the global research community could spawn collaborative projects, bringing diverse insights to the fore.
+
 
 As we voyage further into the AI frontier, Andromeda stands as a beacon, illuminating the path forward, promising marvels yet to come. It's not just about machine intelligence; it's about the dance between human curiosity and machine capability.
 
