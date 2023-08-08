@@ -9,7 +9,7 @@ from torch.utils.data import DataLoader, Dataset
 
 from Andromeda.model import Andromeda
 
-from Andromeda.core.transformer import Decoder, Transformer
+from Andromeda.core.transformer import Decoder, AndromedaEmbedding, Transformer
 from Andromeda.core.autoregressive_wrapper import AutoregressiveWrapper
 # constants
 
@@ -41,7 +41,7 @@ model = Transformer(
     num_tokens=50432,
     max_seq_len=8192,
     use_abs_pos_emb=False,
-    # embedding_provider=embedding_provider,
+    embedding_provider=AndromedaEmbedding(),
     attn_layers=Decoder(
         dim=2560,
         depth=32,
