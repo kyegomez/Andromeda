@@ -1,13 +1,16 @@
-from Andromeda.model import Andromeda
-import random
-import tqdm
 import gzip
+import random
+
 import numpy as np
 import torch
 import torch.optim as optim
-from torch.nn import functional as F
+import tqdm
 from torch.utils.data import DataLoader, Dataset
 
+from Andromeda.model import Andromeda
+
+from Andromeda.core.transformer import Decoder, Transformer
+from Andromeda.core.autoregressive_wrapper import AutoregressiveWrapper
 # constants
 
 NUM_BATCHES = int(1e5)
@@ -34,7 +37,31 @@ def decode_tokens(tokens):
 
 # instantiate GPT-like decoder model
 
-model = Andromeda()
+model = Transformer(
+    num_tokens=50432,
+    max_seq_len=8192,
+    use_abs_pos_emb=False,
+    # embedding_provider=embedding_provider,
+    attn_layers=Decoder(
+        dim=2560,
+        depth=32,
+        dim_head=128,
+        heads=24,
+        alibi_pos_bias=12,
+        alibi_num_heads=True,
+        rotary_xpos=True,
+        attn_flash=True,
+        # deepnorm=deepnorm,
+        # shift_tokens=shift_tokens,
+        attn_one_kv_head=True,
+        qk_norm=True,
+        attn_qk_norm=True,
+        attn_qk_norm_dim_scale=True
+    )
+)
+
+model = AutoregressiveWrapper(model)
+
 model.cuda()
 
 # prepare enwik8 data
@@ -94,7 +121,7 @@ for i in tqdm.tqdm(range(NUM_BATCHES), mininterval=10., desc='training'):
         model.eval()
         inp = random.choice(val_dataset)[:-1]
         prime = decode_tokens(inp)
-        print(f'%s \n\n %s', (prime, '*' * 100))
+        print('%s \n\n %s', (prime, '*' * 100))
 
         sample = model.generate(inp, GENERATE_LENGTH)
         output_str = decode_tokens(sample)
