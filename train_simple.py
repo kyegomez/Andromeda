@@ -100,8 +100,8 @@ for i in tqdm.tqdm(range(NUM_BATCHES), mininterval=10., desc='training'):
     model.train()
 
     for __ in range(GRADIENT_ACCUMULATE_EVERY):
-        loss = model(next(train_loader)).loss
-        loss.backward()
+        loss = model(next(train_loader))
+        (loss / GRADIENT_ACCUMULATE_EVERY).backward()
 
     print(f'training loss: {loss.item()}')
     torch.nn.utils.clip_grad_norm_(model.parameters(), 0.5)
