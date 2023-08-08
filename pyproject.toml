@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "TheBestLLMEver"
-version = "0.0.1"
+version = "0.0.2"
 description = "andromeda - Pytorch"
 authors = ["Kye Gomez <kye@apac.ai>"]
 license = "MIT"
