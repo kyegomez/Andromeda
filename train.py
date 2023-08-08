@@ -40,7 +40,7 @@ from transformers import (AutoTokenizer, default_data_collator,
 
 
 from Andromeda.utils.stable_adamw import StableAdamWUnfused
-from Andromeda.optimus_prime.transformer import TransformerWrapper, AndromedaEmbedding
+from Andromeda.optimus_prime.transformer import Transformer, AndromedaEmbedding
 # from Andromeda.model import Andromeda
 from Andromeda.model import AndromedaEmbedding #, Andromeda
 from Andromeda.configs import Andromeda1Billion
@@ -103,7 +103,7 @@ def activation_checkpointing(
     if accelerator is not None:
         accelerator.print("Using activation checkpointing")
     def check_fn(submodule):
-        return isinstance(submodule, TransformerWrapper)
+        return isinstance(submodule, Transformer)
     non_reentrant_wrapper = partial(
         checkpoint_wrapper,
         offload_to_cpu=offload_to_cpu,
@@ -143,7 +143,7 @@ def fsdp(
         Andromeda_auto_wrap_policy = partial(
             transformer_auto_wrap_policy,
             transformer_layer_cls={
-                TransformerWrapper,
+                Transformer,
             },
         )
     else:

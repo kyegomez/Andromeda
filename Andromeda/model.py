@@ -1,5 +1,5 @@
 from torch.nn import Module
-from Andromeda.core.transformer import TransformerWrapper, AutoregressiveWrapper, AndromedaEmbedding, Decoder
+from Andromeda.core.transformer import Transformer, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 from transformers import AutoTokenizer
 
 class AndromedaTokenizer:
@@ -27,7 +27,7 @@ class AndromedaTokenizer:
 class Andromeda(Module):
     """
     Andromeda is a transformer-based model architecture. It initializes with 
-    a TransformerWrapper and AutoregressiveWrapper with default or user-specified parameters.
+    a Transformer and AutoregressiveWrapper with default or user-specified parameters.
     """
     def __init__(self, 
                 num_tokens=50432, 
@@ -40,10 +40,8 @@ class Andromeda(Module):
                  alibi_num_heads=12, 
                  rotary_xpos=True,
                  attn_flash=True, 
-                #  deepnorm=True, 
                  shift_tokens=1, 
-                 attn_one_kv_head=True, 
-                #  attn_sparse_topk=8,
+                 attn_one_kv_head=True,  # multiquery attention
                  qk_norm=True, 
                  attn_qk_norm=True, 
                  attn_qk_norm_dim_scale=True, 
@@ -73,7 +71,7 @@ class Andromeda(Module):
         super().__init__()
 
         try:
-            self.Andromeda = TransformerWrapper(
+            self.Andromeda = Transformer(
                 num_tokens=num_tokens,
                 max_seq_len=max_seq_len,
                 use_abs_pos_emb=use_abs_pos_emb,

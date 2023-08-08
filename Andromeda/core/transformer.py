@@ -1205,7 +1205,7 @@ class Decoder(AttentionLayers):
 
 
 
-class TransformerWrapper(nn.Module):
+class Transformer(nn.Module):
     def __init__(
         self,
         *,

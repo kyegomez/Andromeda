@@ -27,7 +27,7 @@ from transformers import (AutoTokenizer, default_data_collator,
 # from stable_adamw import StableAdamWUnfused
 # sd
 
-from optimus_prime import TransformerWrapper, Decoder, AutoregressiveWrapper
+from optimus_prime import Transformer, Decoder, AutoregressiveWrapper
 from optimus_prime import AndromedaEmbedding
 
 from sophia import SophiaG
@@ -180,7 +180,7 @@ def TrainAndromeda():
 
     # instantiate andromeda
 
-    model = TransformerWrapper(
+    model = Transformer(
         num_tokens=64007,
         max_seq_len=8192,
         use_abs_pos_emb=False,

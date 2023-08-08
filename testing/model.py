@@ -8,7 +8,7 @@ class TestAndromeda(unittest.TestCase):
         self.model = Andromeda()
 
     def test_initialization(self):
-        self.assertIsNotNone(self.model.andromeda, "TransformerWrapper is not initialized.")
+        self.assertIsNotNone(self.model.andromeda, "Transformer is not initialized.")
         self.assertIsNotNone(self.model.decoder, "AutoregressiveWrapper is not initialized.")
 
     def test_forward_pass(self):

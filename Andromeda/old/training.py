@@ -13,8 +13,8 @@ from rich.progress import Progress
 
 
 from lion_pytorch import Lion
-# from x_transformers import TransformerWrapper, Decoder, AutoregressiveWrapper
-from optimus_prim import TransformerWrapper, Decoder, AutoregressiveWrapper
+# from x_transformers import Transformer, Decoder, AutoregressiveWrapper
+from optimus_prim import Transformer, Decoder, AutoregressiveWrapper
 
 from torch.nn.parallel import DataParallel, DistributedDataParallel
 import torch.distributed as dist
@@ -48,7 +48,7 @@ class CustomGPTNeoXTokenizer:
 
 custom_tokenizer = CustomGPTNeoXTokenizer()
 
-Andromeda = TransformerWrapper(
+Andromeda = Transformer(
     num_tokens=64007,
     max_seq_len=8192,
     use_abs_pos_emb = False,

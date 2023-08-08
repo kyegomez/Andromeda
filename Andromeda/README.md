@@ -5,7 +5,7 @@ This document provides an analysis of the hyperparameters and configurations of 
 ## Model Configuration
 
 ```python
-model = TransformerWrapper(
+model = Transformer(
     num_tokens=20000,
     max_seq_len=8192,
     use_abs_pos_emb = False,

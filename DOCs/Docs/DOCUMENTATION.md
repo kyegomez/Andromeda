@@ -74,13 +74,13 @@ print(tokenized_ids)
 
 ### Purpose
 
-The `Andromeda` class is a transformer-based model architecture. It consists of a `TransformerWrapper` and `AutoregressiveWrapper` with default or user-specified parameters.
+The `Andromeda` class is a transformer-based model architecture. It consists of a `Transformer` and `AutoregressiveWrapper` with default or user-specified parameters.
 
 ### Systems Understanding
 
-The `Andromeda` class initializes with a `TransformerWrapper` and `AutoregressiveWrapper`. The `TransformerWrapper` encapsulates the main transformer model, and the `AutoregressiveWrapper` enables autoregressive generation using the transformer model.
+The `Andromeda` class initializes with a `Transformer` and `AutoregressiveWrapper`. The `Transformer` encapsulates the main transformer model, and the `AutoregressiveWrapper` enables autoregressive generation using the transformer model.
 
-The constructor of the `Andromeda` class takes various parameters that define the architecture of the model, such as the number of tokens, maximum sequence length, model dimension, depth, number of heads, etc. These parameters are used to initialize the `TransformerWrapper` and `AutoregressiveWrapper` with the specified configuration.
+The constructor of the `Andromeda` class takes various parameters that define the architecture of the model, such as the number of tokens, maximum sequence length, model dimension, depth, number of heads, etc. These parameters are used to initialize the `Transformer` and `AutoregressiveWrapper` with the specified configuration.
 
 The `forward` method performs a forward pass through the model. It takes the input `text_tokens` as input and passes it through the `Decoder` module inside the `Andromeda` model. The output from the decoder is returned as the result.
 
