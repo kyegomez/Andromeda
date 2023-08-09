@@ -6,50 +6,45 @@ from functools import partial
 from itertools import chain
 
 import torch
-# import bitsandbytes as bnb
-
-from torch.distributed.fsdp import (
-    FullyShardedDataParallel,
-    MixedPrecision,
-    BackwardPrefetch,
-    ShardingStrategy,
-)
-from accelerate import Accelerator
-from accelerate.utils import (DummyOptim, InitProcessGroupKwargs)
-from accelerate.logging import get_logger
-
-
-from datasets import load_dataset
-from lion_pytorch import Lion
-from torch.nn import LayerNorm
-
-
-from torch.distributed.algorithms._checkpoint.checkpoint_wrapper import (
-    CheckpointImpl, apply_activation_checkpointing, checkpoint_wrapper)
-from torch.distributed.fsdp.wrap import (
-    transformer_auto_wrap_policy
-)
-
-
-from torch.optim import AdamW
-from torch.utils.data import DataLoader
-from tqdm import tqdm
-from transformers import (AutoTokenizer, default_data_collator,
-                          get_cosine_schedule_with_warmup,
-                          get_linear_schedule_with_warmup, set_seed)
-
-
-from Andromeda.utils.stable_adamw import StableAdamWUnfused
-from Andromeda.core.transformer import Transformer, AndromedaEmbedding
-# from Andromeda.model import Andromeda
-from Andromeda.model import AndromedaEmbedding #, Andromeda
-from Andromeda.configs import Andromeda1Billion
 
 ########### SETUP CONFIG
 import torch.distributed as dist
-
-
+from accelerate import Accelerator
+from accelerate.logging import get_logger
 from accelerate.state import AcceleratorState
+from accelerate.utils import DummyOptim, InitProcessGroupKwargs
+from datasets import load_dataset
+from lion_pytorch import Lion
+from torch.distributed.algorithms._checkpoint.checkpoint_wrapper import (
+    CheckpointImpl,
+    apply_activation_checkpointing,
+    checkpoint_wrapper,
+)
+
+# import bitsandbytes as bnb
+from torch.distributed.fsdp import (
+    BackwardPrefetch,
+    FullyShardedDataParallel,
+    MixedPrecision,
+    ShardingStrategy,
+)
+from torch.distributed.fsdp.wrap import transformer_auto_wrap_policy
+from torch.nn import LayerNorm
+from torch.optim import AdamW
+from torch.utils.data import DataLoader
+from tqdm import tqdm
+from transformers import (
+    AutoTokenizer,
+    default_data_collator,
+    get_cosine_schedule_with_warmup,
+    get_linear_schedule_with_warmup,
+    set_seed,
+)
+
+# from Andromeda.model import Andromeda
+from Andromeda.configs import Andromeda1Billion
+from Andromeda.core.transformer import Transformer
+from Andromeda.utils.stable_adamw import StableAdamWUnfused
 
 # state = AcceleratorState()
 
@@ -686,7 +681,7 @@ def Train():
             )
 
 
-def main():
+def train():
     os.environ['MASTER_ADDR'] #'localhost'
     os.environ['MASTER_PORT'] #= '9994'
     
@@ -702,4 +697,4 @@ def main():
     Train()
 
 if __name__ == '__main__':
-    main()
+    train()
