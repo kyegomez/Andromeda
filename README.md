@@ -24,7 +24,7 @@
 
 
 
-Welcome to Andromeda, The Fastest, Most Creative, and Reliable Language Model Ever Built, train your own verison, conduct inference, and finetune your own verison with simple plug in and play scripts get started in 10 seconds
+Welcome to Andromeda, The Fastest, Most Creative, and Reliable Language Model Ever Built, train your own verison, conduct inference, and finetune your own verison with simple plug in and play scripts get started in 10 seconds, and:
 
 
 - 💼 Handle Ultra Long Sequences (32,000-200,000+ context lengths)
