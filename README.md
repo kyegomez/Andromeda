@@ -1,6 +1,8 @@
 
 # Andromeda: Ultra-Fast and Ultra-Intelligent SOTA Language Model 🚀🌌
 
+![Andromeda Next Generation Open Source Language Model](images/andromeda-banner.png)
+
 <div align="center">
 
 [![Open Bounties](https://img.shields.io/endpoint?url=https%3A%2F%2Fconsole.algora.io%2Fapi%2Fshields%2Fkyegomez%2Fbounties%3Fstatus%3Dopen)](https://console.algora.io/org/kyegomez/bounties?status=open)
@@ -20,9 +22,7 @@
 
 </div>
 
----
 
-![Andromeda Next Generation Open Source Language Model](images/andromeda-banner.png)
 
 Welcome to Andromeda, a high-performance language model that offers exciting possibilities in the realm of natural language understanding and generation. Built for efficiency and speed, Andromeda rivals leading models like OpenAI's GPT-4 and PALM. Features include:
 
