@@ -24,7 +24,8 @@
 
 
 
-Welcome to Andromeda, a high-performance language model that offers exciting possibilities in the realm of natural language understanding and generation. Built for efficiency and speed, Andromeda rivals leading models like OpenAI's GPT-4 and PALM. Features include:
+Welcome to Andromeda, The Fastest, Most Creative, and Reliable Language Model Ever Built, train your own verison, conduct inference, and finetune your own verison with simple plug in and play scripts get started in 10 seconds
+
 
 - 💼 Handle Ultra Long Sequences (32,000-200,000+ context lengths)
 - ⚡ Ultra Fast Processing (32,000+ tokens in under 100ms)
