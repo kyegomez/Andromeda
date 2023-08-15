@@ -40,6 +40,11 @@ Welcome to Andromeda, The Fastest, Most Creative, and Reliable Language Model Ev
 
 ---
 
+## Appreciation
+* All the creators in Agora, [Join Agora](https://discord.gg/qUtxnK2NMf) the community of AI engineers changing the world with their creations.
+* LucidRains for inspiring me to devote myself to open source AI
+
+
 -----
 ## Hiring
 We're hiring: Engineers, Researchers, Interns, And, Customer Success Professionals to work on democratizing Andromeda, email me at with your story `kye@apac.ai`
