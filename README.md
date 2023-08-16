@@ -1,3 +1,4 @@
+[Join Agora](https://discord.gg/qUtxnK2NMf), the open source Multi-Modality AI research organization.
 
 # Andromeda: Ultra-Fast and Ultra-Intelligent SOTA Language Model 🚀🌌
 
