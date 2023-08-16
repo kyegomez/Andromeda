@@ -1,4 +1,4 @@
-[![Multi-Modality](agorammai.png)](https://discord.gg/qUtxnK2NMf)
+[![Multi-Modality](agorabanner.png)](https://discord.gg/qUtxnK2NMf)
 
 
 # Andromeda: Ultra-Fast and Ultra-Intelligent SOTA Language Model 🚀🌌
