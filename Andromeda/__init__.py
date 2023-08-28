@@ -1,3 +1,3 @@
-# from Andromeda.train import Train
-from Andromeda.model import AndromedaTokenizer, Andromeda
-from Andromeda.train import Train, train
+# from andromeda.train import Train
+from andromeda.model import AndromedaTokenizer, Andromeda
+from andromeda.train import Train, train

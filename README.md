@@ -59,7 +59,7 @@ There are two methods to use Andromeda
 
 1. `pip install TheBestLLMEver`
 
-2. `git clone https://github.com/kyegomez/Andromeda.git` 
+2. `git clone https://github.com/kyegomez/andromeda.git` 
 
 For detailed instructions, refer to the [Training SOP](DOCs/TRAINING.md) and [Documentation](https://github.com/kyegomez/Andromeda/blob/master/DOCs/DOCUMENTATION.md).
 
@@ -136,7 +136,7 @@ For detailed information about the model architecture and methods, refer to the 
 
 ## 🚀 Get Involved
 
-We're just at the beginning of our journey. As we continue to develop and refine Andromeda, we invite you to join us. Whether you're a developer, researcher, or simply an enthusiast, your insights and contributions can help shape the future of Andromeda.
+We're just at the beginning of our journey. As we continue to develop and refine Andromeda, we invite you to join us. Whether you're a developer, researcher, or simply an enthusiast, your insights and contributions can help shape the future of andromeda.
 
 ---
 
@@ -176,7 +176,7 @@ If you're ready to become a part of Andromeda and contribute to the future of mu
 
 4. Our team will review your submission. If it's approved, it will be merged into the main repository, and you will become part of the Andromeda Rewards Program.
 
-Thank you for considering contributing to Andromeda. Your expertise and commitment to this project are what make it thrive. Let's build the future of multimodal embeddings together.
+Thank you for considering contributing to andromeda. Your expertise and commitment to this project are what make it thrive. Let's build the future of multimodal embeddings together.
 
 ---
 
@@ -212,5 +212,5 @@ Thank you for considering contributing to Andromeda. Your expertise and commitme
 We're just getting started, and we invite you to join the journey. Let's revolutionize the NLP landscape together! 🚀🌟
 
 - Join Agora and work with 2,000+ AI Engineers to implement all new features.
-- Provide compute and help train Andromeda.
+- Provide compute and help train andromeda.
 - Share the message on how we're liberating this superintelligent AI and seizing the power from the corrupt, providing it back to you.

@@ -48,7 +48,6 @@ class Andromeda(Module):
                  alibi_num_heads=12, 
                  rotary_xpos=True,
                  attn_flash=True, 
-                #  attn_one_kv_head=True,  # multiquery attention
                 attn_kv_heads = 2,
                  qk_norm=True, 
                  attn_qk_norm=True, 

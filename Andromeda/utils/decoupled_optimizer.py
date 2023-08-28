@@ -4,8 +4,8 @@ from torch.nn import LayerNorm
 from torch.optim import AdamW
 
 # from palm.utils import print_main
-from Andromeda.utils.helpers import print_main
-from Andromeda.utils.stable_adamw import StableAdamWUnfused
+from andromeda.utils.helpers import print_main
+from andromeda.utils.stable_adamw import StableAdamWUnfused
 
 # optimizers
 

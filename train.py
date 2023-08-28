@@ -39,11 +39,11 @@ from transformers import (AutoTokenizer, default_data_collator,
                           get_linear_schedule_with_warmup, set_seed)
 
 
-from Andromeda.utils.stable_adamw import StableAdamWUnfused
-from Andromeda.core.transformer import Transformer, AndromedaEmbedding
-# from Andromeda.model import Andromeda
-from Andromeda.model import AndromedaEmbedding #, Andromeda
-from Andromeda.configs import Andromeda1Billion
+from andromeda.utils.stable_adamw import StableAdamWUnfused
+from andromeda.core.transformer import Transformer, AndromedaEmbedding
+# from andromeda.model import Andromeda
+from andromeda.model import AndromedaEmbedding #, Andromeda
+from andromeda.configs import Andromeda1Billion
 
 ########### SETUP CONFIG
 import torch.distributed as dist

@@ -1,5 +1,5 @@
 import torch
-from Andromeda.configs import Andromeda1Billion
+from andromeda.configs import Andromeda1Billion
 
 model =  Andromeda1Billion().cuda()
 
