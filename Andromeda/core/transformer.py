@@ -1296,7 +1296,7 @@ class ViTransformerWrapper(nn.Module):
         x = x.mean(dim = -2)
         return self.mlp_head(x)
 
-class TransformerWrapper(nn.Module):
+class Transformer(nn.Module):
     def __init__(
         self,
         *,
