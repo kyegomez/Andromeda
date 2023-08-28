@@ -40,9 +40,8 @@ from transformers import (AutoTokenizer, default_data_collator,
 
 
 from Andromeda.utils.stable_adamw import StableAdamWUnfused
-from Andromeda.core.transformer import Transformer, AndromedaEmbedding
+from Andromeda.core.transformer import Transformer
 # from Andromeda.model import Andromeda
-from Andromeda.model import AndromedaEmbedding #, Andromeda
 from Andromeda.configs import Andromeda1Billion
 
 ########### SETUP CONFIG
