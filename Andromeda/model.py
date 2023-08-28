@@ -1,7 +1,7 @@
 from torch.nn import Module
 from transformers import AutoTokenizer
 
-from Andromeda.core.transformer import (
+from andromeda.core.transformer import (
     AndromedaEmbedding,
     AutoregressiveWrapper,
     Decoder,
