@@ -46,7 +46,7 @@ The second step is to define the Andromeda model architecture. The `model.py` sc
 The final step is to train the Andromeda model using the `train_distributed.py` script. Follow the instructions below to start the training process:
 
 1. Open the `train_distributed.py` script.
-2. Set the configuration parameters in the `Trainandromeda.CFG` class according to your requirements:
+2. Set the configuration parameters in the `TrainAndromeda.CFG` class according to your requirements:
    - `BATCH_SIZE`: Set the batch size for training.
    - `GRADIENT_ACCUMULATE_EVERY`: Set the number of gradient accumulation steps.
    - `LEARNING_RATE`: Set the learning rate for the optimizer.

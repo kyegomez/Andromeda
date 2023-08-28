@@ -1,5 +1,5 @@
 import torch
-from andromeda.model import Andromeda
+from Andromeda.model import Andromeda
 
 model =  Andromeda().cuda()
 

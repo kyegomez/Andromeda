@@ -15,7 +15,7 @@ Andromeda is an innovative language model designed for high performance and effi
 7. **Partnerships:** Form strategic partnerships with tech companies that can leverage Andromeda's capabilities in their products and services.
 8. **Sponsorships:** Sponsor research projects or tech events to get visibility and promote Andromeda's services.
 9. **Training and certifications:** Offer training programs and certifications on Andromeda usage and applications.
-10. **Custom development:** Offer custom development services for businesses that want specialized applications of andromeda.
+10. **Custom development:** Offer custom development services for businesses that want specialized applications of Andromeda.
 
 ## Potential Customers:
 

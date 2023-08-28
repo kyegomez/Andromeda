@@ -45,7 +45,7 @@ Elegantly marrying craftsmanship and technology, Andromeda is not just another s
 - **Community-Driven**: Behind Andromeda's machine brain is the human heart of the community. It doesn't just utilize open source; it thrives on it, constantly evolving, learning, and improving with contributions from around the world.
 
 
-For enthusiasts, developers, and thinkers looking to dive deeper, the Model Architecture documentation offers an exhaustive, detailed view into the intricate marvel that is andromeda. Dive in, and witness engineering and artistry in harmony.
+For enthusiasts, developers, and thinkers looking to dive deeper, the Model Architecture documentation offers an exhaustive, detailed view into the intricate marvel that is Andromeda. Dive in, and witness engineering and artistry in harmony.
 
 ---
 

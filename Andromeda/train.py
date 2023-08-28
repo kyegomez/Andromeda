@@ -41,10 +41,10 @@ from transformers import (
     set_seed,
 )
 
-# from andromeda.model import Andromeda
-from andromeda.configs import Andromeda1Billion
-from andromeda.core.transformer import Transformer
-from andromeda.utils.stable_adamw import StableAdamWUnfused
+# from Andromeda.model import Andromeda
+from Andromeda.configs import Andromeda1Billion
+from Andromeda.core.transformer import Transformer
+from Andromeda.utils.stable_adamw import StableAdamWUnfused
 
 # state = AcceleratorState()
 

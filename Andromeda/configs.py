@@ -1,4 +1,4 @@
-from andromeda.model import AndromedaEmbedding, Andromeda
+from Andromeda.model import AndromedaEmbedding, Andromeda
 
 
 Andromeda1Billion = Andromeda(

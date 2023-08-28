@@ -7,10 +7,10 @@ import torch.optim as optim
 import tqdm
 from torch.utils.data import DataLoader, Dataset
 
-from andromeda.model import Andromeda
+from Andromeda.model import Andromeda
 
-from andromeda.core.transformer import Decoder, AndromedaEmbedding, Transformer
-from andromeda.core.autoregressive_wrapper import AutoregressiveWrapper
+from Andromeda.core.transformer import Decoder, AndromedaEmbedding, Transformer
+from Andromeda.core.autoregressive_wrapper import AutoregressiveWrapper
 # constants
 
 NUM_BATCHES = int(1e5)
