@@ -1,7 +1,7 @@
 import torch
-from andromeda.configs import Andromeda1Billion
+from andromeda.model import Andromeda
 
-model =  Andromeda1Billion().cuda()
+model =  Andromeda().cuda()
 
 x = torch.randint(0, 256, (1, 1024)).cuda()
 
