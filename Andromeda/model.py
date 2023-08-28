@@ -1,6 +1,13 @@
 from torch.nn import Module
-from Andromeda.core.transformer import Transformer, AutoregressiveWrapper, AndromedaEmbedding, Decoder
 from transformers import AutoTokenizer
+
+from Andromeda.core.transformer import (
+    AndromedaEmbedding,
+    AutoregressiveWrapper,
+    Decoder,
+    Transformer,
+)
+
 
 class AndromedaTokenizer:
     def __init__(self):
@@ -86,9 +93,7 @@ class Andromeda(Module):
                     alibi_num_heads=alibi_num_heads,
                     rotary_xpos=rotary_xpos,
                     attn_flash=attn_flash,
-                    # deepnorm=deepnorm,
-                    # shift_tokens=shift_tokens,
-                    attn_one_kv_head=attn_one_kv_head,
+                    attn_kv_heads=attn_kv_heads,
                     qk_norm=qk_norm,
                     attn_qk_norm=attn_qk_norm,
                     attn_qk_norm_dim_scale=attn_qk_norm_dim_scale

@@ -13,7 +13,6 @@ from typing import Callable, List, Optional
 from einops import rearrange, repeat, reduce
 
 from andromeda.core.attend import Attend, Intermediates
-# constants
 
 DEFAULT_DIM_HEAD = 64
 
