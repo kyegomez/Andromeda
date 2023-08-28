@@ -1,13 +1,13 @@
 from torch.nn import Module
 from transformers import AutoTokenizer
 
-from andromeda.core.transformer import (
-    AndromedaEmbedding,
-    AutoregressiveWrapper,
+from Andromeda.core.transformer import (
     Decoder,
     Transformer,
 )
 
+
+from Andromeda.core.autoregressive_wrapper import AutoregressiveWrapper
 
 class AndromedaTokenizer:
     def __init__(self):
