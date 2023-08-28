@@ -48,7 +48,7 @@ class Andromeda(Module):
                  alibi_num_heads=12, 
                  rotary_xpos=True,
                  attn_flash=True, 
-                attn_kv_heads = 2,
+                 attn_kv_heads = 2,
                  qk_norm=True, 
                  attn_qk_norm=True, 
                  attn_qk_norm_dim_scale=True, 
