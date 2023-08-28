@@ -18,7 +18,6 @@ Andromeda1Billion = Andromeda(
     qk_norm=True, 
     attn_qk_norm=True, 
     attn_qk_norm_dim_scale=True, 
-    embedding_provider=AndromedaEmbedding()
 )
 
 
@@ -40,7 +39,6 @@ Andromeda3Billion = Andromeda(
     qk_norm=True, 
     attn_qk_norm=True, 
     attn_qk_norm_dim_scale=True, 
-    embedding_provider=AndromedaEmbedding()
 )
 
 
@@ -62,7 +60,6 @@ Andromeda7Billion = Andromeda(
     qk_norm=True, 
     attn_qk_norm=True, 
     attn_qk_norm_dim_scale=True, 
-    embedding_provider=AndromedaEmbedding()
 )
 
 Andromeda10Billion = Andromeda(
@@ -82,7 +79,6 @@ Andromeda10Billion = Andromeda(
     qk_norm=True, 
     attn_qk_norm=True, 
     attn_qk_norm_dim_scale=True, 
-    embedding_provider=AndromedaEmbedding()
 )
 
 Andromeda15Billion = Andromeda(
@@ -102,7 +98,6 @@ Andromeda15Billion = Andromeda(
     qk_norm=True, 
     attn_qk_norm=True, 
     attn_qk_norm_dim_scale=True, 
-    embedding_provider=AndromedaEmbedding()
 )
 
 Andromeda20Billion = Andromeda(
@@ -122,7 +117,6 @@ Andromeda20Billion = Andromeda(
     qk_norm=True, 
     attn_qk_norm=True, 
     attn_qk_norm_dim_scale=True, 
-    embedding_provider=AndromedaEmbedding()
 )
 
 #to GPT like 176Billion Parameters 122888 dimension, 96 depth, 96 heads, attn dim head 128

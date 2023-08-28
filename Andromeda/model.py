@@ -52,7 +52,7 @@ class Andromeda(Module):
                  qk_norm=True, 
                  attn_qk_norm=True, 
                  attn_qk_norm_dim_scale=True, 
-                 embedding_provider=AndromedaEmbedding()):
+                 ):
         """
         Initialize the model with specified or default parameters.
         Args:
@@ -82,7 +82,6 @@ class Andromeda(Module):
                 num_tokens=num_tokens,
                 max_seq_len=max_seq_len,
                 use_abs_pos_emb=use_abs_pos_emb,
-                embedding_provider=embedding_provider,
                 attn_layers=Decoder(
                     dim=dim,
                     depth=depth,
