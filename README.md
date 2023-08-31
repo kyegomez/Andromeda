@@ -48,10 +48,7 @@ Welcome to Andromeda, The Fastest, Most Creative, and Reliable Language Model Ev
 
 
 -----
-## Hiring
-We're hiring: Engineers, Researchers, Interns, And, Customer Success Professionals to work on democratizing Andromeda, email me at with your story `kye@apac.ai`
 
-----------
 
 ## 💻 Usage
 
@@ -180,7 +177,7 @@ Thank you for considering contributing to Andromeda. Your expertise and commitme
 
 ---
 
-## 🗺️ Roadmap
+# 🗺️ Roadmap
 
 1. **Training phase**: Train Andromeda on a large-scale dataset to achieve SOTA performance in various natural language processing tasks.
 
@@ -193,6 +190,20 @@ Thank you for considering contributing to Andromeda. Your expertise and commitme
 3. **Continuous improvement**: Continuously fine-tune Andromeda on diverse data sources and adapt it to new tasks and domains.
 
 4. **Community-driven development**: Encourage open-source contributions, including pre-processing improvements, advanced training techniques, and novel use cases.
+
+---
+
+## Todo
+- [ ] add truncated rope from https://arxiv.org/abs/2308.10882
+
+- [ ] add rope from code llama
+
+- [ ] multi grouped query 
+
+-  [ ] LLM Infinite for long sequence generation https://arxiv.org/pdf/2308.16137.pdf
+
+- [ ] speculative decoder 
+
 
 ---
 

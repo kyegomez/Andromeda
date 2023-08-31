@@ -495,25 +495,6 @@ def Train():
 
     set_seed(CFG.SEED)
 
-    # model = Andromeda(
-    #     num_tokens=50432,
-    #     max_seq_len=8192,
-    #     dim=3072,
-    #     depth=24,
-    #     dim_head=128,
-    #     heads=12,
-    #     use_abs_pos_emb=False, 
-    #     alibi_pos_bias=True, 
-    #     alibi_num_heads=6, 
-    #     rotary_xpos=True,
-    #     attn_flash=True, 
-    #     shift_tokens=1, 
-    #     attn_one_kv_head=True, 
-    #     qk_norm=True, 
-    #     attn_qk_norm=True, 
-    #     attn_qk_norm_dim_scale=True, 
-    #     embedding_provider=AndromedaEmbedding()
-    # )
     model = Andromeda1Billion()
 
     print_num_params(model, accelerator)
