@@ -379,8 +379,6 @@ def decoupled_optimizer(
         optimizer = Lion(grouped_params, lr=learning_rate, betas=(beta_1, beta_2),)
     elif optimizer_type == "adamw":
         optimizer = AdamW(grouped_params, lr=learning_rate, betas=(beta_1, beta_2),)
-    elif optimizer_type == "deepspeed":
-        optimizer = DummyOptim(grouped_params, lr=learning_rate, betas=(beta_1, beta_2),)
     elif optimizer_type == "stable_adamw":
         optimizer = StableAdamWUnfused(
             grouped_params, lr=learning_rate, betas=(beta_1, beta_2),
