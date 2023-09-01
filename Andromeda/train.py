@@ -12,7 +12,7 @@ import torch.distributed as dist
 from accelerate import Accelerator
 from accelerate.logging import get_logger
 from accelerate.state import AcceleratorState
-from accelerate.utils import DummyOptim, InitProcessGroupKwargs
+from accelerate.utils import InitProcessGroupKwargs
 from datasets import load_dataset
 from lion_pytorch import Lion
 from torch.distributed.algorithms._checkpoint.checkpoint_wrapper import (
