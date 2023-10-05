@@ -6,13 +6,14 @@ from Andromeda.core.transformer import (
     Transformer,
 )
 
-
 from Andromeda.core.autoregressive_wrapper import AutoregressiveWrapper
 
+
+#classes
 class AndromedaTokenizer:
     def __init__(self):
         self.tokenizer= AutoTokenizer.from_pretrained(
-            "EleutherAI/gpt-neox-20b",
+            "mistralai/Mistral-7B-v0.1", #mistal tokenizer 
             eos_token="<eos>",
             pad_token="<pad>",
             extra_ids=0,
@@ -20,7 +21,12 @@ class AndromedaTokenizer:
         )
 
     def tokenize_texts(self, texts):
-        return self.tokenizer(texts, return_tensors='pt', padding=True, truncation=True).input_ids
+        return self.tokenizer(
+            texts, 
+            return_tensors='pt', 
+            padding=True, 
+            truncation=True
+        ).input_ids
     
     def decode(self, texts):
         return self.tokenizer.decode(texts)
