@@ -1,4 +1,5 @@
 import torch
+
 # from palm_rlhf_pytorch.palm import LayerNorm
 from torch.nn import LayerNorm
 from torch.optim import AdamW
@@ -126,14 +127,14 @@ def decoupled_optimizer(
     # Create a variable called optimizer that stores an instance of the optimizer.
     if optimizer_type == "adamw":
         optimizer = AdamW(
-            grouped_params, 
-            lr=learning_rate, 
+            grouped_params,
+            lr=learning_rate,
             betas=(beta_1, beta_2),
         )
     elif optimizer_type == "stable_adamw":
         optimizer = StableAdamWUnfused(
-            grouped_params, 
-            lr=learning_rate, 
+            grouped_params,
+            lr=learning_rate,
             betas=(beta_1, beta_2),
         )
     else:

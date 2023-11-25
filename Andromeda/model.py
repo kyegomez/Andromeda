@@ -9,56 +9,53 @@ from Andromeda.core.transformer import (
 from Andromeda.core.autoregressive_wrapper import AutoregressiveWrapper
 
 
-#classes
+# classes
 class AndromedaTokenizer:
     def __init__(self):
-        self.tokenizer= AutoTokenizer.from_pretrained(
-            "mistralai/Mistral-7B-v0.1", #mistal tokenizer 
+        self.tokenizer = AutoTokenizer.from_pretrained(
+            "mistralai/Mistral-7B-v0.1",  # mistal tokenizer
             eos_token="<eos>",
             pad_token="<pad>",
             extra_ids=0,
-            model_max_length=8192
+            model_max_length=8192,
         )
 
     def tokenize_texts(self, texts):
         return self.tokenizer(
-            texts, 
-            return_tensors='pt', 
-            padding=True, 
-            truncation=True
+            texts, return_tensors="pt", padding=True, truncation=True
         ).input_ids
-    
+
     def decode(self, texts):
         return self.tokenizer.decode(texts)
-    
+
     def __len__(self):
         num_tokens = len(self.tokenizer)
         return num_tokens
 
 
-
 class Andromeda(Module):
     """
-    Andromeda is a transformer-based model architecture. It initializes with 
+    Andromeda is a transformer-based model architecture. It initializes with
     a Transformer and AutoregressiveWrapper with default or user-specified parameters.
     """
+
     def __init__(
-        self, 
-        num_tokens=50432, 
-        max_seq_len=8192, 
-        dim=2560, 
-        depth=32, 
-        dim_head=128, 
+        self,
+        num_tokens=50432,
+        max_seq_len=8192,
+        dim=2560,
+        depth=32,
+        dim_head=128,
         heads=24,
-        use_abs_pos_emb=False, 
-        alibi_pos_bias=True, 
-        alibi_num_heads=12, 
+        use_abs_pos_emb=False,
+        alibi_pos_bias=True,
+        alibi_num_heads=12,
         rotary_xpos=True,
-        attn_flash=True, 
-        attn_kv_heads = 2,
-        qk_norm=True, 
-        attn_qk_norm=True, 
-        attn_qk_norm_dim_scale=True, 
+        attn_flash=True,
+        attn_kv_heads=2,
+        qk_norm=True,
+        attn_qk_norm=True,
+        attn_qk_norm_dim_scale=True,
     ):
         """
         Initialize the model with specified or default parameters.
@@ -101,8 +98,8 @@ class Andromeda(Module):
                     attn_kv_heads=attn_kv_heads,
                     qk_norm=qk_norm,
                     attn_qk_norm=attn_qk_norm,
-                    attn_qk_norm_dim_scale=attn_qk_norm_dim_scale
-                )
+                    attn_qk_norm_dim_scale=attn_qk_norm_dim_scale,
+                ),
             )
 
             self.decoder = AutoregressiveWrapper(self.Andromeda)

@@ -42,7 +42,7 @@ import argparse
 #             "memory_usages": [],
 #             "memory_usage_average": None,
 #             "time_end_to_end": None,
-            
+
 #             "throughput": None
 #         }
 
@@ -50,7 +50,7 @@ import argparse
 #         num_params = sum(param.numel() for param in self.model.parameters() if param.requires_grad)
 
 #         return num_params
-    
+
 #     def generate(self, prompt, generation_steps=32):
 #         #make sure all of the metrics reset at every generation
 #         self.reset_metrics()
@@ -59,7 +59,7 @@ import argparse
 
 #         tokens = self.tokenizer.encode(prompt)
 #         tokens_new = []
-        
+
 #         time_end_to_end = time.time()
 
 #         #generation loop
@@ -70,11 +70,11 @@ import argparse
 #             tracemalloc.start()
 
 #             time_forward_0 = time.time()
-            
+
 #             logits = self.model(tokens_tensor, return_loss=False)[:, -1] # no loss takes the output of the last tokens
-            
+
 #             time_forward_1 = time.time()
-            
+
 #             _, memory_usage = tracemalloc.get_traced_memory()
 #             tracemalloc.stop()
 
@@ -103,29 +103,23 @@ import argparse
 
 #         return tokens_new, decoded
 
-        
-
 
 # def main():
 #     prompt = 'My name is'
 
 #     andromeda = EvalAndromeda(path='checkpoints/step_44927_6656/pytorch_model.bin')
-    
+
 #     num_params = Andromeda.get_num_params()
 #     print(f'The model has {num_params} parameters')
-    
+
 #     _, output = Andromeda.generate(prompt)
-    
+
 #     for metric, value in Andromeda.metrics.items():
 #         print(f'{metric}: {value}\n')
-    
+
 #     print('\n')
-    
+
 #     print(output)
-
-
-
-
 
 
 def main():
@@ -160,14 +154,13 @@ def main():
 
     args = parser.parse_args()
 
-
     dtype = torch.float32
-    if args.dtype == 'bf16':
+    if args.dtype == "bf16":
         dtype = torch.bfloat16
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    #need to submit to torch hub
+    # need to submit to torch hub
     model = torch.hub.load("apacai/andromeda", args.model).to(device).to(dtype)
 
     opt_model = torch.compile(model, backend="hidet")

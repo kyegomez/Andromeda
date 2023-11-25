@@ -35,9 +35,12 @@ class AndromedaModelTest:
 
         loss.backward()
         for name, parameter in self.model.named_parameters():
-            assert not torch.isnan(parameter.grad().any()), f"Gradient for {name} contains NaNs"
-            assert not torch.isinf(parameter.grad().any()), f"Gradient for {name} contains Infs"
-
+            assert not torch.isnan(
+                parameter.grad().any()
+            ), f"Gradient for {name} contains NaNs"
+            assert not torch.isinf(
+                parameter.grad().any()
+            ), f"Gradient for {name} contains Infs"
 
     def test_optimizer_step(self):
         initial_params = [param.clone() for param in self.model_parameters()]
@@ -48,10 +51,9 @@ class AndromedaModelTest:
         loss.backward()
         self.optimizer.step()
         for initial_param, param in zip(initial_params, self.model.parameters()):
-            assert not torch.equal(initial_param, param), "Model Parameters did not change after an optimizer step"
-
-
-
+            assert not torch.equal(
+                initial_param, param
+            ), "Model Parameters did not change after an optimizer step"
 
 
 class SpeedMetrics:
@@ -60,24 +62,32 @@ class SpeedMetrics:
 
     def forward_pass_time(self):
         start_time = time.time()
-        self.model.decoder.forward(torch.randint(0, 50304, (1, 8192), device=device, dtype=torch.long))[0]
+        self.model.decoder.forward(
+            torch.randint(0, 50304, (1, 8192), device=device, dtype=torch.long)
+        )[0]
         end_time = time.time()
         return end_time - start_time
-    
+
     def backward_pass_time(self):
-        model_input = self.model.decoder.forward(torch.randint(0, 50304, (1, 8192), device=device, dtype=torch.long))[0]
+        model_input = self.model.decoder.forward(
+            torch.randint(0, 50304, (1, 8192), device=device, dtype=torch.long)
+        )[0]
         start_time = time.time()
-        loss = torch.nn.CrossEntropyLoss()(model_input, torch.randint(0, 50304, (1, 8192), device=device, dtype=torch.long))
+        loss = torch.nn.CrossEntropyLoss()(
+            model_input,
+            torch.randint(0, 50304, (1, 8192), device=device, dtype=torch.long),
+        )
         loss.backward()
         end_time = time.time()
         return end_time - start_time
-    
+
     def end_to_end_latency(self):
         start_time = time.time()
-        self.model.forward(torch.randint(0, 50304, (1, 8192), device=device, dtype=torch.long))
+        self.model.forward(
+            torch.randint(0, 50304, (1, 8192), device=device, dtype=torch.long)
+        )
         end_time = time.time()
         return end_time - start_time
-    
 
 
 class ScalabilityMetrics:
@@ -145,16 +155,21 @@ class SequenceMetrics:
         return seq_lengths, seq_impact_times
 
 
-
-
 class FlopsBenchmark:
-    def __init__(self, model, bsz=32, d_model=1024, num_heads=8, sequence_lengths=list(range(500, 32001, 500))):
+    def __init__(
+        self,
+        model,
+        bsz=32,
+        d_model=1024,
+        num_heads=8,
+        sequence_lengths=list(range(500, 32001, 500)),
+    ):
         self.bsz = bsz
         self.d_model = d_model
         self.num_heads = num_heads
         self.sequence_lengths = sequence_lengths
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.dtype=torch.float32
+        self.dtype = torch.float32
         self.model = model.to(self.device)
 
     def benchmark(self):
@@ -162,7 +177,11 @@ class FlopsBenchmark:
         tflops_per_s = []
 
         for seq_len in self.sequence_lengths:
-            x = torch.randn(self.bsz, seq_len, self.d_model).to(self.device).type(self.dtype)
+            x = (
+                torch.randn(self.bsz, seq_len, self.d_model)
+                .to(self.device)
+                .type(self.dtype)
+            )
             torch.cuda.synchronize()
 
             start = time.time()
@@ -171,56 +190,56 @@ class FlopsBenchmark:
             elapsed = time.time() - start
 
             time_taken.append(elapsed)
-            total_flops = 4 * seq_len **2 * (self.d_model // self.num_heads) * self.num_heads
+            total_flops = (
+                4 * seq_len**2 * (self.d_model // self.num_heads) * self.num_heads
+            )
             tflops_per_s.append(total_flops / elapsed / 1e12)  # Convert to TFLOPs
 
-        for seq_len, elapsed, tflops in zip(self.sequence_lengths, time_taken, tflops_per_s):
-            print(f"Sequence length: {seq_len}, Time elapsed: {elapsed} s, TFLOPs/s: {tflops}")
+        for seq_len, elapsed, tflops in zip(
+            self.sequence_lengths, time_taken, tflops_per_s
+        ):
+            print(
+                f"Sequence length: {seq_len}, Time elapsed: {elapsed} s, TFLOPs/s: {tflops}"
+            )
 
 
-#mock test dataset
+# mock test dataset
 test_dataset = datasets.FakeData(size=1000, transform=transforms.ToTensor())
 
-#model
+# model
 model = Andromeda(
-    num_tokens=50304, 
-    dim=1024,
-    depth=24,
-    dim_head=128,
-    heads=8,
-    alibi_num_heads=4
+    num_tokens=50304, dim=1024, depth=24, dim_head=128, heads=8, alibi_num_heads=4
 )
 
 
-#speed test metrics test 
-# speed test metrics test 
+# speed test metrics test
+# speed test metrics test
 speed_metrics = SpeedMetrics(model)
 forward_pass_time = speed_metrics.forward_pass_time()
 backward_pass_time = speed_metrics.backward_pass_time()
 end_to_end_latency = speed_metrics.end_to_end_latency()
 
 
-#scalability metrics test
+# scalability metrics test
 scalability_metrics = ScalabilityMetrics(model, test_dataset)
 throughput = scalability_metrics.throughput()
 
 
-#consistency metrucs test
+# consistency metrucs test
 consistency_metrics = ConsistencyMetrics(model)
 consistency_times, consistency_score = consistency_metrics.consistency_over_time()
 
 
-#memory metrics test
+# memory metrics test
 memory_metrics = MemoryMetrics(model)
 current, peak = memory_metrics.memory_footprint()
 
-#sequence metrics test
+# sequence metrics test
 sequence_metrics = SequenceMetrics(model)
 seq_lengths, seq_impact_times = sequence_metrics.sequence_length_impact()
 
 
-
-#flops
+# flops
 
 flops_benchmark = FlopsBenchmark(model)
 flops_benchmark.benchmark()
@@ -228,27 +247,29 @@ flops_benchmark.benchmark()
 # Graphical Interface
 fig, axs = plt.subplots(3)
 
-axs[0].bar(["Forward Pass Time", "Backward Pass Time", "End-to-End Latency"], [forward_pass_time, backward_pass_time, end_to_end_latency])
-axs[0].set_title('Speed Metrics')
-axs[0].set_xlabel('Metrics')
-axs[0].set_ylabel('Time (seconds)')
+axs[0].bar(
+    ["Forward Pass Time", "Backward Pass Time", "End-to-End Latency"],
+    [forward_pass_time, backward_pass_time, end_to_end_latency],
+)
+axs[0].set_title("Speed Metrics")
+axs[0].set_xlabel("Metrics")
+axs[0].set_ylabel("Time (seconds)")
 
 axs[1].bar(seq_lengths, seq_impact_times)
-axs[1].set_title('Sequence Length Impact')
-axs[1].set_xlabel('Sequence Length')
-axs[1].set_ylabel('Time (seconds)')
+axs[1].set_title("Sequence Length Impact")
+axs[1].set_xlabel("Sequence Length")
+axs[1].set_ylabel("Time (seconds)")
 
 axs[2].plot(list(range(1, 11)), consistency_times)
-axs[2].set_title('Consistency Over Time')
-axs[2].set_xlabel('Run Number')
-axs[2].set_ylabel('Time (seconds)')
+axs[2].set_title("Consistency Over Time")
+axs[2].set_xlabel("Run Number")
+axs[2].set_ylabel("Time (seconds)")
 
 plt.tight_layout()
 plt.show()
 
 print(f"Throughput: {throughput} instances/second")
 print(f"Memory used: {current / 10**6}MB; Peak: {peak / 10**6}MB")
-
 
 
 # Add at the bottom of your file

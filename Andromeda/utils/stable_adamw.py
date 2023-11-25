@@ -1,4 +1,3 @@
-
 import torch
 
 # This is the unfused version of StableAdamW. It is slower than the fused version (coming).
