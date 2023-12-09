@@ -1,5 +1,5 @@
 import torch
-from torch.nn import Module
+from torch import nn
 
 from andromeda_torch.core.autoregressive_wrapper import AutoregressiveWrapper
 from andromeda_torch.core.transformer import (
@@ -8,7 +8,7 @@ from andromeda_torch.core.transformer import (
 )
 
 
-class Andromeda(Module):
+class Andromeda(nn.Module):
     """
     Andromeda is a transformer-based model architecture. It initializes with
     a Transformer and AutoregressiveWrapper with default or user-specified parameters.

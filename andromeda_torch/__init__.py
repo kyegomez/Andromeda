@@ -1,3 +1,7 @@
-from andromeda_torch.model import AndromedaTokenizer, Andromeda
-from andromeda_torch.train import Train, train
+from andromeda_torch.model import Andromeda
 from andromeda_torch.tokenizer import Tokenizer
+
+__all__ = [
+    "Andromeda",
+    "Tokenizer",
+]
