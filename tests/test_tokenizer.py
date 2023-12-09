@@ -1,7 +1,7 @@
 import os
 import pytest
 from unittest.mock import patch, mock_open
-from andromeda_torch.model import Tokenizer
+from andromeda_torch import Tokenizer
 
 
 # Define a fixture to create a Tokenizer instance
