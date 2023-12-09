@@ -1,42 +1,39 @@
+import torch
 from torch.nn import Module
-from transformers import AutoTokenizer
 
-from Andromeda.core.transformer import (
+from andromeda.core.autoregressive_wrapper import AutoregressiveWrapper
+from andromeda.core.transformer import (
     Decoder,
     Transformer,
 )
-
-from Andromeda.core.autoregressive_wrapper import AutoregressiveWrapper
-
-
-# classes
-class AndromedaTokenizer:
-    def __init__(self):
-        self.tokenizer = AutoTokenizer.from_pretrained(
-            "mistralai/Mistral-7B-v0.1",  # mistal tokenizer
-            eos_token="<eos>",
-            pad_token="<pad>",
-            extra_ids=0,
-            model_max_length=8192,
-        )
-
-    def tokenize_texts(self, texts):
-        return self.tokenizer(
-            texts, return_tensors="pt", padding=True, truncation=True
-        ).input_ids
-
-    def decode(self, texts):
-        return self.tokenizer.decode(texts)
-
-    def __len__(self):
-        num_tokens = len(self.tokenizer)
-        return num_tokens
 
 
 class Andromeda(Module):
     """
     Andromeda is a transformer-based model architecture. It initializes with
     a Transformer and AutoregressiveWrapper with default or user-specified parameters.
+
+    Args:
+    - num_tokens: Number of tokens in the vocabulary
+    - max_seq_len: Maximum sequence length
+    - dim: Dimension of the model
+    - depth: Depth of the model
+    - dim_head: Dimension of the model head
+    - heads: Number of heads
+    - use_abs_pos_emb: Whether to use absolute position embedding
+    - alibi_pos_bias: Alibi position bias
+    - alibi_num_heads: Number of alibi heads
+    - rotary_xpos: Rotary position
+    - attn_flash: Attention flash
+    - deepnorm: Deep normalization
+    - shift_tokens: Number of tokens to shift
+    - attn_one_kv_head: Attention one key/value head
+    - qk_norm: Query-key normalization
+    - attn_qk_norm: Attention query-key normalization
+    - attn_qk_norm_dim_scale: Attention query-key normalization dimension scale
+    - embedding_provider: Embedding provider module
+
+
     """
 
     def __init__(
@@ -108,7 +105,7 @@ class Andromeda(Module):
             print("Failed to initialize Andromeda: ", e)
             raise
 
-    def forward(self, text_tokens, **kwargs):
+    def forward(self, text_tokens: torch.Tensor, **kwargs):
         """
         Forward pass through the model. It expects the input text_tokens.
         Args:

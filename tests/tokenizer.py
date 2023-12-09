@@ -1,5 +1,5 @@
 import unittest
-from Andromeda.model import AndromedaTokenizer
+from andromeda.model import AndromedaTokenizer
 
 
 class TestAndromedaTokenizer(unittest.TestCase):

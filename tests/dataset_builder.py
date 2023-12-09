@@ -1,5 +1,5 @@
 import unittest
-from Andromeda.dataset_builder import DatasetBuilder
+from andromeda.dataset_builder import DatasetBuilder
 
 
 class TestDatasetBuilder(unittest.TestCase):

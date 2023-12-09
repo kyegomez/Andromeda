@@ -45,11 +45,11 @@ from transformers import (
 )
 
 
-from Andromeda.utils.stable_adamw import StableAdamWUnfused
-from Andromeda.core.transformer import Transformer
+from andromeda.utils.stable_adamw import StableAdamWUnfused
+from andromeda.core.transformer import Transformer
 
-# from Andromeda.model import Andromeda
-from Andromeda.configs import Andromeda1Billion
+# from andromeda.model import Andromeda
+from andromeda.configs import Andromeda1Billion
 
 ########### SETUP CONFIG
 import torch.distributed as dist

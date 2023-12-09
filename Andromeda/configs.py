@@ -1,5 +1,4 @@
-from Andromeda.model import Andromeda
-
+from andromeda.model import Andromeda
 
 Andromeda1Billion = Andromeda(
     num_tokens=25000,

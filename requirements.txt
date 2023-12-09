@@ -15,6 +15,6 @@ rouge
 nltk
 scikit-learn
 wandb
-
-
+pytest
+zetascale
 matplotlib

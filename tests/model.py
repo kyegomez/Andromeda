@@ -1,6 +1,6 @@
 import torch
 import unittest
-from Andromeda.model import Andromeda
+from andromeda.model import Andromeda
 
 
 class TestAndromeda(unittest.TestCase):
