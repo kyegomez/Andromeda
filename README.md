@@ -44,10 +44,11 @@ Welcome to Andromeda, The Fastest, Most Creative, and Reliable Language Model Ev
 
 ## 💻 Install
 
-`pip install TheBestLLMEver`
+`python3.11 -m pip install --upgrade andromeda-torch`
 
 
 ## Usage
+- Forward pass with random inputs
 ```python
 import torch
 
@@ -59,9 +60,24 @@ x = torch.randint(0, 256, (1, 1024)).cuda()
 
 out = model(x)  # (1, 1024, 20000)
 print(out)
+```
+
+- Tokenized inputs
+```python
+from andromeda_torch import Tokenizer
+from andromeda_torch.configs import Andromeda1Billion
+
+model = Andromeda1Billion()
+tokenizer = Tokenizer()
+
+encoded_text = tokenizer.encode("Hello world!")
+out = model(encoded_text)
+print(out)
 
 
 ```
+
+
 
 ## 📚 Training
 
