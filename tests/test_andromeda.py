@@ -1,6 +1,6 @@
 import torch
 import pytest
-from andromeda.model import Andromeda
+from andromeda_torch.model import Andromeda
 
 
 # Create a fixture to initialize the Andromeda model

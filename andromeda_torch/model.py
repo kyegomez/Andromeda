@@ -1,8 +1,8 @@
 import torch
 from torch.nn import Module
 
-from andromeda.core.autoregressive_wrapper import AutoregressiveWrapper
-from andromeda.core.transformer import (
+from andromeda_torch.core.autoregressive_wrapper import AutoregressiveWrapper
+from andromeda_torch.core.transformer import (
     Decoder,
     Transformer,
 )

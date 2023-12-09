@@ -7,10 +7,10 @@ import torch.optim as optim
 import tqdm
 from torch.utils.data import DataLoader, Dataset
 
-from andromeda.model import Andromeda
+from andromeda_torch.model import Andromeda
 
-from andromeda.core.transformer import Decoder, Transformer
-from andromeda.core.autoregressive_wrapper import AutoregressiveWrapper
+from andromeda_torch.core.transformer import Decoder, Transformer
+from andromeda_torch.core.autoregressive_wrapper import AutoregressiveWrapper
 
 # constants
 

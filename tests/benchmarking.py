@@ -7,8 +7,8 @@ import numpy as np
 import tracemalloc
 
 # from andromeda.model import Andromeda
-from andromeda.model import Andromeda
-from andromeda.utils.stable_adamw import StableAdamWUnfused
+from andromeda_torch.model import Andromeda
+from andromeda_torch.utils.stable_adamw import StableAdamWUnfused
 
 torch.manual_seed(0)
 if torch.cuda.is_available():

@@ -12,7 +12,7 @@ from typing import Callable, List, Optional
 
 from einops import rearrange, repeat, reduce
 
-from andromeda.core.attend import Attend, Intermediates
+from andromeda_torch.core.attend import Attend, Intermediates
 
 DEFAULT_DIM_HEAD = 64
 

@@ -42,9 +42,9 @@ from transformers import (
 )
 
 # from andromeda.model import Andromeda
-from andromeda.configs import Andromeda1Billion
-from andromeda.core.transformer import Transformer
-from andromeda.utils.stable_adamw import StableAdamWUnfused
+from andromeda_torch.configs import Andromeda1Billion
+from andromeda_torch.core.transformer import Transformer
+from andromeda_torch.utils.stable_adamw import StableAdamWUnfused
 
 # state = AcceleratorState()
 
