@@ -1,6 +1,5 @@
 import torch
 
-# from andromeda.model import Andromeda
 from andromeda_torch.configs import Andromeda1Billion
 
 model = Andromeda1Billion()

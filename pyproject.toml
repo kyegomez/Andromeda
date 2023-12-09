@@ -14,10 +14,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3.6",
 ]
-packages = [
-    { include = "andromeda" },
-    { include = "andromeda/**/*.py" },
-]
+
 
 [tool.poetry.dependencies]
 python = "^3.6"

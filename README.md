@@ -51,7 +51,6 @@ Welcome to Andromeda, The Fastest, Most Creative, and Reliable Language Model Ev
 ```python
 import torch
 
-# from andromeda.model import Andromeda
 from andromeda.configs import Andromeda1Billion
 
 model = Andromeda1Billion()
