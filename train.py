@@ -75,7 +75,7 @@ class CFG:
     USE_FSDP: bool = True
     USE_PRETOKENIZED: bool = True
     USE_ACTIVATION_CHECKPOINTING: bool = True
-    RESUME_FROM_CHECKPOINT: str = False
+    RESUME_FROM_CHECKPOINT: bool = False
     CHECKPOINTING_STEPS: int = 1000
     OUTPUT_DIR: str = "checkpoints/"  # Folder
     ENTITY_NAME: str = "Andromeda"
