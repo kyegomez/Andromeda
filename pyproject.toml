@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "andromeda-torch"
-version = "0.0.4"
+version = "0.0.5"
 description = "Andromeda - Pytorch"
 authors = ["Kye Gomez <kye@apac.ai>"]
 license = "MIT"
@@ -19,6 +19,8 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.6"
 torch = "*"
+py-cpuinfo = "*"
+
 lion-pytorch = "*"
 numpy = "*"
 einops = "*"
