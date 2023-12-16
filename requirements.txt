@@ -9,7 +9,6 @@ transformers
 
 SentencePiece
 datasets
-deepspeed
 memory-profiler
 rouge
 nltk
