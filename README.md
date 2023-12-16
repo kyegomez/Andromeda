@@ -100,18 +100,9 @@ For more information, refer to the [Training SOP](DOCs/TRAINING.md).
 
 
 ## Todo
-- [ ] add truncated rope from https://arxiv.org/abs/2308.10882
-
-- [ ] add rope from code llama
-
-- [ ] multi grouped query 
-
--  [ ] LLM Infinite for long sequence generation https://arxiv.org/pdf/2308.16137.pdf
-
-- [ ] speculative decoder 
+- [ ] Add Yarn Embeddings from zeta
 
 
----
 
 ## 📈 Benchmarks
 
@@ -122,12 +113,5 @@ For more information, refer to the [Training SOP](DOCs/TRAINING.md).
 
 - We can speed this up even more with dynamic sparse flash attention 2.0.
 
----
-
-# 🔮 Join the Journey
-
-We're just getting started, and we invite you to join the journey. Let's revolutionize the NLP landscape together! 🚀🌟
-
-- Join Agora and work with 2,000+ AI Engineers to implement all new features.
-- Provide compute and help train Andromeda.
-- Share the message on how we're liberating this superintelligent AI and seizing the power from the corrupt, providing it back to you.
+# License
+Apache License
