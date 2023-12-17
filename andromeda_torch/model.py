@@ -31,8 +31,6 @@ class Andromeda(nn.Module):
     - qk_norm: Query-key normalization
     - attn_qk_norm: Attention query-key normalization
     - attn_qk_norm_dim_scale: Attention query-key normalization dimension scale
-    - embedding_provider: Embedding provider module
-
 
     """
 
@@ -53,6 +51,8 @@ class Andromeda(nn.Module):
         qk_norm=True,
         attn_qk_norm=True,
         attn_qk_norm_dim_scale=True,
+        *args,
+        **kwargs
     ):
         """
         Initialize the model with specified or default parameters.
@@ -76,10 +76,10 @@ class Andromeda(nn.Module):
         - attn_qk_norm_dim_scale: Attention query-key normalization dimension scale
         - embedding_provider: Embedding provider module
         """
-        super().__init__()
+        super(Andromeda, self).__init__()
 
         try:
-            self.Andromeda = Transformer(
+            self.andromeda = Transformer(
                 num_tokens=num_tokens,
                 max_seq_len=max_seq_len,
                 use_abs_pos_emb=use_abs_pos_emb,
@@ -96,27 +96,29 @@ class Andromeda(nn.Module):
                     qk_norm=qk_norm,
                     attn_qk_norm=attn_qk_norm,
                     attn_qk_norm_dim_scale=attn_qk_norm_dim_scale,
+                    *args,
+                    **kwargs
                 ),
             )
 
-            self.decoder = AutoregressiveWrapper(self.Andromeda)
+            self.decoder = AutoregressiveWrapper(self.andromeda)
 
         except Exception as e:
             print("Failed to initialize Andromeda: ", e)
             raise
 
-    def forward(self, text_tokens: torch.Tensor, **kwargs):
+    def forward(self, x: torch.Tensor, **kwargs):
         """
-        Forward pass through the model. It expects the input text_tokens.
+        Forward pass through the model. It expects the input x.
         Args:
-        - text_tokens: Input tokens
+        - x: Input tokens
         - kwargs: Other arguments
         Returns:
         - output from the decoder
         """
         try:
-            model_input = self.decoder.forward(text_tokens)[0]
-            return self.decoder(model_input, padded_x=model_input[0])
+            model_input = self.decoder.forward(x)[0]
+            return self.decoder(model_input, padded_x=model_input[0], **kwargs)
         except Exception as e:
-            print("Failed in forward method: ", e)
+            print(f"Failed to run forward pass: {e}")
             raise
