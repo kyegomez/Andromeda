@@ -3,16 +3,11 @@ lion-pytorch
 numpy
 einops
 bitsandbytes
-triton
 accelerate
 transformers
-
 SentencePiece
 datasets
 memory-profiler
-rouge
-nltk
-scikit-learn
 wandb
 pytest
 zetascale
