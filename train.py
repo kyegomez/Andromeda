@@ -36,7 +36,7 @@ from transformers import (
     get_linear_schedule_with_warmup,
     set_seed,
 )
-from zeta.nn import StableAdamWUnfused
+from zeta.optim import StableAdamWUnfused
 
 from andromeda_torch.configs import Andromeda1Billion
 from andromeda_torch.core.transformer import Transformer
