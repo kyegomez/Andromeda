@@ -16,7 +16,7 @@ from torch.distributed.fsdp import (
     ShardingStrategy,
 )
 from accelerate import Accelerator
-from accelerate.utils import DummyOptim, InitProcessGroupKwargs
+from accelerate.utils import InitProcessGroupKwargs
 from accelerate.logging import get_logger
 
 
@@ -396,12 +396,6 @@ def decoupled_optimizer(
         )
     elif optimizer_type == "adamw":
         optimizer = AdamW(
-            grouped_params,
-            lr=learning_rate,
-            betas=(beta_1, beta_2),
-        )
-    elif optimizer_type == "deepspeed":
-        optimizer = DummyOptim(
             grouped_params,
             lr=learning_rate,
             betas=(beta_1, beta_2),

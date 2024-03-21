@@ -1,18 +1,12 @@
-import time
-import tracemalloc
-import matplotlib.pyplot as plt
-import numpy as np
 import torch
 import torch.nn.functional as F
 from nltk.translate.bleu_score import corpus_bleu
 from rouge import Rouge
 from sklearn.metrics import f1_score
-from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
 # from andromeda.model import Andromeda
 from andromeda_torch.model import Andromeda
-from andromeda_torch.utils.stable_adamw import StableAdamWUnfused
 
 torch.manual_seed(0)
 if torch.cuda.is_available():

@@ -52,7 +52,7 @@ class Andromeda(nn.Module):
         attn_qk_norm=True,
         attn_qk_norm_dim_scale=True,
         *args,
-        **kwargs
+        **kwargs,
     ):
         """
         Initialize the model with specified or default parameters.
@@ -97,7 +97,7 @@ class Andromeda(nn.Module):
                     attn_qk_norm=attn_qk_norm,
                     attn_qk_norm_dim_scale=attn_qk_norm_dim_scale,
                     *args,
-                    **kwargs
+                    **kwargs,
                 ),
             )
 
