@@ -371,34 +371,11 @@ def decoupled_optimizer(
     ]
 
     # Create a variable called optimizer that stores an instance of the optimizer.
-    if optimizer_type == "lion":
-        optimizer = Lion(
-            grouped_params,
-            lr=learning_rate,
-            betas=(beta_1, beta_2),
-        )
-    elif optimizer_type == "adamw":
-        optimizer = AdamW(
-            grouped_params,
-            lr=learning_rate,
-            betas=(beta_1, beta_2),
-        )
-    elif optimizer_type == "stable_adamw":
-        optimizer = StableAdamWUnfused(
-            grouped_params,
-            lr=learning_rate,
-            betas=(beta_1, beta_2),
-        )
-    # elif optimizer_type=="Adam8bit":
-    #     optimizer = bnb.optim.Adam8bit(grouped_params, lr=learning_rate, betas=(beta_1, beta_2))
-    # elif optimizer_type=="Lion8Bit":
-    #     optimizer = bnb.optim.Lion8bit(grouped_params, lr=learning_rate, betas=(beta_1, beta_2))
-    else:
-        raise ValueError(
-            "Invalid optimizer_type. Expected 'lion', 'adamw', 'deepspeed' or 'stable_adamw', got: {}".format(
-                optimizer_type
-            )
-        )
+    optimizer = StableAdamWUnfused(
+        grouped_params,
+        lr=learning_rate,
+        betas=(beta_1, beta_2),
+    )
 
     # Return the optimizer.
     return optimizer

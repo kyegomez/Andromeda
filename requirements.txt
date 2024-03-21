@@ -12,3 +12,4 @@ wandb
 pytest
 zetascale
 matplotlib
+deepspeed
