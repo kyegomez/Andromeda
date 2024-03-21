@@ -1,10 +1,6 @@
 import torch
 from torch import nn
-
-from andromeda_torch.core.autoregressive_wrapper import (
-    AutoregressiveWrapper,
-)
-from zeta.structs import Decoder, Transformer
+from zeta.structs import Decoder, Transformer, AutoregressiveWrapper
 
 
 class Andromeda(nn.Module):
@@ -48,6 +44,7 @@ class Andromeda(nn.Module):
         attn_flash=True,
         attn_kv_heads=2,
         qk_norm=True,
+        kv_heads: int = 4,
         attn_qk_norm=True,
         attn_qk_norm_dim_scale=True,
         *args,
@@ -93,6 +90,7 @@ class Andromeda(nn.Module):
                     attn_flash=attn_flash,
                     attn_kv_heads=attn_kv_heads,
                     qk_norm=qk_norm,
+                    kv_heads=kv_heads,
                     attn_qk_norm=attn_qk_norm,
                     attn_qk_norm_dim_scale=attn_qk_norm_dim_scale,
                     *args,
