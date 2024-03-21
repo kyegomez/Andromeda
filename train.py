@@ -6,33 +6,26 @@ from functools import partial
 from itertools import chain
 
 import torch
-
-# import bitsandbytes as bnb
-
-from torch.distributed.fsdp import (
-    FullyShardedDataParallel,
-    MixedPrecision,
-    BackwardPrefetch,
-    ShardingStrategy,
-)
+import torch.distributed as dist
 from accelerate import Accelerator
-from accelerate.utils import InitProcessGroupKwargs
 from accelerate.logging import get_logger
-
-
+from accelerate.state import AcceleratorState
+from accelerate.utils import InitProcessGroupKwargs
 from datasets import load_dataset
 from lion_pytorch import Lion
-from torch.nn import LayerNorm
-
-
 from torch.distributed.algorithms._checkpoint.checkpoint_wrapper import (
     CheckpointImpl,
     apply_activation_checkpointing,
     checkpoint_wrapper,
 )
+from torch.distributed.fsdp import (
+    BackwardPrefetch,
+    FullyShardedDataParallel,
+    MixedPrecision,
+    ShardingStrategy,
+)
 from torch.distributed.fsdp.wrap import transformer_auto_wrap_policy
-
-
+from torch.nn import LayerNorm
 from torch.optim import AdamW
 from torch.utils.data import DataLoader
 from tqdm import tqdm
@@ -43,22 +36,12 @@ from transformers import (
     get_linear_schedule_with_warmup,
     set_seed,
 )
+from zeta.nn import StableAdamWUnfused
 
-
-from andromeda_torch.utils.stable_adamw import StableAdamWUnfused
+from andromeda_torch.configs import Andromeda1Billion
 from andromeda_torch.core.transformer import Transformer
 
-# from andromeda.model import Andromeda
-from andromeda_torch.configs import Andromeda1Billion
-
-########### SETUP CONFIG
-import torch.distributed as dist
-
-
-from accelerate.state import AcceleratorState
-
 # state = AcceleratorState()
-
 
 logger = get_logger(__name__, log_level="INFO")
 
