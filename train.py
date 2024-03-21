@@ -449,16 +449,16 @@ def build_dataloaders():
 
 # switch to falconwebdataset
 def build_pre_tokenized():
-    d0 = load_dataset(
-        "conceptofmind/c4_0-to-20_neox_with_eos_8k",
-        split="train[:10]",
-    )
+    # d0 = load_dataset(
+    #     "conceptofmind/c4_0-to-20_neox_with_eos_8k",
+    #     split="train[:10]",
+    # )
     # d1 = load_dataset("conceptofmind/c4_21-to-40_neox_with_eos_8k", split="train")
     # d2 = load_dataset("conceptofmind/c4_41-to-60_neox_with_eos_8k", split="train")
     # d3 = load_dataset("conceptofmind/c4_61-to-80_neox_with_eos_8k", split="train")
-    # d4 = load_dataset("conceptofmind/c4_81-to-100_neox_with_eos_8k", split="train")
+    d4 = load_dataset("conceptofmind/c4_81-to-100_neox_with_eos_8k", split="train")
     # train_dataset = concatenate_datasets([d0, d1, d2, d3, d4])
-    return d0
+    return d4
 
 
 def Train():
@@ -479,7 +479,7 @@ def Train():
 
     state.deepspeed_plugin.deepspeed_config[
         "train_micro_batch_size_per_gpu"
-    ] = CFG.BATCH_SIZE  # ??????
+    ] = CFG.BATCH_SIZE  
 
     accelerator.init_trackers(
         project_name="Andromeda",
