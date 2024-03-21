@@ -36,7 +36,7 @@ from transformers import (
 )
 from zeta.optim import StableAdamWUnfused
 
-from andromeda_torch.model import Andromeda, Transformer # noqa: F401
+from andromeda_torch.model import Andromeda, Transformer  # noqa: F401
 
 # state = AcceleratorState()
 
