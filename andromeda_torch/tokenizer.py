@@ -34,23 +34,35 @@ class Tokenizer:
         >>> print("Decoded text:", decoded_text)
     """
 
-    def __init__(self, model_path: str = None, tokenizer_name: str = None):
+    def __init__(
+        self, model_path: str = None, tokenizer_name: str = None
+    ):
         if model_path:
             assert os.path.isfile(model_path), model_path
         elif tokenizer_name:
             model_path = self.download_tokenizer(tokenizer_name)
         else:
-            raise ValueError("Either model_path or tokenizer_name must be provided.")
+            raise ValueError(
+                "Either model_path or tokenizer_name must be"
+                " provided."
+            )
 
         self.sp_model = SentencePieceProcessor(model_file=model_path)
         logger.info(f"Reloaded SentencePiece model from {model_path}")
 
     @staticmethod
     def download_tokenizer(tokenizer_name: str) -> str:
-        if tokenizer_name not in PRETRAINED_VOCAB_FILES_MAP["vocab_file"]:
-            raise ValueError(f"Tokenizer {tokenizer_name} is not available.")
+        if (
+            tokenizer_name
+            not in PRETRAINED_VOCAB_FILES_MAP["vocab_file"]
+        ):
+            raise ValueError(
+                f"Tokenizer {tokenizer_name} is not available."
+            )
 
-        model_url = PRETRAINED_VOCAB_FILES_MAP["vocab_file"][tokenizer_name]
+        model_url = PRETRAINED_VOCAB_FILES_MAP["vocab_file"][
+            tokenizer_name
+        ]
         model_path = os.path.join("data", "tokenizer.model")
 
         if not os.path.exists("data"):
@@ -61,9 +73,13 @@ class Tokenizer:
         if response.status_code == 200:
             with open(model_path, "wb") as file:
                 file.write(response.content)
-            logger.info(f"Downloaded SentencePiece model to {model_path}")
+            logger.info(
+                f"Downloaded SentencePiece model to {model_path}"
+            )
         else:
-            raise Exception(f"Failed to download model from {model_url}")
+            raise Exception(
+                f"Failed to download model from {model_url}"
+            )
 
         return model_path
 

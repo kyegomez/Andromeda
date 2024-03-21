@@ -25,11 +25,15 @@ def eval_decorator(fn):
 
 
 def top_p(logits, thres=0.9):
-    sorted_logits, sorted_indices = torch.sort(logits, descending=True)
+    sorted_logits, sorted_indices = torch.sort(
+        logits, descending=True
+    )
     cum_probs = torch.cumsum(F.softmax(sorted_logits, dim=-1), dim=-1)
 
     sorted_indices_to_remove = cum_probs > (1 - thres)
-    sorted_indices_to_remove[:, 1:] = sorted_indices_to_remove[:, :-1].clone()
+    sorted_indices_to_remove[:, 1:] = sorted_indices_to_remove[
+        :, :-1
+    ].clone()
     sorted_indices_to_remove[:, 0] = 0
 
     sorted_logits[sorted_indices_to_remove] = float("-inf")
@@ -62,7 +66,9 @@ def top_a(logits, min_p_pow=2.0, min_p_ratio=0.02):
 
 
 class AutoregressiveWrapper(nn.Module):
-    def __init__(self, net, ignore_index=-100, pad_value=0, mask_prob=0.0):
+    def __init__(
+        self, net, ignore_index=-100, pad_value=0, mask_prob=0.0
+    ):
         super().__init__()
         self.pad_value = pad_value
         self.ignore_index = ignore_index
@@ -86,7 +92,7 @@ class AutoregressiveWrapper(nn.Module):
         filter_thres=0.9,
         min_p_pow=2.0,
         min_p_ratio=0.02,
-        **kwargs
+        **kwargs,
     ):
         start_tokens, ps = pack([start_tokens], "* n")
 
@@ -100,14 +106,22 @@ class AutoregressiveWrapper(nn.Module):
             logits = self.net(x, **kwargs)[:, -1]
 
             if filter_logits_fn in {top_k, top_p}:
-                filtered_logits = filter_logits_fn(logits, thres=filter_thres)
-                probs = F.softmax(filtered_logits / temperature, dim=-1)
+                filtered_logits = filter_logits_fn(
+                    logits, thres=filter_thres
+                )
+                probs = F.softmax(
+                    filtered_logits / temperature, dim=-1
+                )
 
             elif filter_logits_fn is top_a:
                 filtered_logits = filter_logits_fn(
-                    logits, min_p_pow=min_p_pow, min_p_ratio=min_p_ratio
+                    logits,
+                    min_p_pow=min_p_pow,
+                    min_p_ratio=min_p_ratio,
                 )
-                probs = F.softmax(filtered_logits / temperature, dim=-1)
+                probs = F.softmax(
+                    filtered_logits / temperature, dim=-1
+                )
 
             sample = torch.multinomial(probs, 1)
 
@@ -118,8 +132,13 @@ class AutoregressiveWrapper(nn.Module):
 
                 if is_eos_tokens.any(dim=-1).all():
                     # mask out everything after the eos tokens
-                    shifted_is_eos_tokens = F.pad(is_eos_tokens, (1, -1))
-                    mask = shifted_is_eos_tokens.float().cumsum(dim=-1) >= 1
+                    shifted_is_eos_tokens = F.pad(
+                        is_eos_tokens, (1, -1)
+                    )
+                    mask = (
+                        shifted_is_eos_tokens.float().cumsum(dim=-1)
+                        >= 1
+                    )
                     out = out.masked_fill(mask, self.pad_value)
                     break
 
@@ -141,13 +160,17 @@ class AutoregressiveWrapper(nn.Module):
             ).max  # first token should not be masked out
             num_mask = min(int(seq * self.mask_prob), seq - 1)
             indices = rand.topk(num_mask, dim=-1).indices
-            mask = ~torch.zeros_like(inp).scatter(1, indices, 1.0).bool()
+            mask = (
+                ~torch.zeros_like(inp).scatter(1, indices, 1.0).bool()
+            )
             kwargs.update(self_attn_context_mask=mask)
 
         logits = self.net(inp, **kwargs)
 
         loss = F.cross_entropy(
-            rearrange(logits, "b n c -> b c n"), target, ignore_index=ignore_index
+            rearrange(logits, "b n c -> b c n"),
+            target,
+            ignore_index=ignore_index,
         )
 
         if return_loss:

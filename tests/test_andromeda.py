@@ -61,12 +61,17 @@ class TestAndromeda:
     def test_model_parameters(self, andromeda_model):
         # Ensure model parameters are accessible and correct
         model_parameters = andromeda_model.parameters()
-        assert all(isinstance(param, torch.Tensor) for param in model_parameters)
+        assert all(
+            isinstance(param, torch.Tensor)
+            for param in model_parameters
+        )
         assert all(param.requires_grad for param in model_parameters)
 
     def test_model_training(self, andromeda_model):
         # Test model training with a simple task (e.g., regression)
-        optimizer = torch.optim.Adam(andromeda_model.parameters(), lr=0.001)
+        optimizer = torch.optim.Adam(
+            andromeda_model.parameters(), lr=0.001
+        )
         loss_fn = torch.nn.MSELoss()
 
         # Generate random input and target data

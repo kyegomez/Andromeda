@@ -49,7 +49,9 @@ model.cuda()
 with gzip.open("./data/enwik8.gz") as file:
     data = np.frombuffer(file.read(int(95e6)), dtype=np.uint8).copy()
     train_x, valid_x = np.split(data, [int(90e6)])
-    data_train, data_val = torch.from_numpy(train_x), torch.from_numpy(valid_x)
+    data_train, data_val = torch.from_numpy(
+        train_x
+    ), torch.from_numpy(valid_x)
 
 
 class TextSamplerDataset(Dataset):
@@ -59,8 +61,12 @@ class TextSamplerDataset(Dataset):
         self.seq_len = seq_len
 
     def __getitem__(self, index):
-        rand_start = torch.randint(0, self.data.size(0) - self.seq_len - 1, (1,))
-        full_seq = self.data[rand_start : rand_start + self.seq_len + 1].long()
+        rand_start = torch.randint(
+            0, self.data.size(0) - self.seq_len - 1, (1,)
+        )
+        full_seq = self.data[
+            rand_start : rand_start + self.seq_len + 1
+        ].long()
         return full_seq.cuda()
 
     def __len__(self):
@@ -69,8 +75,12 @@ class TextSamplerDataset(Dataset):
 
 train_dataset = TextSamplerDataset(data_train, SEQ_LEN)
 val_dataset = TextSamplerDataset(data_val, SEQ_LEN)
-train_loader = cycle(DataLoader(train_dataset, batch_size=BATCH_SIZE, drop_last=True))
-val_loader = cycle(DataLoader(val_dataset, batch_size=BATCH_SIZE, drop_last=True))
+train_loader = cycle(
+    DataLoader(train_dataset, batch_size=BATCH_SIZE, drop_last=True)
+)
+val_loader = cycle(
+    DataLoader(val_dataset, batch_size=BATCH_SIZE, drop_last=True)
+)
 
 # optimizer
 
@@ -78,7 +88,9 @@ optim = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
 # training
 
-for i in tqdm.tqdm(range(NUM_BATCHES), mininterval=10.0, desc="training"):
+for i in tqdm.tqdm(
+    range(NUM_BATCHES), mininterval=10.0, desc="training"
+):
     model.train()
 
     for __ in range(GRADIENT_ACCUMULATE_EVERY):

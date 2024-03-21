@@ -1,7 +1,9 @@
 import torch
 from torch import nn
 
-from andromeda_torch.core.autoregressive_wrapper import AutoregressiveWrapper
+from andromeda_torch.core.autoregressive_wrapper import (
+    AutoregressiveWrapper,
+)
 from andromeda_torch.core.transformer import (
     Decoder,
     Transformer,
@@ -118,7 +120,9 @@ class Andromeda(nn.Module):
         """
         try:
             model_input = self.decoder.forward(x)[0]
-            return self.decoder(model_input, padded_x=model_input[0], **kwargs)
+            return self.decoder(
+                model_input, padded_x=model_input[0], **kwargs
+            )
         except Exception as e:
             print(f"Failed to run forward pass: {e}")
             raise

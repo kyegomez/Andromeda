@@ -10,16 +10,29 @@ def main():
 
     torch.hub._validate_not_a_forked_repo = lambda a, b, c: True
 
-    parser = argparse.ArgumentParser(description="Generate text using Andromeda model")
-    parser.add_argument("prompt", type=str, help="Text prompt to generate text")
-    parser.add_argument(
-        "--seq_len", type=int, default=256, help="Sequence length for generated text"
+    parser = argparse.ArgumentParser(
+        description="Generate text using Andromeda model"
     )
     parser.add_argument(
-        "--temperature", type=float, default=0.8, help="Sampling temperature"
+        "prompt", type=str, help="Text prompt to generate text"
     )
     parser.add_argument(
-        "--filter_thres", type=float, default=0.9, help="Filter threshold for sampling"
+        "--seq_len",
+        type=int,
+        default=256,
+        help="Sequence length for generated text",
+    )
+    parser.add_argument(
+        "--temperature",
+        type=float,
+        default=0.8,
+        help="Sampling temperature",
+    )
+    parser.add_argument(
+        "--filter_thres",
+        type=float,
+        default=0.9,
+        help="Filter threshold for sampling",
     )
     parser.add_argument(
         "--model",
@@ -41,14 +54,22 @@ def main():
     if args.dtype == "bf16":
         dtype = torch.bfloat16
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device(
+        "cuda" if torch.cuda.is_available() else "cpu"
+    )
 
     # need to submit to torch hub
-    model = torch.hub.load("apacai/andromeda", args.model).to(device).to(dtype)
+    model = (
+        torch.hub.load("apacai/andromeda", args.model)
+        .to(device)
+        .to(dtype)
+    )
 
     opt_model = torch.compile(model, backend="hidet")
 
-    tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neox-20b")
+    tokenizer = AutoTokenizer.from_pretrained(
+        "EleutherAI/gpt-neox-20b"
+    )
 
     encoded_text = tokenizer(args.prompt, return_tensors="pt")
 
@@ -63,7 +84,9 @@ def main():
         use_tqdm=True,
     )
 
-    decoded_output = tokenizer.batch_decode(output_tensor, skip_special_tokens=True)
+    decoded_output = tokenizer.batch_decode(
+        output_tensor, skip_special_tokens=True
+    )
 
     return decoded_output
 

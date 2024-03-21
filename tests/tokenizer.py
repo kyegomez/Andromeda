@@ -7,7 +7,9 @@ class TestAndromedaTokenizer(unittest.TestCase):
         self.tokenizer = AndromedaTokenizer()
 
     def test_initialization(self):
-        self.assertIsNotNone(self.tokenizer.tokenizer, "Tokenizer is not initialized.")
+        self.assertIsNotNone(
+            self.tokenizer.tokenizer, "Tokenizer is not initialized."
+        )
         self.assertEqual(
             self.tokenizer.tokenizer.eos_token,
             "<eos>",
@@ -40,15 +42,23 @@ class TestAndromedaTokenizer(unittest.TestCase):
     def test_decode(self):
         texts = ["Hello, world!", "Andromeda is great."]
         tokenized_texts = self.tokenizer.tokenize_texts(texts)
-        decoded_texts = [self.tokenizer.decode(t) for t in tokenized_texts]
+        decoded_texts = [
+            self.tokenizer.decode(t) for t in tokenized_texts
+        ]
         self.assertEqual(
-            decoded_texts, texts, "Decoded texts do not match original texts."
+            decoded_texts,
+            texts,
+            "Decoded texts do not match original texts.",
         )
 
     def test_len(self):
         num_tokens = len(self.tokenizer)
-        self.assertIsInstance(num_tokens, int, "Number of tokens is not an integer.")
-        self.assertGreater(num_tokens, 0, "Number of tokens is not greater than 0.")
+        self.assertIsInstance(
+            num_tokens, int, "Number of tokens is not an integer."
+        )
+        self.assertGreater(
+            num_tokens, 0, "Number of tokens is not greater than 0."
+        )
 
 
 if __name__ == "__main__":

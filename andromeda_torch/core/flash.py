@@ -93,7 +93,9 @@ def _fwd_kernel(
         qk = tl.zeros([BLOCK_M, BLOCK_N], dtype=tl.float32)
         if IS_CAUSAL:
             qk = tl.where(
-                offs_m[:, None] >= (start_n + offs_n[None, :]), qk, float("-inf")
+                offs_m[:, None] >= (start_n + offs_n[None, :]),
+                qk,
+                float("-inf"),
             )
         qk += tl.dot(q, k)
         # -- compute scaling constant ---
@@ -137,8 +139,12 @@ def _bwd_preprocess(
     off_m = tl.program_id(0) * BLOCK_M + tl.arange(0, BLOCK_M)
     off_n = tl.arange(0, D_HEAD)
     # load
-    o = tl.load(Out + off_m[:, None] * D_HEAD + off_n[None, :]).to(tl.float32)
-    do = tl.load(DO + off_m[:, None] * D_HEAD + off_n[None, :]).to(tl.float32)
+    o = tl.load(Out + off_m[:, None] * D_HEAD + off_n[None, :]).to(
+        tl.float32
+    )
+    do = tl.load(DO + off_m[:, None] * D_HEAD + off_n[None, :]).to(
+        tl.float32
+    )
     # compute
     delta = tl.sum(o * do, axis=1)
     # write-back
@@ -202,11 +208,21 @@ def _bwd_kernel(
         offs_m = tl.arange(0, BLOCK_N)
         offs_k = tl.arange(0, BLOCK_DMODEL)
         # initialize pointers to value-like data
-        q_ptrs = Q + (offs_qm[:, None] * stride_qm + offs_k[None, :] * stride_qk)
-        k_ptrs = K + (offs_n[:, None] * stride_kn + offs_k[None, :] * stride_kk)
-        v_ptrs = V + (offs_n[:, None] * stride_qm + offs_k[None, :] * stride_qk)
-        do_ptrs = DO + (offs_qm[:, None] * stride_qm + offs_k[None, :] * stride_qk)
-        dq_ptrs = DQ + (offs_qm[:, None] * stride_qm + offs_k[None, :] * stride_qk)
+        q_ptrs = Q + (
+            offs_qm[:, None] * stride_qm + offs_k[None, :] * stride_qk
+        )
+        k_ptrs = K + (
+            offs_n[:, None] * stride_kn + offs_k[None, :] * stride_kk
+        )
+        v_ptrs = V + (
+            offs_n[:, None] * stride_qm + offs_k[None, :] * stride_qk
+        )
+        do_ptrs = DO + (
+            offs_qm[:, None] * stride_qm + offs_k[None, :] * stride_qk
+        )
+        dq_ptrs = DQ + (
+            offs_qm[:, None] * stride_qm + offs_k[None, :] * stride_qk
+        )
         # pointer to row-wise quantities in value-like data
         D_ptrs = D + off_hz * N_CTX
         l_ptrs = L + off_hz * N_CTX
@@ -224,7 +240,9 @@ def _bwd_kernel(
             # recompute p = softmax(qk, dim=-1).T
             if CAUSAL:
                 qk = tl.where(
-                    offs_m_curr[:, None] >= (offs_n[None, :]), float(0.0), float("-inf")
+                    offs_m_curr[:, None] >= (offs_n[None, :]),
+                    float(0.0),
+                    float("-inf"),
                 )
             else:
                 qk = tl.zeros([BLOCK_M, BLOCK_N], dtype=tl.float32)
@@ -237,7 +255,10 @@ def _bwd_kernel(
             dv += tl.dot(tl.trans(p.to(Q.dtype.element_ty)), do)
             # compute dp = dot(v, do)
             Di = tl.load(D_ptrs + offs_m_curr)
-            dp = tl.zeros([BLOCK_M, BLOCK_N], dtype=tl.float32) - Di[:, None]
+            dp = (
+                tl.zeros([BLOCK_M, BLOCK_N], dtype=tl.float32)
+                - Di[:, None]
+            )
             dp += tl.dot(do, tl.trans(v))
             # compute ds = p * (dp - delta[:, None])
             ds = p * dp * sm_scale
@@ -252,8 +273,12 @@ def _bwd_kernel(
             q_ptrs += BLOCK_M * stride_qm
             do_ptrs += BLOCK_M * stride_qm
         # write-back
-        dv_ptrs = DV + (offs_n[:, None] * stride_qm + offs_k[None, :] * stride_qk)
-        dk_ptrs = DK + (offs_n[:, None] * stride_kn + offs_k[None, :] * stride_kk)
+        dv_ptrs = DV + (
+            offs_n[:, None] * stride_qm + offs_k[None, :] * stride_qk
+        )
+        dk_ptrs = DK + (
+            offs_n[:, None] * stride_kn + offs_k[None, :] * stride_kk
+        )
         tl.store(dv_ptrs, dv)
         tl.store(dk_ptrs, dk)
 
@@ -264,7 +289,12 @@ empty = torch.empty(128, device="cuda")
 class _attention(torch.autograd.Function):
     @staticmethod
     def forward(
-        ctx, q: torch.Tensor, k: torch.Tensor, v: torch.Tensor, causal, sm_scale
+        ctx,
+        q: torch.Tensor,
+        k: torch.Tensor,
+        v: torch.Tensor,
+        causal,
+        sm_scale,
     ):
         # shape constraints
         Lq, Lk, Lv = q.shape[-1], k.shape[-1], v.shape[-1]
@@ -273,9 +303,15 @@ class _attention(torch.autograd.Function):
         o = torch.empty_like(q)
         BLOCK_M = 128
         BLOCK_N = 64
-        grid = (triton.cdiv(q.shape[2], BLOCK_M), q.shape[0] * q.shape[1], 1)
+        grid = (
+            triton.cdiv(q.shape[2], BLOCK_M),
+            q.shape[0] * q.shape[1],
+            1,
+        )
         L = torch.empty(
-            (q.shape[0] * q.shape[1], q.shape[2]), device=q.device, dtype=torch.float32
+            (q.shape[0] * q.shape[1], q.shape[2]),
+            device=q.device,
+            dtype=torch.float32,
         )
 
         num_warps = 4 if Lk <= 64 else 8

@@ -26,7 +26,11 @@ class AndromedaModelTest:
 
     def test_forward_pass(self):
         output = self.model(self.test_input)
-        assert output.shape == (1, 1024, 64007), "Forward pass output shape mismatch"
+        assert output.shape == (
+            1,
+            1024,
+            64007,
+        ), "Forward pass output shape mismatch"
 
     def test_backward_pass(self):
         self.optimizer.zero_grad()
@@ -43,17 +47,22 @@ class AndromedaModelTest:
             ), f"Gradient for {name} contains Infs"
 
     def test_optimizer_step(self):
-        initial_params = [param.clone() for param in self.model_parameters()]
+        initial_params = [
+            param.clone() for param in self.model_parameters()
+        ]
         output = self.model(self.test_input)
         loss = self.loss_function(output, self.test_input)
 
         self.optimizer.zero_grad()
         loss.backward()
         self.optimizer.step()
-        for initial_param, param in zip(initial_params, self.model.parameters()):
-            assert not torch.equal(
-                initial_param, param
-            ), "Model Parameters did not change after an optimizer step"
+        for initial_param, param in zip(
+            initial_params, self.model.parameters()
+        ):
+            assert not torch.equal(initial_param, param), (
+                "Model Parameters did not change after an optimizer"
+                " step"
+            )
 
 
 class SpeedMetrics:
@@ -63,19 +72,25 @@ class SpeedMetrics:
     def forward_pass_time(self):
         start_time = time.time()
         self.model.decoder.forward(
-            torch.randint(0, 50304, (1, 8192), device=device, dtype=torch.long)
+            torch.randint(
+                0, 50304, (1, 8192), device=device, dtype=torch.long
+            )
         )[0]
         end_time = time.time()
         return end_time - start_time
 
     def backward_pass_time(self):
         model_input = self.model.decoder.forward(
-            torch.randint(0, 50304, (1, 8192), device=device, dtype=torch.long)
+            torch.randint(
+                0, 50304, (1, 8192), device=device, dtype=torch.long
+            )
         )[0]
         start_time = time.time()
         loss = torch.nn.CrossEntropyLoss()(
             model_input,
-            torch.randint(0, 50304, (1, 8192), device=device, dtype=torch.long),
+            torch.randint(
+                0, 50304, (1, 8192), device=device, dtype=torch.long
+            ),
         )
         loss.backward()
         end_time = time.time()
@@ -84,7 +99,9 @@ class SpeedMetrics:
     def end_to_end_latency(self):
         start_time = time.time()
         self.model.forward(
-            torch.randint(0, 50304, (1, 8192), device=device, dtype=torch.long)
+            torch.randint(
+                0, 50304, (1, 8192), device=device, dtype=torch.long
+            )
         )
         end_time = time.time()
         return end_time - start_time
@@ -113,7 +130,9 @@ class ConsistencyMetrics:
         outputs_list = []
         for _ in range(10):
             start_time = time.time()
-            outputs = self.model.forward(torch.randint(0, 50304, (1, 8192)))
+            outputs = self.model.forward(
+                torch.randint(0, 50304, (1, 8192))
+            )
             end_time = time.time()
             consistency_times.append(end_time - start_time)
             outputs_list.append(outputs.detach().numpy())
@@ -123,7 +142,9 @@ class ConsistencyMetrics:
         for output in outputs_list[1:]:
             if np.array_equal(initial_output, output):
                 consistency_score += 1
-        consistency_score = consistency_score / len(outputs_list) * 100
+        consistency_score = (
+            consistency_score / len(outputs_list) * 100
+        )
 
         return consistency_times, consistency_score
 
@@ -168,7 +189,9 @@ class FlopsBenchmark:
         self.d_model = d_model
         self.num_heads = num_heads
         self.sequence_lengths = sequence_lengths
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = torch.device(
+            "cuda" if torch.cuda.is_available() else "cpu"
+        )
         self.dtype = torch.float32
         self.model = model.to(self.device)
 
@@ -191,24 +214,37 @@ class FlopsBenchmark:
 
             time_taken.append(elapsed)
             total_flops = (
-                4 * seq_len**2 * (self.d_model // self.num_heads) * self.num_heads
+                4
+                * seq_len**2
+                * (self.d_model // self.num_heads)
+                * self.num_heads
             )
-            tflops_per_s.append(total_flops / elapsed / 1e12)  # Convert to TFLOPs
+            tflops_per_s.append(
+                total_flops / elapsed / 1e12
+            )  # Convert to TFLOPs
 
         for seq_len, elapsed, tflops in zip(
             self.sequence_lengths, time_taken, tflops_per_s
         ):
             print(
-                f"Sequence length: {seq_len}, Time elapsed: {elapsed} s, TFLOPs/s: {tflops}"
+                f"Sequence length: {seq_len}, Time elapsed:"
+                f" {elapsed} s, TFLOPs/s: {tflops}"
             )
 
 
 # mock test dataset
-test_dataset = datasets.FakeData(size=1000, transform=transforms.ToTensor())
+test_dataset = datasets.FakeData(
+    size=1000, transform=transforms.ToTensor()
+)
 
 # model
 model = Andromeda(
-    num_tokens=50304, dim=1024, depth=24, dim_head=128, heads=8, alibi_num_heads=4
+    num_tokens=50304,
+    dim=1024,
+    depth=24,
+    dim_head=128,
+    heads=8,
+    alibi_num_heads=4,
 )
 
 
@@ -227,7 +263,9 @@ throughput = scalability_metrics.throughput()
 
 # consistency metrucs test
 consistency_metrics = ConsistencyMetrics(model)
-consistency_times, consistency_score = consistency_metrics.consistency_over_time()
+consistency_times, consistency_score = (
+    consistency_metrics.consistency_over_time()
+)
 
 
 # memory metrics test
@@ -236,7 +274,9 @@ current, peak = memory_metrics.memory_footprint()
 
 # sequence metrics test
 sequence_metrics = SequenceMetrics(model)
-seq_lengths, seq_impact_times = sequence_metrics.sequence_length_impact()
+seq_lengths, seq_impact_times = (
+    sequence_metrics.sequence_length_impact()
+)
 
 
 # flops

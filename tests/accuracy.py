@@ -36,7 +36,9 @@ class AccuracyMetrics:
         return corpus_bleu(references, hypotheses)
 
     def calculate_rouge(self, references, hypotheses):
-        scores = self.rouge.get_scores(hypotheses, references, avg=True)
+        scores = self.rouge.get_scores(
+            hypotheses, references, avg=True
+        )
         return scores
 
     def calculate_f1(self, true_labels, pred_labels):
@@ -44,11 +46,18 @@ class AccuracyMetrics:
 
 
 # mock test dataset
-test_dataset = datasets.FakeData(size=1000, transform=transforms.ToTensor())
+test_dataset = datasets.FakeData(
+    size=1000, transform=transforms.ToTensor()
+)
 
 # model
 model = Andromeda(
-    num_tokens=50304, dim=1024, depth=24, dim_head=128, heads=8, alibi_num_heads=4
+    num_tokens=50304,
+    dim=1024,
+    depth=24,
+    dim_head=128,
+    heads=8,
+    alibi_num_heads=4,
 )
 
 
@@ -64,7 +73,9 @@ bleu = accuracy_metrics.calculate_bleu(references, hypotheses)
 print("BLEU Score:", bleu)
 
 # Calculate ROUGE
-rouge_scores = accuracy_metrics.calculate_rouge(references, hypotheses)
+rouge_scores = accuracy_metrics.calculate_rouge(
+    references, hypotheses
+)
 print("ROUGE Scores:", rouge_scores)
 
 # Calculate F1 Score

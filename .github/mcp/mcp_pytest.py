@@ -18,14 +18,25 @@ from mcli.sdk import (
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--name", type=str, default="mcp-pytest", help="Base name of run"
+        "--name",
+        type=str,
+        default="mcp-pytest",
+        help="Base name of run",
     )
-    parser.add_argument("--cluster", type=str, default="r1z4", help="Cluster to use")
     parser.add_argument(
-        "--gpu_type", type=str, default="a100_40gb", help="Type of GPU to use"
+        "--cluster", type=str, default="r1z4", help="Cluster to use"
     )
     parser.add_argument(
-        "--gpu_num", type=int, default=2, help="Number of the GPU to use"
+        "--gpu_type",
+        type=str,
+        default="a100_40gb",
+        help="Type of GPU to use",
+    )
+    parser.add_argument(
+        "--gpu_num",
+        type=int,
+        default=2,
+        help="Number of the GPU to use",
     )
     parser.add_argument(
         "--image",
@@ -33,21 +44,36 @@ if __name__ == "__main__":
         default="mosaicml/pytorch:latest",
         help="Docker image to use",
     )
-    parser.add_argument("--git_branch", type=str, help="Git branch to check out")
+    parser.add_argument(
+        "--git_branch", type=str, help="Git branch to check out"
+    )
     parser.add_argument(
         "--git_commit",
         type=str,
-        help="Git commit to check out. Overrides git_branch if specified",
+        help=(
+            "Git commit to check out. Overrides git_branch if"
+            " specified"
+        ),
     )
     parser.add_argument(
         "--pr_number",
         type=int,
-        help="PR number to check out. Overrides git_branch/git_commit if specified",
+        help=(
+            "PR number to check out. Overrides git_branch/git_commit"
+            " if specified"
+        ),
     )
-    parser.add_argument("--pytest_markers", type=str, help="Markers to pass to pytest")
-    parser.add_argument("--pytest_command", type=str, help="Command to run pytest")
     parser.add_argument(
-        "--timeout", type=int, default=1800, help="Timeout for run (in seconds)"
+        "--pytest_markers", type=str, help="Markers to pass to pytest"
+    )
+    parser.add_argument(
+        "--pytest_command", type=str, help="Command to run pytest"
+    )
+    parser.add_argument(
+        "--timeout",
+        type=int,
+        default=1800,
+        help="Timeout for run (in seconds)",
     )
     args = parser.parse_args()
 
@@ -121,7 +147,8 @@ if __name__ == "__main__":
         # Check if args.timeout seconds have elapsed
         if time.time() - start_time > args.timeout:
             print(
-                f"[GHA] Run timed out and did not complete in {args.timeout/60} minutes."
+                "[GHA] Run timed out and did not complete in"
+                f" {args.timeout/60} minutes."
             )
             run = stop_run(run)
             print("[GHA] Run stopped.")

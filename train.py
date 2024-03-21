@@ -12,7 +12,6 @@ from accelerate.logging import get_logger
 from accelerate.state import AcceleratorState
 from accelerate.utils import InitProcessGroupKwargs
 from datasets import load_dataset
-from lion_pytorch import Lion
 from torch.distributed.algorithms._checkpoint.checkpoint_wrapper import (
     CheckpointImpl,
     apply_activation_checkpointing,
@@ -26,7 +25,6 @@ from torch.distributed.fsdp import (
 )
 from torch.distributed.fsdp.wrap import transformer_auto_wrap_policy
 from torch.nn import LayerNorm
-from torch.optim import AdamW
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from transformers import (
@@ -70,7 +68,9 @@ class CFG:
 
 def print_num_params(model, accelerator: Accelerator):
     # n_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
-    n_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    n_params = sum(
+        p.numel() for p in model.parameters() if p.requires_grad
+    )
     accelerator.print(f"Number of parameters in model: {n_params}")
 
 
@@ -102,7 +102,9 @@ def activation_checkpointing(
         checkpoint_impl=CheckpointImpl.NO_REENTRANT,
     )
     apply_activation_checkpointing(
-        model, checkpoint_wrapper_fn=non_reentrant_wrapper, check_fn=check_fn
+        model,
+        checkpoint_wrapper_fn=non_reentrant_wrapper,
+        check_fn=check_fn,
     )
 
 
@@ -167,9 +169,8 @@ def fsdp(
         )
     else:
         raise ValueError(
-            "Invalid scheduler_type. Expected 'bf16', 'fp16' or 'fp32', got: {}".format(
-                mp
-            )
+            "Invalid scheduler_type. Expected 'bf16', 'fp16' or"
+            " 'fp32', got: {}".format(mp)
         )
 
     if shard_strat == "SHARD_GRAD":
@@ -180,9 +181,8 @@ def fsdp(
         sharding_strat_fsdp = ShardingStrategy.NO_SHARD
     else:
         raise ValueError(
-            "Invalid scheduler_type. Expected 'SHARD_GRAD', 'FULL_SHARD' or 'NO_SHARD', got: {}".format(
-                shard_strat
-            )
+            "Invalid scheduler_type. Expected 'SHARD_GRAD',"
+            " 'FULL_SHARD' or 'NO_SHARD', got: {}".format(shard_strat)
         )
 
     model = FullyShardedDataParallel(
@@ -233,20 +233,23 @@ def get_lr_scheduler_with_warmup(
     if scheduler_type == "linear":
         return get_linear_schedule_with_warmup(
             optimizer=optimizer,
-            num_warmup_steps=NUM_WARMUP_STEPS * GRADIENT_ACCUMULATE_EVERY,
-            num_training_steps=max_train_steps * GRADIENT_ACCUMULATE_EVERY,
+            num_warmup_steps=NUM_WARMUP_STEPS
+            * GRADIENT_ACCUMULATE_EVERY,
+            num_training_steps=max_train_steps
+            * GRADIENT_ACCUMULATE_EVERY,
         )
     elif scheduler_type == "cosine":
         return get_cosine_schedule_with_warmup(
             optimizer=optimizer,
-            num_warmup_steps=NUM_WARMUP_STEPS * GRADIENT_ACCUMULATE_EVERY,
-            num_training_steps=max_train_steps * GRADIENT_ACCUMULATE_EVERY,
+            num_warmup_steps=NUM_WARMUP_STEPS
+            * GRADIENT_ACCUMULATE_EVERY,
+            num_training_steps=max_train_steps
+            * GRADIENT_ACCUMULATE_EVERY,
         )
     else:
         raise ValueError(
-            "Invalid scheduler_type. Expected 'linear' or 'cosine', got: {}".format(
-                scheduler_type
-            )
+            "Invalid scheduler_type. Expected 'linear' or 'cosine',"
+            " got: {}".format(scheduler_type)
         )
 
 
@@ -397,11 +400,15 @@ def build_dataloaders():
     Returns:
         Dataset: The processed dataset ready for training.
     """
-    tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neox-20b")
+    tokenizer = AutoTokenizer.from_pretrained(
+        "EleutherAI/gpt-neox-20b"
+    )
     dataset = load_dataset("openwebtext", split="train")
 
     tokenized_dataset = dataset.map(
-        lambda example: tokenizer([t + tokenizer.eos_token for t in example["text"]]),
+        lambda example: tokenizer(
+            [t + tokenizer.eos_token for t in example["text"]]
+        ),
         batched=True,
         num_proc=CFG.NUM_CPU,
         remove_columns=["text"],
@@ -412,15 +419,22 @@ def build_dataloaders():
     # Main data processing function that will concatenate all texts from our dataset and generate chunks of block_size.
     def group_texts(examples):
         # Concatenate all texts.
-        concatenated_examples = {k: list(chain(*examples[k])) for k in examples.keys()}
-        total_length = len(concatenated_examples[list(examples.keys())[0]])
+        concatenated_examples = {
+            k: list(chain(*examples[k])) for k in examples.keys()
+        }
+        total_length = len(
+            concatenated_examples[list(examples.keys())[0]]
+        )
         # We drop the small remainder, we could add padding if the model supported it instead of this drop, you can
         # customize this part to your needs.
         if total_length >= block_size:
             total_length = (total_length // block_size) * block_size
         # Split by chunks of max_len.
         result = {
-            k: [t[i : i + block_size] for i in range(0, total_length, block_size)]
+            k: [
+                t[i : i + block_size]
+                for i in range(0, total_length, block_size)
+            ]
             for k, t in concatenated_examples.items()
         }
         return result
@@ -436,7 +450,10 @@ def build_dataloaders():
 
 # switch to falconwebdataset
 def build_pre_tokenized():
-    d0 = load_dataset("conceptofmind/c4_0-to-20_neox_with_eos_8k", split="train[:10]")
+    d0 = load_dataset(
+        "conceptofmind/c4_0-to-20_neox_with_eos_8k",
+        split="train[:10]",
+    )
     # d1 = load_dataset("conceptofmind/c4_21-to-40_neox_with_eos_8k", split="train")
     # d2 = load_dataset("conceptofmind/c4_41-to-60_neox_with_eos_8k", split="train")
     # d3 = load_dataset("conceptofmind/c4_61-to-80_neox_with_eos_8k", split="train")
@@ -448,7 +465,9 @@ def build_pre_tokenized():
 def Train():
     # accelerator
 
-    timeout = InitProcessGroupKwargs(timeout=timedelta(seconds=1_000_000))
+    timeout = InitProcessGroupKwargs(
+        timeout=timedelta(seconds=1_000_000)
+    )
 
     accelerator = Accelerator(
         gradient_accumulation_steps=CFG.GRADIENT_ACCUMULATE_EVERY,
@@ -467,7 +486,9 @@ def Train():
         project_name="Andromeda",
         config={
             "batch_size": CFG.BATCH_SIZE,
-            "gradient_accumulate_every": CFG.GRADIENT_ACCUMULATE_EVERY,
+            "gradient_accumulate_every": (
+                CFG.GRADIENT_ACCUMULATE_EVERY
+            ),
             "learning_rate": CFG.LEARNING_RATE,
             "seq_len": CFG.SEQ_LEN,
         },
@@ -538,7 +559,9 @@ def Train():
 
     # Determine number of training steps
 
-    max_train_steps = math.ceil(len(train_loader) / CFG.GRADIENT_ACCUMULATE_EVERY)
+    max_train_steps = math.ceil(
+        len(train_loader) / CFG.GRADIENT_ACCUMULATE_EVERY
+    )
     accelerator.print(f"Max train steps: {max_train_steps}")
 
     # lr scheduler
@@ -573,26 +596,39 @@ def Train():
 
     # I do not know why Huggingface recommends recalculation of max_train_steps
 
-    max_train_steps = math.ceil(len(train_loader) / CFG.GRADIENT_ACCUMULATE_EVERY)
-    accelerator.print(f"Max train steps recalculated: {max_train_steps}")
+    max_train_steps = math.ceil(
+        len(train_loader) / CFG.GRADIENT_ACCUMULATE_EVERY
+    )
+    accelerator.print(
+        f"Max train steps recalculated: {max_train_steps}"
+    )
 
     # Total batch size for logging
 
     total_batch_size = (
-        CFG.BATCH_SIZE * accelerator.num_processes * CFG.GRADIENT_ACCUMULATE_EVERY
+        CFG.BATCH_SIZE
+        * accelerator.num_processes
+        * CFG.GRADIENT_ACCUMULATE_EVERY
     )
     accelerator.print(f"Total batch size: {total_batch_size}")
 
     # resume training
 
     progress_bar = tqdm(
-        range(max_train_steps), disable=not accelerator.is_local_main_process
+        range(max_train_steps),
+        disable=not accelerator.is_local_main_process,
     )
     completed_steps = 0
 
     if CFG.RESUME_FROM_CHECKPOINT:
-        if CFG.RESUME_FROM_CHECKPOINT is not None or CFG.RESUME_FROM_CHECKPOINT != "":
-            accelerator.print(f"Resuming from checkpoint {CFG.RESUME_FROM_CHECKPOINT}")
+        if (
+            CFG.RESUME_FROM_CHECKPOINT is not None
+            or CFG.RESUME_FROM_CHECKPOINT != ""
+        ):
+            accelerator.print(
+                "Resuming from checkpoint"
+                f" {CFG.RESUME_FROM_CHECKPOINT}"
+            )
             accelerator.load_state(CFG.RESUME_FROM_CHECKPOINT)
             path = os.path.basename(CFG.RESUME_FROM_CHECKPOINT)
         training_difference = os.path.splitext(path)[0]
@@ -604,7 +640,9 @@ def Train():
         )
 
     if CFG.RESUME_FROM_CHECKPOINT and resume_step is not None:
-        train_loader = accelerator.skip_first_batches(train_loader, resume_step)
+        train_loader = accelerator.skip_first_batches(
+            train_loader, resume_step
+        )
         completed_steps += resume_step
         progress_bar.update(resume_step)
 
@@ -634,7 +672,9 @@ def Train():
             if completed_steps % CFG.CHECKPOINTING_STEPS == 0:
                 output_dir = f"step_{completed_steps }"
                 if CFG.OUTPUT_DIR is not None:
-                    output_dir = os.path.join(CFG.OUTPUT_DIR, output_dir)
+                    output_dir = os.path.join(
+                        CFG.OUTPUT_DIR, output_dir
+                    )
                 accelerator.save_state(output_dir)
 
         if completed_steps >= max_train_steps:
@@ -643,7 +683,8 @@ def Train():
         # logging every CFG.LOGGING STEPS
         if CFG.LOGGING_STEPS > 0 and step % CFG.LOGGING_STEPS == 0:
             logger.info(
-                f"Step: {completed_steps}/{max_train_steps}, Loss: {loss.item():.5f}"
+                f"Step: {completed_steps}/{max_train_steps}, Loss:"
+                f" {loss.item():.5f}"
             )
 
     # end training
@@ -659,7 +700,8 @@ def Train():
         unwrapped_model = accelerator.unwrap_model(model)
         with accelerator.main_process_first():
             accelerator.save(
-                unwrapped_model.state_dict(), f"{CFG.OUTPUT_DIR}/final/final_model.pt"
+                unwrapped_model.state_dict(),
+                f"{CFG.OUTPUT_DIR}/final/final_model.pt",
             )
 
 

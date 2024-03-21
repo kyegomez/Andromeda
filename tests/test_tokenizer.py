@@ -54,7 +54,9 @@ class TestTokenizer:
 
     @patch("requests.get")
     @patch("builtins.open", mock_open())
-    def test_download_tokenizer_failed_download(self, mock_requests_get):
+    def test_download_tokenizer_failed_download(
+        self, mock_requests_get
+    ):
         mock_requests_get.return_value.status_code = 404
         tokenizer_name = "invalid-tokenizer"
         with pytest.raises(Exception):

@@ -8,15 +8,20 @@ class TestAndromeda(unittest.TestCase):
         self.model = Andromeda()
 
     def test_initialization(self):
-        self.assertIsNotNone(self.model.andromeda, "Transformer is not initialized.")
         self.assertIsNotNone(
-            self.model.decoder, "AutoregressiveWrapper is not initialized."
+            self.model.andromeda, "Transformer is not initialized."
+        )
+        self.assertIsNotNone(
+            self.model.decoder,
+            "AutoregressiveWrapper is not initialized.",
         )
 
     def test_forward_pass(self):
         input_tokens = torch.randint(0, 50432, (1, 8192))
         output = self.model(input_tokens)
-        self.assertIsInstance(output, torch.Tensor, "Output is not a PyTorch tensor.")
+        self.assertIsInstance(
+            output, torch.Tensor, "Output is not a PyTorch tensor."
+        )
         self.assertEqual(
             output.shape[0],
             input_tokens.shape[0],
@@ -60,7 +65,10 @@ class TestAndromedaExtended(unittest.TestCase):
             self.assertEqual(
                 output.shape[1],
                 seq_len,
-                f"Output sequence length does not match input for seq_len={seq_len}.",
+                (
+                    "Output sequence length does not match input for"
+                    f" seq_len={seq_len}."
+                ),
             )
 
     def test_batch_size(self):
@@ -70,7 +78,10 @@ class TestAndromedaExtended(unittest.TestCase):
             self.assertEqual(
                 output.shape[0],
                 batch_size,
-                f"Output batch size does not match input for batch_size={batch_size}.",
+                (
+                    "Output batch size does not match input for"
+                    f" batch_size={batch_size}."
+                ),
             )
 
     def test_token_range(self):
@@ -89,7 +100,10 @@ class TestAndromedaExtended(unittest.TestCase):
             self.assertEqual(
                 model.Andromeda.attn_layers.depth,
                 depth,
-                f"Model depth is not correctly set for depth={depth}.",
+                (
+                    "Model depth is not correctly set for"
+                    f" depth={depth}."
+                ),
             )
 
     def test_model_dim(self):
@@ -98,7 +112,10 @@ class TestAndromedaExtended(unittest.TestCase):
             self.assertEqual(
                 model.Andromeda.attn_layers.dim,
                 dim,
-                f"Model dimension is not correctly set for dim={dim}.",
+                (
+                    "Model dimension is not correctly set for"
+                    f" dim={dim}."
+                ),
             )
 
     def test_model_heads(self):
@@ -107,7 +124,10 @@ class TestAndromedaExtended(unittest.TestCase):
             self.assertEqual(
                 model.Andromeda.attn_layers.heads,
                 heads,
-                f"Number of heads is not correctly set for heads={heads}.",
+                (
+                    "Number of heads is not correctly set for"
+                    f" heads={heads}."
+                ),
             )
 
     def test_model_dim_head(self):
@@ -116,7 +136,10 @@ class TestAndromedaExtended(unittest.TestCase):
             self.assertEqual(
                 model.Andromeda.attn_layers.dim_head,
                 dim_head,
-                f"Head dimension is not correctly set for dim_head={dim_head}.",
+                (
+                    "Head dimension is not correctly set for"
+                    f" dim_head={dim_head}."
+                ),
             )
 
     def test_model_alibi_num_heads(self):
@@ -125,7 +148,10 @@ class TestAndromedaExtended(unittest.TestCase):
             self.assertEqual(
                 model.Andromeda.attn_layers.alibi_num_heads,
                 alibi_num_heads,
-                f"Number of alibi heads is not correctly set for alibi_num_heads={alibi_num_heads}.",
+                (
+                    "Number of alibi heads is not correctly set for"
+                    f" alibi_num_heads={alibi_num_heads}."
+                ),
             )
 
     def test_model_shift_tokens(self):
@@ -134,7 +160,10 @@ class TestAndromedaExtended(unittest.TestCase):
             self.assertEqual(
                 model.Andromeda.attn_layers.shift_tokens,
                 shift_tokens,
-                f"Number of shift tokens is not correctly set for shift_tokens={shift_tokens}.",
+                (
+                    "Number of shift tokens is not correctly set for"
+                    f" shift_tokens={shift_tokens}."
+                ),
             )
 
     def test_model_use_abs_pos_emb(self):
@@ -143,7 +172,11 @@ class TestAndromedaExtended(unittest.TestCase):
             self.assertEqual(
                 model.Andromeda.use_abs_pos_emb,
                 use_abs_pos_emb,
-                f"Use absolute position embedding flag is not correctly set for use_abs_pos_emb={use_abs_pos_emb}.",
+                (
+                    "Use absolute position embedding flag is not"
+                    " correctly set for"
+                    f" use_abs_pos_emb={use_abs_pos_emb}."
+                ),
             )
 
     def test_model_alibi_pos_bias(self):
@@ -152,7 +185,10 @@ class TestAndromedaExtended(unittest.TestCase):
             self.assertEqual(
                 model.Andromeda.attn_layers.alibi_pos_bias,
                 alibi_pos_bias,
-                f"Alibi position bias flag is not correctly set for alibi_pos_bias={alibi_pos_bias}.",
+                (
+                    "Alibi position bias flag is not correctly set"
+                    f" for alibi_pos_bias={alibi_pos_bias}."
+                ),
             )
 
     def test_model_rotary_xpos(self):
@@ -161,7 +197,10 @@ class TestAndromedaExtended(unittest.TestCase):
             self.assertEqual(
                 model.Andromeda.attn_layers.rotary_xpos,
                 rotary_xpos,
-                f"Rotary position flag is not correctly set for rotary_xpos={rotary_xpos}.",
+                (
+                    "Rotary position flag is not correctly set for"
+                    f" rotary_xpos={rotary_xpos}."
+                ),
             )
 
     def test_model_attn_flash(self):
@@ -170,7 +209,10 @@ class TestAndromedaExtended(unittest.TestCase):
             self.assertEqual(
                 model.Andromeda.attn_layers.attn_flash,
                 attn_flash,
-                f"Attention flash flag is not correctly set for attn_flash={attn_flash}",
+                (
+                    "Attention flash flag is not correctly set for"
+                    f" attn_flash={attn_flash}"
+                ),
             )
 
 
