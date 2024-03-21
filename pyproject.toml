@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "andromeda-torch"
-version = "0.0.7"
+version = "0.0.8"
 description = "Andromeda - Pytorch"
 authors = ["Kye Gomez <kye@apac.ai>"]
 license = "MIT"

@@ -4,10 +4,7 @@ from torch import nn
 from andromeda_torch.core.autoregressive_wrapper import (
     AutoregressiveWrapper,
 )
-from andromeda_torch.core.transformer import (
-    Decoder,
-    Transformer,
-)
+from zeta.structs import Decoder, Transformer
 
 
 class Andromeda(nn.Module):
